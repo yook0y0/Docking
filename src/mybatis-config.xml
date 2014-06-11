@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"/>
+				<property name="username" value="kfcpizza"/>
+				<property name="password" value="7426"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="dao/mapper/CollaborativeEnvironmentDAO.xml"/>
+		<mapper resource="dao/mapper/ContentsDAO.xml"/>
+		<mapper resource="dao/mapper/MemberDAO.xml"/>
+		<mapper resource="dao/mapper/JoinedMemberDAO.xml"/>
+		<mapper resource="dao/mapper/TempDAO.xml"/>
+	</mappers>
+	
+</configuration>

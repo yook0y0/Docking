@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.ContentsDAO">
+	<insert id="contents_add" parameterType="vo.contents.ContentsVO">
+		insert into contents_tb (contents_id, contents_title, contents_body, contents_type, contents_path)
+		values (#{contentsId}, #{title}, #{body}, #{type}, #{path})
+	</insert>
+	
+	<update id="contents_modify" parameterType="vo.contents.ContentsVO">
+		update contents_tb
+		set contents_title=#{title}, contents_body=#{body}, contents_type=#{type}, contents_path=#{path}
+		where contents_id=#{contentsId}
+	</update>
+	
+	<select id="contents_search" parameterType="vo.contents.ContentsVO" resultType="vo.contents.ContentsVO">
+		select contents_id contentsId, contents_title title, contents_body body, contents_type type, contents_path path from contents_tb 
+		where contents_id=#{contentsId}
+	</select>
+
+	<select id="contents_searchAll" resultType="vo.contents.ContentsVO">
+		select contents_id contentsId, contents_title title, contents_body body, contents_type type, contents_path path from contents_tb
+	</select>
+	
+	<delete id="contents_delete" parameterType="vo.contents.ContentsVO">
+        delete from contents_tb where contents_id=#{contentsId}
+    </delete>
+</mapper>

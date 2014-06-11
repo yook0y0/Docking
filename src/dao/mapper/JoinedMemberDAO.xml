@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.JoinedMemberDAO">
+	<insert id="joinedMember_add" parameterType="vo.member.JoinedMemberVO">
+		insert into joinedMember_tb (joinedmember_flag, joinedmember_member)
+		values (#{flag}, #{memberVO})
+	</insert>
+	
+	<update id="joinedMember_modify" parameterType="vo.member.JoinedMemberVO">
+		update joinedMember_tb
+		set joinedmember_flag=#{flag}, joinedmember_member=#{memberVO}
+		where joinedmember_member=#{memberVO}
+	</update>
+	
+	<select id="joinedMember_search" parameterType="vo.member.JoinedMemberVO" resultType="vo.member.JoinedMemberVO">
+		select joinedmember_flag flag, joinedmember_member memberVO from joinedMember_tb 
+		where joinedmember_member=#{memberVO}
+	</select>
+
+	<select id="joinedMember_searchAll" resultType="vo.member.JoinedMemberVO">
+		select joinedmember_flag flag, joinedmember_member memberVO from joinedMember_tb
+	</select>
+	
+	<delete id="joinedMember_delete" parameterType="vo.member.JoinedMemberVO">
+        delete from joinedMember_tb where joinedmember_member=#{memberVO}
+    </delete>
+</mapper>

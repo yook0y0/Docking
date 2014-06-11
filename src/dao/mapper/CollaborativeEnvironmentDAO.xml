@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.CollaborativeEnvironmentDAO">
+	<insert id="collaborativeEnvironment_add" parameterType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO">
+		insert into collaborativeEnvironment_tb (ce_id, ce_title, ce_creationDate, ce_writer)
+		values (#{docId}, #{title}, #{creationDate}, #{writer})
+	</insert>
+	
+	<update id="collaborativeEnvironment_modify" parameterType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO">
+		update collaborativeEnvironment_tb
+		set ce_title=#{title}, ce_creationDate=#{creationDate}, ce_writer=#{writer}
+		where ce_id=#{docId}
+	</update>
+	
+	<select id="collaborativeEnvironment_search" parameterType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO" resultType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO">
+		select ce_id docId, ce_title title, ce_creationDate creationDate ce_writer writer from collaborativeEnvironment_tb 
+		where ce_id=#{docId}
+	</select>
+
+	<select id="collaborativeEnvironment_searchAll" resultType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO">
+		select ce_id docId, ce_title title, ce_creationDate creationDate ce_writer writer from collaborativeEnvironment_tb
+	</select>
+	
+	<delete id="collaborativeEnvironment_delete" parameterType="vo.collaborativeEnvironment.CollaborativeEnvironmentVO">
+        delete from collaborativeEnvironment_tb where ce_id=#{docId}
+    </delete>
+</mapper>

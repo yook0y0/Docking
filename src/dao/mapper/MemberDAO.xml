@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.MemberDAO">
+	<insert id="member_add" parameterType="vo.member.MemberVO">
+		insert into member_tb (member_id, member_pw, member_nickname)
+		values (#{id}, #{pw}, #{nickName})
+	</insert>
+	
+	<update id="member_modify" parameterType="vo.member.MemberVO">
+		update member_tb
+		set member_pw=#{pw}, member_nickname=#{nickName}
+		where member_id=#{id}
+	</update>
+	
+	<select id="member_search" parameterType="vo.member.MemberVO" resultType="vo.member.MemberVO">
+		select member_id id, member_pw pw, member_nickname nickname from member_tb 
+		where member_id=#{id}
+	</select>
+
+	<select id="member_searchAll" resultType="vo.member.MemberVO">
+		select member_id id, member_pw pw, member_nickname nickname from member_tb
+	</select>
+	
+	<delete id="member_delete" parameterType="vo.member.MemberVO">
+        delete from member_tb where member_id=#{id}
+    </delete>
+</mapper>

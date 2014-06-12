@@ -2,11 +2,11 @@ package analyze.analyzer;
 
 import analyze.attribute.DockingAttrSet;
 
-public abstract class DockingAnalyzer extends DockingAttrSet{
+public abstract class DockingRegister extends DockingAttrSet{
 	
 	private String srcPath;
 	
-	public DockingAnalyzer(String srcPath) {
+	public DockingRegister(String srcPath) {
 		super();
 		this.srcPath = srcPath;
 	}

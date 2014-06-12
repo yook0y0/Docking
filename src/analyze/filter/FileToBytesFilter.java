@@ -5,13 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import analyze.DockingStream;
+import analyze.DockingAnalyzer;
 import analyze.attribute.AttributeDataType;
 
 public class FileToBytesFilter extends DockingFilter {
 
-	public FileToBytesFilter(DockingStream stream) {
-		super(stream);
+	public FileToBytesFilter(DockingAnalyzer da) {
+		super(da);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,19 +31,19 @@ public class FileToBytesFilter extends DockingFilter {
 		long length = file.length();
 
 		if(length > Integer.MAX_VALUE) {
-			// file 크기가 너무 클 경우.. length는 long타입이나 int로 캐스팅하여 씀
-			// length 크기가 Integer의 최대값보다 클 경우를 위한 if 문
-			// 내부구현 필요함
+			// file �ш린媛��덈Т ��寃쎌슦.. length��long��엯�대굹 int濡�罹먯뒪�낇븯����
+			// length �ш린媛�Integer��理쒕�媛믩낫����寃쎌슦瑜��꾪븳 if 臾�
+			// �대�援ы쁽 �꾩슂��
 		}
 
-		// file 데이터를 담을 bytes 변수, 파일 크기에 따라 크기가 잡히게 함. 길이는 int형이여야함
+		// file �곗씠�곕� �댁쓣 bytes 蹂�닔, �뚯씪 �ш린���곕씪 �ш린媛��≫엳寃��� 湲몄씠��int�뺤씠�ъ빞��
 		byte[] bytes = new byte[(int) length];
 
 		int offset = 0;
 		int numRead = 0;
 
-		// numRead의 값을 is.Read 함수가 호출될때 넣어줌.
-		// FileInputStream의 형태로 읽혀진 file 내용을 byte형태로 bytes 에 넣어주는 역할을 함
+		// numRead��媛믪쓣 is.Read �⑥닔媛��몄텧�좊븣 �ｌ뼱以�
+		// FileInputStream���뺥깭濡��쏀�吏�file �댁슜��byte�뺥깭濡�bytes ���ｌ뼱二쇰뒗 ��븷����
 		while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) { 
 			offset += numRead;
 		}

@@ -7,14 +7,14 @@ import java.io.InputStreamReader;
 
 import net.sf.json.JSONArray;
 
-import analyze.DockingStream;
+import analyze.DockingAnalyzer;
 import analyze.attribute.AttributeDataType;
 
 public class FileStructureChkFilter extends DockingFilter{
 
 	
-	public FileStructureChkFilter(DockingStream dockingStream) {
-		super(dockingStream);
+	public FileStructureChkFilter(DockingAnalyzer da) {
+		super(da);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -28,7 +28,7 @@ public class FileStructureChkFilter extends DockingFilter{
 		
 		JSONArray jArr = new JSONArray();
 		
-		// 지금 데이터가 중복되어 추가되는 문제가 있음 고쳐야함
+		// 吏�툑 �곗씠�곌� 以묐났�섏뼱 異붽��섎뒗 臾몄젣媛��덉쓬 怨좎퀜�쇳븿
 
 		if (file.isDirectory()) { 
 			if (file.listFiles().length != 0) {

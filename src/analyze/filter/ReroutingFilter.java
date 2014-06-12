@@ -8,15 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import analyze.DockingStream;
+import analyze.DockingAnalyzer;
 import analyze.attribute.AttributeDataType;
 
 public class ReroutingFilter extends DockingFilter {
 	
 	public static String SERVER_ROUTING = "src=\"./srcLoad?file=";
 
-	public ReroutingFilter(DockingStream dockingStream) {
-		super(dockingStream);
+	public ReroutingFilter(DockingAnalyzer da) {
+		super(da);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -37,7 +37,7 @@ public class ReroutingFilter extends DockingFilter {
 		while((rLine = br.readLine()) != null)
 		{
 			System.out.println(rLine);
-			// body 재설정 부분은 다시 고쳐야할 필요가 있음
+			// body �ъ꽕��遺�텇���ㅼ떆 怨좎퀜�쇳븷 �꾩슂媛��덉쓬
 			body += rLine.replace("src=\"" + "./", SERVER_ROUTING);
 			body += "\n";
 		}

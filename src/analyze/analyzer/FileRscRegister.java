@@ -2,9 +2,9 @@ package analyze.analyzer;
 
 import analyze.attribute.AttributeDataType;
 
-public class FileRscPathAnalyzer extends DockingAnalyzer {
+public class FileRscRegister extends DockingRegister {
 
-	public FileRscPathAnalyzer(String srcPath) {
+	public FileRscRegister(String srcPath) {
 		super(srcPath);
 		try {
 			this.analyze();

@@ -3,12 +3,12 @@ package analyze.attribute;
 import java.util.HashMap;
 import java.util.Map;
 
-import analyze.DockingStream;
+import analyze.DockingAnalyzer;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public abstract class DockingAttrSet implements DockingStream{
+public abstract class DockingAttrSet implements DockingAnalyzer{
 
 	private Map<Integer, String> attrSet;
 

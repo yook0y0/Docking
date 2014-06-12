@@ -13,13 +13,13 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 
-import analyze.DockingStream;
+import analyze.DockingAnalyzer;
 import analyze.attribute.AttributeDataType;
 
 public class ImageToByteFilter extends DockingFilter{
 
-	public ImageToByteFilter(DockingStream stream) {
-		super(stream);
+	public ImageToByteFilter(DockingAnalyzer da) {
+		super(da);
 		// TODO Auto-generated constructor stub
 	}
 

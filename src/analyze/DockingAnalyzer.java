@@ -2,7 +2,7 @@ package analyze;
 
 import java.util.Map;
 
-public interface DockingStream {
+public interface DockingAnalyzer {
 
 	public Map<Integer,String> getAttrSet();
 	public void setAttrSet(Map<Integer,String> attrSet);

@@ -1,7 +1,7 @@
 package test;
 
-import analyze.DockingStream;
-import analyze.analyzer.FileRscPathAnalyzer;
+import analyze.DockingAnalyzer;
+import analyze.analyzer.FileRscRegister;
 import analyze.attribute.AttributeDataType;
 import analyze.filter.FileStructureChkFilter;
 import analyze.filter.FileToBytesFilter;
@@ -15,7 +15,7 @@ public class ByteFilterTestMain {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 
-		DockingStream ds = new FileToBytesFilter(new FileRscPathAnalyzer("C:/zipTest/test.png"));
+		DockingAnalyzer ds = new FileToBytesFilter(new FileRscRegister("C:/zipTest/test.png"));
 		
 		ds.analyze();
 

@@ -1,7 +1,7 @@
 package test;
 
-import analyze.DockingStream;
-import analyze.analyzer.FileRscPathAnalyzer;
+import analyze.DockingAnalyzer;
+import analyze.analyzer.FileRscRegister;
 import analyze.attribute.AttributeDataType;
 import analyze.filter.FileStructureChkFilter;
 
@@ -15,7 +15,7 @@ public class AnalyzerTestMain {
 		// TODO Auto-generated method stub
 
 		
-		DockingStream ds = new FileStructureChkFilter(new FileRscPathAnalyzer("C:/zipTest"));
+		DockingAnalyzer ds = new FileStructureChkFilter(new FileRscRegister("C:/zipTest"));
 		ds.analyze();
 		
 		System.out.println(ds.getAttrSet().get(AttributeDataType.FILE_STRUCTURE));	

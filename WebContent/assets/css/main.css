@@ -1,0 +1,495 @@
+/*
+ * Author: Carlos Alvarez
+ * URL: http://alvarez.is
+ *
+ * Project Name: STANLEY - Free Bootstrap 3 Theme
+ * Version: 1.0
+ * URL: http://blacktie.co
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+body {
+  	background-color: #ffffff;
+  	font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #555;
+
+    -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #333;
+}
+
+h1 {
+	font-size: 35px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+
+
+/* Paragraph & Typographic */
+p {
+    line-height: 28px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.centered {
+    text-align: center;
+}
+
+/* Links */
+a {
+    color: #24A6BD;
+    word-wrap: break-word;
+
+    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
+    transition: color 0.1s ease-in, background 0.1s ease-in;
+}
+
+a:hover,
+a:focus {
+    color: #7b7b7b;
+    text-decoration: none;
+    outline: 0;
+}
+
+a:before,
+a:after {
+    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
+    transition: color 0.1s ease-in, background 0.1s ease-in;
+}
+
+ hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+
+.navbar {
+	text-transform: uppercase;
+	margin-bottom: 0px;
+}
+
+.navbar-inverse {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.navbar-inverse {
+	background-color: #24A6BD;
+	border-color: #16a085;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+	color: white;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+	color: #222222;
+}
+
+.navbar-brand {
+	font-weight: 700;
+	font-size: 20px;
+	letter-spacing: 2px;
+}
+
+.navbar-inverse .navbar-brand {
+	color: white;
+}
+
+.navbar-inverse .navbar-toggle {
+	border-color: transparent;
+}
+
+.progress-bar-theme {
+  background-color: #24A6BD;
+}
+
+
+/* Helpers */
+
+.mt {
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.pt {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+
+/* +++++ WRAP SECTIONS +++++ */
+
+#home {
+	padding-top: 230px;
+	padding-bottom: 230px;
+	background-color: #f2f2f2;
+}
+
+#page {/* 
+	padding-top: 20px;
+	padding-bottom: 20px; */
+	padding-top: 100px;
+	padding-bottom: 130px;
+	text-align: center;
+	background-color: #f2f2f2;
+}
+
+#loginPage {/* 
+	padding-top: 20px;
+	padding-bottom: 20px; */
+	padding-top: 125px;
+	padding-bottom: 150px;
+	text-align: center;
+	background-color: #f2f2f2;
+}
+
+#boardPage {/* 
+	padding-top: 20px;
+	padding-bottom: 20px; */
+	padding-top: 150px;
+	padding-bottom: 100px;
+		background-color: #f2f2f2;
+}
+
+#center {
+	text-align: center;
+}
+
+
+#footer {
+	background-color: #2f2f2f;
+	padding-top: 10px;
+	padding-bottom: 10px; 
+}
+
+#footer p {
+	color: white;
+}
+
+#footer h4 {
+	color: white;
+	text-transform: uppercase;
+	padding-bottom: 20px;
+}
+
+
+/* +++++ Color Wraps / Blog Page +++++ */
+
+#grey {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	background-color: #f2f2f2;
+}
+
+#white {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	background-color: #ffffff;
+}
+
+
+
+/* Blog Date*/
+bd {
+	font-size: 12px;
+	text-transform: uppercase;
+	color: #d2d2d2;
+	font-weight: 700;
+}
+
+/* Blog Author*/
+ba {
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+/* Blog Quote */
+.bq {
+	font-size: 22px;
+	padding-top: 30px;
+}
+
+/* Blog Tags */
+bt {
+	font-size: 12px;
+}
+
+/* ================== PORTFOLIO IMAGES HOVER EFFECT ================== */
+/* Effects also are controled by hover.zoom.js */
+.zoom { 
+    display:block; 
+    position:relative; 
+    overflow:hidden; 
+    background:transparent url(../img/loader.gif) no-repeat center;
+}
+
+
+    .zoomOverlay {
+        position:absolute;
+        top:0; left:0;
+        bottom:0; right:0;
+        display:none;
+        background-image:url(../img/topArrow.png);
+        background-repeat:no-repeat;
+        background-position:center;
+    }
+
+.zoom2 {
+	opacity: 1;
+}
+
+.zoom2:hover {
+	opacity: 0.5;
+}
+
+/* glyphicon Configuration */
+
+.glyphicon {
+	font-size: 40px;
+	color: #24A6BD;
+}
+
+
+/* custom */
+.form-signin
+{
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading, .form-signin .checkbox
+{
+    margin-bottom: 10px;
+}
+.form-signin .checkbox
+{
+    font-weight: normal;
+}
+.form-signin .form-control
+{
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-signin .form-control:focus
+{
+    z-index: 2;
+}
+.form-signin input[type="text"]
+{
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"]
+{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.account-wall
+{
+    margin-top: 20px;
+    padding: 40px 0px 20px 0px;
+    background-color: #f7f7f7;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+.login-title
+{
+    color: #555;
+    font-size: 18px;
+    font-weight: 400;
+    display: block;
+}
+.profile-img
+{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.need-help
+{
+    margin-top: 10px;
+}
+.new-account
+{
+    display: block;
+    margin-top: 10px;
+}
+
+
+/* login page css */
+.form-signin
+{
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading, .form-signin .checkbox
+{
+    margin-bottom: 10px;
+}
+.form-signin .checkbox
+{
+    font-weight: normal;
+}
+.form-signin .form-control
+{
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-signin .form-control:focus
+{
+    z-index: 2;
+}
+.form-signin input[type="text"]
+{
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"]
+{
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.account-wall
+{
+    margin-top: 20px;
+    padding: 40px 0px 20px 0px;
+    background-color: #f7f7f7;
+    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+.login-title
+{
+    color: #555;
+    font-size: 18px;
+    font-weight: 400;
+    display: block;
+}
+.profile-img
+{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.need-help
+{
+    margin-top: 10px;
+}
+.new-account
+{
+    display: block;
+    margin-top: 10px;
+}
+
+/* arrow */
+
+#arrows {
+	bottom: 10%;
+	height: 80px;
+	position: fixed;
+	right: 10%;
+	width: 80px;
+	z-index: 1000;
+}
+
+#arrows div {
+	background-image: url('../img/website-arrows.png');
+	cursor: pointer;
+	height: 30px;
+	position: absolute;
+	width: 30px;
+}
+
+#arrows div.disabled {
+	cursor: default;
+}
+
+#arrow-up {
+	background-position: 30px 0;
+	left: 25px;
+	top: 0;
+}
+
+#arrow-up.disabled {
+	background-position: 0 0;
+}
+
+#arrow-down {
+	background-position: 30px -30px;
+	left: 25px;
+	bottom: 0;
+}
+
+#arrow-down.disabled {
+	background-position: 0 -30px;
+}
+
+#arrow-left {
+	background-position: 30px -60px;
+	left: 0;
+	top: 25px;
+}
+
+#arrow-left.disabled {
+	background-position: 0 -60px;
+}
+
+#arrow-right {
+	background-position: 30px -90px;
+	right: 0;
+	top: 25px;
+}
+
+#arrow-right.disabled {
+	background-position: 0 -90px;
+}
+
+.navigation-slide {
+	cursor: pointer;
+}

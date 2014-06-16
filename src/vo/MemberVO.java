@@ -9,6 +9,7 @@ public class MemberVO	implements Serializable
 	private	String	id;
 	private	String	pw;
 	private	String	nickName;
+	private Integer	memberType;
 	
 	public String getId() {
 		return id;
@@ -27,6 +28,13 @@ public class MemberVO	implements Serializable
 	}
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
+	}
+	
+	public Integer getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(Integer memberType) {
+		this.memberType = memberType;
 	}
 	
 	@Override
@@ -56,7 +64,7 @@ public class MemberVO	implements Serializable
 	
 	@Override
 	public String toString() {
-		return "MemberInfoVO [id=" + id + ", pw=" + pw + ", nickName="
-				+ nickName + "]";
+		return "MemberVO [id=" + id + ", pw=" + pw + ", nickName=" + nickName
+				+ ", memberType=" + memberType + "]";
 	}
 }

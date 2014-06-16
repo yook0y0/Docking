@@ -1,22 +1,20 @@
 package vo;
 
 import java.io.Serializable;
-import java.util.Calendar;
-
-import vo.ContentsVO;
+import java.sql.Date;
 
 public class TempVO	implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Calendar	date;
-	private	String		editor;
-	private ContentsVO	contents;
+	private Date	date;
+	private	String	editor;
+	private String	contentsId;
 	
-	public Calendar getDate() {
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(Calendar date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public String getEditor() {
@@ -25,16 +23,16 @@ public class TempVO	implements Serializable
 	public void setEditor(String editor) {
 		this.editor = editor;
 	}
-	public ContentsVO getContents() {
-		return contents;
+	public String getContentsId() {
+		return contentsId;
 	}
-	public void setContents(ContentsVO contents) {
-		this.contents = contents;
+	public void setContentsId(String contentsId) {
+		this.contentsId = contentsId;
 	}
 	
 	@Override
 	public String toString() {
-		return "TempInfoVO [date=" + date + ", editor=" + editor
-				+ ", contents=" + contents + "]";
+		return "TempVO [date=" + date + ", editor=" + editor + ", contentsId="
+				+ contentsId + "]";
 	}
 }

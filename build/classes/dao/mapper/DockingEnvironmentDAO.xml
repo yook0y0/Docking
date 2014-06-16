@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.DockingEnvironmentDAO">
+	<insert id="dockingEnvironment_add" parameterType="vo.DockingEnvironmentVO">
+		insert into dockingEnvironment_tb (de_id, de_title, de_creationDate, de_writer)
+		values (#{docId}, #{title}, #{creationDate}, #{writer})
+	</insert>
+	
+	<update id="dockingEnvironment_modify" parameterType="vo.DockingEnvironmentVO">
+		update dockingEnvironment_tb
+		set de_title=#{title}, de_creationDate=#{creationDate}, de_writer=#{writer}
+		where de_id=#{docId}
+	</update>
+	
+	<select id="dockingEnvironment_search" parameterType="vo.DockingEnvironmentVO" resultType="vo.DockingEnvironmentVO">
+		select de_id docId, de_title title, de_creationDate creationDate de_writer writer from dockingEnvironment_tb 
+		where de_id=#{docId}
+	</select>
+
+	<select id="dockingEnvironment_searchAll" resultType="vo.DockingEnvironmentVO">
+		select de_id docId, de_title title, de_creationDate creationDate de_writer writer from dockingEnvironment_tb
+	</select>
+	
+	<delete id="dockingEnvironment_delete" parameterType="vo.DockingEnvironmentVO">
+        delete from dockingEnvironment_tb where de_id=#{docId}
+    </delete>
+</mapper>

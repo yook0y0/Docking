@@ -1,14 +1,21 @@
 package vo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JoinedMembersVO
 {
 	private	Map<Integer,List<MemberVO>>	joinedMembers;
-
-	public Map<Integer,List<MemberVO>> getJoinedMembers() {
+	
+	public JoinedMembersVO()
+	{
+		joinedMembers = new HashMap<Integer,List<MemberVO>>();
+	}
+	
+	public Map<Integer,List<MemberVO>> getJoinedMembers() 
+	{
 		return joinedMembers;
 	}
 

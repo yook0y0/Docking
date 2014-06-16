@@ -14,13 +14,14 @@
 			</dataSource>
 		</environment>
 	</environments>
-	
+
 	<mappers>
-		<mapper resource="dao/mapper/CollaborativeEnvironmentDAO.xml"/>
+		<mapper resource="dao/mapper/DockingEnvironmentDAO.xml"/>
 		<mapper resource="dao/mapper/ContentsDAO.xml"/>
 		<mapper resource="dao/mapper/MemberDAO.xml"/>
 		<mapper resource="dao/mapper/JoinedMemberDAO.xml"/>
 		<mapper resource="dao/mapper/TempDAO.xml"/>
+		<mapper resource="dao/mapper/EditorCodeDAO.xml"/>
 	</mappers>
 	
 </configuration>

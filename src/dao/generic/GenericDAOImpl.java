@@ -73,7 +73,7 @@ public class GenericDAOImpl<T extends Serializable> implements GenericDAO<T>
 	{
 		connect();
 		
-		T	t = (T)sqlSession.selectList(mapper, id);
+		T	t = (T)sqlSession.selectOne(mapper, id);
 		
 		disconnect();
 		

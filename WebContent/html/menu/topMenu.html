@@ -1,0 +1,33 @@
+
+<!-- fixed navbar -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			
+			<a class="navbar-brand">DOCKING</a>	
+			
+			Hi! ${sessionScope.logInMember.nickName}
+		
+		</div>
+		
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+ 				<li><a id="menu-link-1" href="start.jsp">HOME</a></li>
+<!--				<li><a id="menu-link-2" href="#slide-2">ABOUT US</a></li> -->
+				<li><a href="document.jsp">DOCUMENT</a></li>
+				<li><a href="editor.jsp">EDITOR</a></li>
+				<li><a href="board.jsp">BOARD</a></li>
+				<li><a href="contact.jsp">CONTACT</a></li>
+				<li><a href="login.jsp">LOG IN</a>
+			</ul>
+		</div>
+		<!--/.nav-collapse -->
+	</div>
+</div>
+
+<script src="../assets/js/showSessionMember.js"></script>

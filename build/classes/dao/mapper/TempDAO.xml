@@ -3,27 +3,27 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="dao.TempDAO">
-	<insert id="temp_add" parameterType="vo.temp.TempVO">
-		insert into temp_tb (temp_date, temp_editor, temp_contents)
-		values (#{date}, #{editor}, #{contents})
+	<insert id="temp_add" parameterType="vo.TempVO">
+		insert into temp_tb (temp_date, temp_editor, temp_contentsId)
+		values (#{date}, #{editor}, #{contentsId})
 	</insert>
 	
-	<update id="temp_modify" parameterType="vo.temp.TempVO">
+	<update id="temp_modify" parameterType="vo.TempVO">
 		update temp_tb
-		set temp_editor=#{editor}, temp_contents=#{contents}
-		where temp_date=#{date}
+		set temp_editor=#{editor}, temp_contentsId=#{contentsId}
+		where temp_contentsId=#{contentsId}
 	</update>
 	
-	<select id="temp_search" parameterType="vo.temp.TempVO" resultType="vo.temp.TempVO">
-		select temp_date date, temp_editor editor, temp_contents contents from temp_tb 
-		where temp_date=#{date}
+	<select id="temp_search" parameterType="vo.TempVO" resultType="vo.TempVO">
+		select temp_date date, temp_editor editor, temp_contentsId contentsId from temp_tb 
+		where temp_contentsId=#{contentsId}
 	</select>
 
-	<select id="temp_searchAll" resultType="vo.temp.TempVO">
-		select temp_date date, temp_editor editor, temp_contents contents from temp_tb
+	<select id="temp_searchAll" resultType="vo.TempVO">
+		select temp_date date, temp_editor editor, temp_contentsId contentsId from temp_tb
 	</select>
 	
-	<delete id="temp_delete" parameterType="vo.temp.TempVO">
-        delete from temp_tb where temp_date=#{date}
+	<delete id="temp_delete" parameterType="vo.TempVO">
+        delete from temp_tb where temp_contentsId=#{contentsId}
     </delete>
 </mapper>

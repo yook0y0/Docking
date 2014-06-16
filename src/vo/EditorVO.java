@@ -2,7 +2,7 @@ package vo;
 
 import java.io.Serializable;
 
-public class EditorCodeVO	implements Serializable
+public class EditorVO	implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -45,7 +45,7 @@ public class EditorCodeVO	implements Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EditorCodeVO other = (EditorCodeVO) obj;
+		EditorVO other = (EditorVO) obj;
 		if (path == null) {
 			if (other.path != null)
 				return false;

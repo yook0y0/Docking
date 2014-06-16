@@ -3,27 +3,41 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="dao.EditorCodeDAO">
-	<insert id="editorCode_add" parameterType="vo.EditorCodeVO">
-		insert into editorCode_tb (editor_name, editor_code, editor_path)
-		values (#{editorName}, #{code}, #{path})
+	<insert id="editorCode_add" parameterType="vo.EditorVO">
+		insert into
+		editorCode_tb (editor_name, editor_code, editor_path)
+		values
+		(#{editorName}, #{code}, #{path})
 	</insert>
-	
-	<update id="editorCode_modify" parameterType="vo.EditorCodeVO">
-		update editorCode_tb
-		set editor_name=#{editorName}, editor_code=#{code}, editor_path=#{path}
+
+	<update id="editorCode_modify" parameterType="vo.EditorVO">
+		update
+		editorCode_tb
+		set editor_name=#{editorName}, editor_code=#{code},
+		editor_path=#{path}
 		where editor_name=#{editorName}
 	</update>
-	
-	<select id="editorCode_search" parameterType="vo.EditorCodeVO" resultType="vo.EditorCodeVO">
-		select editor_name editorName, editor_code code, editor_path path from editorCode_tb 
+
+	<select id="editorCode_search" parameterType="vo.EditorVO"
+		resultType="vo.EditorVO">
+		select editor_name editorName, editor_code code,
+		editor_path path from editorCode_tb
 		where editor_name=#{editorName}
 	</select>
 
-	<select id="editorCode_searchAll" resultType="vo.EditorCodeVO">
-		select editor_name editorName, editor_code code, editor_path path from editorCode_tb
+	<select id="editorCode_search_editor_path" parameterType="vo.EditorVO"
+		resultType="vo.EditorVO">
+		select editor_name editorName, editor_code code,
+		editor_path path from editorCode_tb
+		where editor_name=#{path}
 	</select>
-	
-	<delete id="editorCode_delete" parameterType="vo.EditorCodeVO">
-        delete from editorCode_tb where editor_name=#{editorName}
-    </delete>
+
+	<select id="editorCode_searchAll" resultType="vo.EditorVO">
+		select editor_name
+		editorName, editor_code code, editor_path path from editorCode_tb
+	</select>
+
+	<delete id="editorCode_delete" parameterType="vo.EditorVO">
+		delete from editorCode_tb where editor_name=#{editorName}
+	</delete>
 </mapper>

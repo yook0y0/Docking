@@ -70,11 +70,9 @@ public class StringReplaceFilter extends Filter {
 			for(int i=0;i<size;i++){
 			
 				if(this.changeType == StringReplaceFilter.CHANGE_DATA || this.changeType == StringReplaceFilter.CHANGE_ALL){
-					System.out.println("data");
 					data[i] = this.replace(data[i]);
 				}
 				if(this.changeType == StringReplaceFilter.CHANGE_TYPE || this.changeType == StringReplaceFilter.CHANGE_ALL){
-					System.out.println("type");
 					type[i] = this.replace(type[i]);
 				}
 			}

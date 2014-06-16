@@ -61,8 +61,10 @@ public class FileUnzipFilter extends Filter{
 					typeList.add(zae.getName().getBytes());
 
 					writtenSize = 0;
+					tmpSize = 0;
+					dat = null;
 					while ((written = zais.read(buf)) >= 0 ){
-
+						
 						writtenSize += written;
 
 						tmp = dat;
@@ -84,6 +86,7 @@ public class FileUnzipFilter extends Filter{
 							b++;
 						}
 					}
+					if(dat == null){dat = new byte[1];}
 					dataList.add(dat);
 				}
 				zais.close();

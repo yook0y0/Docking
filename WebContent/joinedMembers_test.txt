@@ -1,0 +1,29 @@
+JoinedMemberController	jc = new JoinedMemberController();
+		MemberController	mc = new MemberController();
+		
+		JoinedMembersVO	jms = new JoinedMembersVO();
+		
+		List<MemberVO>	list0 = new ArrayList<MemberVO>();
+		List<MemberVO>	list1 = new ArrayList<MemberVO>();
+		
+		for(JoinedMemberVO jv : jc.searchAll("joinedMember_searchAll"))
+		{
+			if(jv.getFlag() == 0)
+			{
+				list0.add(mc.search("member_search", jv.getMemberId()));
+			}
+			
+			else 
+			{
+				list1.add(mc.search("member_search", jv.getMemberId()));
+				
+			/*	System.out.println("id :" + jv.getMemberId());
+				System.out.println("1 : " + mc.search("member_search", jv.getMemberId()));*/
+			}
+		}
+		
+		jms.getJoinedMembers().put(0, list0);
+		jms.getJoinedMembers().put(1, list1);		
+		
+		System.out.println(jms.getJoinedMembers().get(0));
+		System.out.println(jms.getJoinedMembers().get(1));

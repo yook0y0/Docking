@@ -34,7 +34,7 @@
 						<c:choose>
 							<c:when test="${sessionScope.logInMember.nickName != null}">
 								<li><a href="body/logout.jsp">LOGOUT</a>
-								<li><a href="mainChangeMemberInfo.jsp">ChangeInfo</a>
+								<li><a href="userUpdate.jsp">ChangeInfo</a>
 								
 								<c:if test="${sessionScope.logInMember.memberType == 1 }">
 									<li><a href="editor.jsp">EDITOR</a></li>

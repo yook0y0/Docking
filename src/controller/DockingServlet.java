@@ -387,12 +387,6 @@ public class DockingServlet extends HttpServlet
 				session = request.getSession();
 
 				session.setAttribute("logInMember", memberVO);
-
-				List<MemberVO>	logInMemberList = (List<MemberVO>)getServletContext().getAttribute("logInMemberList");
-
-				logInMemberList.add((MemberVO)session.getAttribute("logInMember"));
-
-				System.out.println("현재회원 : " + logInMemberList);
 			}
 
 			else
@@ -447,12 +441,6 @@ public class DockingServlet extends HttpServlet
 			session = request.getSession();
 
 			session.setAttribute("logInMember", memberVO);
-
-			List<MemberVO>	logInMemberList = (List<MemberVO>)getServletContext().getAttribute("logInMemberList");
-
-			logInMemberList.add((MemberVO)session.getAttribute("logInMember"));
-
-			System.out.println("현재회원 : " + logInMemberList);
 		}
 
 		response.setCharacterEncoding("utf-8");
@@ -485,13 +473,6 @@ public class DockingServlet extends HttpServlet
 		HttpSession	session = request.getSession();
 
 		session.setAttribute("logInMember", memberVO);
-
-		List<MemberVO>	logInMemberList = (List<MemberVO>)getServletContext().getAttribute("logInMemberList");
-
-		logInMemberList.remove(memberController.search("member_search", id));
-		logInMemberList.add((MemberVO)session.getAttribute("logInMember"));
-
-		System.out.println("현재회원 : " + logInMemberList);
 
 		response.setCharacterEncoding("utf-8");
 		PrintWriter	writer = response.getWriter();
@@ -535,13 +516,7 @@ public class DockingServlet extends HttpServlet
 
 		HttpSession	session = request.getSession();
 
-		List<MemberVO>	logInMemberList = (List<MemberVO>)getServletContext().getAttribute("logInMemberList");
-
-		logInMemberList.remove(session.getAttribute("logInMember"));
-
 		session.removeAttribute("logInMember");
-
-		System.out.println("현재회원 : " + logInMemberList);
 
 		response.setCharacterEncoding("utf-8");
 		PrintWriter	writer = response.getWriter();
@@ -664,11 +639,6 @@ public class DockingServlet extends HttpServlet
 		joinedMemberVO.setMemberId(memberVO.getId());
 
 		joinedMemberController.add("joinedMember_add", joinedMemberVO);
-
-		Map<String,List<JoinedMemberVO>>	joinedMemberList = (Map<String,List<JoinedMemberVO>>)getServletContext().getAttribute("joinedMember");
-
-		joinedMemberList.put(dockingEnvironmentVO.getDocId(), joinedMemberController.searchJoinedMember("joinedMember_searchAll", dockingEnvironmentVO.getDocId()));
-		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		response.setCharacterEncoding("utf-8");
 		PrintWriter	writer = response.getWriter();

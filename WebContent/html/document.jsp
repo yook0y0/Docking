@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
-<script src="../assets/js/dockingRegister.js"></script>
+
 </head>
 <body>
 	<myTag:menubar />
@@ -43,5 +43,7 @@
 	</div>
 	<!-- /grey -->
 	<myTag:copyright />
+	
+	<script src="../assets/js/dockingRegister.js"></script>
 </body>
 </html>

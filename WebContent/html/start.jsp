@@ -56,6 +56,7 @@
 				</div>
 				<!--/col-lg-4 -->
 
+
 				<div class="col-lg-4">
 					<img src="../assets/img/cloud.png" width="180" alt="">
 					<h4>3 - Cloud Service</h4>

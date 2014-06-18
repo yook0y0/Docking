@@ -5,7 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.vertx.java.core.Vertx;
+
+import SocketIO.SocketIO;
 import analysis.DockingAnalyzer;
 import analysis.attribute.Attr;
 import analysis.attribute.DataAttribute;
@@ -40,7 +42,7 @@ import vo.EditorVO;
 import vo.JoinedMemberVO;
 import vo.MemberVO;
 
-@WebServlet(name="DiapatcherServlet", urlPatterns={"/addEditor","/getStartPage","/getData",
+@WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData",
 		"/login",
 		"/member_add", "/member_modify", "/member_search", "/member_searchAll", "/member_delete",
 		"/contents_add", "/contents_modify", "/contents_search", "/contents_searchAll", "/contents_delete",
@@ -241,7 +243,7 @@ public class DockingServlet extends HttpServlet
 	
 	private void addEditor(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 
-		String savePath = req.getServletContext().getRealPath("tmp\\");
+		String savePath = req.getServletContext().getRealPath("tmp/");
 
 		// 파일 크기 15MB로 제한
 		int sizeLimit = 1024*1024*15;
@@ -253,17 +255,17 @@ public class DockingServlet extends HttpServlet
 			e.printStackTrace();
 		}
 
-		String name = multi.getParameter("director_name");
+		String name = "testName"/*multi.getParameter("director_name")*/;
 		String editorName = multi.getParameter("editor_name");
 		String fileName = multi.getFilesystemName("editor_file");
 
 		// 업로드한 파일의 전체 경로를 DB에 저장하기 위함
-		String path = savePath + "\\" + fileName;
+		String path = savePath + "/" + fileName;
 
 		/*
 		 * address replace 시에도 이름,아이디등을 붙여서 만들어야함
 		 */
-		DockingAnalyzer ds = new StringReplaceFilter(new FileUnzipFilter(new FilePathRegister(path)),"src=\"./","src=\"./getData?value=");
+		DockingAnalyzer ds = new StringReplaceFilter(new FileUnzipFilter(new FilePathRegister(path)),"src=\"./","src=\"./getData?value=" + name + "/" + editorName + "/");
 		try {
 			ds.analyze();
 		} catch (Exception e) {
@@ -275,25 +277,25 @@ public class DockingServlet extends HttpServlet
 		byte[][] type = dAttr.getType();
 		byte[][] data = dAttr.getData();
 
-		List<EditorVO> evoListTmp = new ArrayList<EditorVO>();
-
 		EditorController ec = new EditorController();
 		EditorVO[] evo = new EditorVO[type.length];
 
 		/*
 		 * path가 unique값이 되기위한 아이디,이름등 추가 필요
 		 */
+		
+		ec.tempConnect();
 		for(int i=0;i<type.length;i++){
 			evo[i] = new EditorVO();
 			evo[i].setEditorName(editorName);
-			evo[i].setPath(new String(type[i]));
+			evo[i].setPath(name + "/" + editorName + "/" + new String(type[i]));
 			evo[i].setCode(new String(data[i]));
 			
-			evoListTmp.add(evo[i]);
-			System.out.println("### path : " + evoListTmp.get(i).getPath());
-
-			ec.add("editorCode_add", evo[i]);
+			ec.tempAdd("editorCode_add", evo[i]);
+			
+			System.out.println("# path : " + evo[i].getPath());
 		}
+		ec.tempDisConnect();
 		
 		ds = null;
 		ds = new FileDeleteFilter(new FilePathRegister(path));
@@ -302,10 +304,12 @@ public class DockingServlet extends HttpServlet
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		res.getWriter().print("success.");
 
-		req.setAttribute("startPage",  "http://localhost:8089/Docking/getStartPage");
+/*		req.setAttribute("startPage",  "http://localhost:8089/Docking/getStartPage?name=" + name + "&editorName=" + editorName + "&pName=start.html");
 
-		req.getRequestDispatcher("./html/body/editorStartTest.jsp").forward(req, res);
+		req.getRequestDispatcher("./html/editorStartTest.jsp").forward(req, res);*/
 	}
 
 	private void getStartPage(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -313,6 +317,12 @@ public class DockingServlet extends HttpServlet
 		/*
 		 * start.jsp 자체 path 저장시 이름,아이디등을 붙여서 만들어야함
 		 */
+		
+		String pName = req.getParameter("pName");
+		String name = req.getParameter("name");
+		String editorName = req.getParameter("editorName");
+		
+		
 		EditorController ec = new EditorController();
         ServletOutputStream o = null;
         try {
@@ -321,7 +331,8 @@ public class DockingServlet extends HttpServlet
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        EditorVO evo = ec.search("editorCode_search_editor_path","start.jsp");
+        
+        EditorVO evo = ec.search("editorCode_search_editor_path",name + "/" + editorName + "/" + pName);
         
         BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(evo.getCode().getBytes())); 
         int n = 0;
@@ -347,9 +358,19 @@ public class DockingServlet extends HttpServlet
 			e.printStackTrace();
 		}
 		EditorController ec = new EditorController();
-		List<EditorVO> evoList = ec.searchAll("editorCode_searchAll");
+		EditorVO evo = ec.search("editorCode_search_editor_path", dat);
+/*		List<EditorVO> evoList = ec.searchAll("editorCode_searchAll");
+		*/
+		BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(evo.getCode().getBytes())); 
+        int n = 0;
+        while((n=in.read(buffer, 0, 1024)) != -1) {
+            o.write(buffer, 0, n);
+        }
+
+        o.close();
+        in.close();
 		
-		BufferedInputStream in = null;
+		/*BufferedInputStream in = null;
 		
 		for(int i=0;i<evoList.size();i++){
 			if(evoList.get(i).getPath().equals(dat)){
@@ -363,11 +384,10 @@ public class DockingServlet extends HttpServlet
 		        o.close();
 		        in.close();
 			}
-		}
+		}*/
 	}
 
 	//////////////////////////////////////////////////// Login ////////////////////////////////////////////////////
-	@SuppressWarnings("unchecked")
 	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String	id = request.getParameter("memberId");
@@ -409,7 +429,6 @@ public class DockingServlet extends HttpServlet
 
 
 	//////////////////////////////////////////////////// MemberRequest ////////////////////////////////////////////////////
-	@SuppressWarnings("unchecked")
 	private void memberAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{			
 		String	id = request.getParameter("memberId");
@@ -450,7 +469,6 @@ public class DockingServlet extends HttpServlet
 		writer.flush();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void memberModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String	id = request.getParameter("memberId");
@@ -484,13 +502,28 @@ public class DockingServlet extends HttpServlet
 	private void memberSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String	id = request.getParameter("memberId");
-
+		
+		String	foundId = null;
+		
 		MemberController	memberController = new MemberController();
+		MemberVO	memberVO = null;
+		
+		try
+		{
+			memberVO = memberController.search("member_search", id);
+			
+			foundId = memberVO.getId();
+		}
+		catch(RuntimeException e)
+		{
 
-		MemberVO	memberVO = memberController.search("member_search", id);
-
-		request.setAttribute("memberVO", memberVO);
-		request.getRequestDispatcher("testResult.jsp").forward(request, response);
+		}
+		
+		response.setCharacterEncoding("utf-8");
+		PrintWriter	writer = response.getWriter();
+		
+		writer.println(foundId);
+		writer.flush();
 	}
 
 	private void memberSearchAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -503,7 +536,6 @@ public class DockingServlet extends HttpServlet
 		request.getRequestDispatcher("testResult.jsp").forward(request, response);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void memberDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String	id = request.getParameter("memberId");
@@ -583,7 +615,42 @@ public class DockingServlet extends HttpServlet
 
 	private void joinedmemberAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		String	id = request.getParameter("memberId");
+		String	docId = (String)getServletContext().getAttribute("docId");
+		
+		String	sendMessage = "Send Invite Message";
+		
+		MemberController	memberController = new MemberController();
+		MemberVO	memberVO = null;
+		
+		memberVO = memberController.search("member_search", id);
+			
+		try
+		{
+			JoinedMemberController	joinedMemberController = new JoinedMemberController();
+			JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
+			
+			joinedMemberVO.setKey(docId + "/" + memberVO.getId());
+			joinedMemberVO.setDocId(docId);
+			joinedMemberVO.setFlag(1);
+			joinedMemberVO.setMemberId(memberVO.getId());
+			
+			joinedMemberController.add("joinedMember_add", joinedMemberVO);
+			
+			List<JoinedMemberVO>	joinedMemberList = joinedMemberController.searchJoinedMember("joinedMember_searchAll", docId);
+			
+			getServletContext().setAttribute("joinedMemberList", joinedMemberList);
+		}
+		catch(RuntimeException e)
+		{
+			sendMessage = "Already Invited Member!";
+		}
 
+		response.setCharacterEncoding("utf-8");
+		PrintWriter	writer = response.getWriter();
+		
+		writer.println(sendMessage);
+		writer.flush();
 	}
 
 	private void joinedmemberModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -608,42 +675,77 @@ public class DockingServlet extends HttpServlet
 
 	//////////////////////////////////////////////////// DockingEnvironmentRequest ////////////////////////////////////////////////////
 
-	@SuppressWarnings("unchecked")
 	private void dockingEnvironmentAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{	
 		String	writerId = request.getParameter("writer");
-		String	sendMessage = "CREATE ROOM FINISHED";
-
+		
 		MemberVO	memberVO = new MemberController().search("member_search", writerId);
-
+		
 		DockingEnvironmentController	dockingEnvironmentController = new DockingEnvironmentController();
 		DockingEnvironmentVO	dockingEnvironmentVO = new DockingEnvironmentVO();
-
+		
 		long 	time = System.currentTimeMillis(); 
 		Date	date = new Date(time);
-
-		dockingEnvironmentVO.setDocId(memberVO.getId());
+		
+		dockingEnvironmentVO.setDocId(memberVO.getId() + "/" + time);
 		dockingEnvironmentVO.setTitle(memberVO.getId());
 		dockingEnvironmentVO.setCreationDate(date);
 		dockingEnvironmentVO.setWriter(memberVO.getId());
-
+		
 		dockingEnvironmentController.add("dockingEnvironment_add", dockingEnvironmentVO);
-
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		JoinedMemberController	joinedMemberController = new JoinedMemberController();
 		JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
-
-		joinedMemberVO.setKey(memberVO.getId() + "/" + memberVO.getId());
+		
+		joinedMemberVO.setKey(dockingEnvironmentVO.getDocId() + "/" + memberVO.getId());
 		joinedMemberVO.setDocId(dockingEnvironmentVO.getDocId());
 		joinedMemberVO.setFlag(1);
 		joinedMemberVO.setMemberId(memberVO.getId());
-
+		
 		joinedMemberController.add("joinedMember_add", joinedMemberVO);
-
+		
+		List<JoinedMemberVO>	joinedMemberList = joinedMemberController.searchJoinedMember("joinedMember_searchAll", dockingEnvironmentVO.getDocId());
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
+		getServletContext().setAttribute("docId", dockingEnvironmentVO.getDocId());
+		getServletContext().setAttribute("joinedMemberList", joinedMemberList);
+		getServletContext().setAttribute("masterId", memberVO.getId());
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
+		SocketIO	socketIO = (SocketIO)getServletContext().getAttribute("socketIO");
+		
+		/*int		portNum = -(int)time;
+		portNum %= 51000;
+		
+		List<Integer> li = new ArrayList<Integer>;
+		
+		for(int i=0;i<1000;i++){
+			li.add(i);
+		}
+		// 컨텍스트에 li를 넣고
+		
+		Map<Integer,List<Integer>> m = null; // servletcontext에서 li 꺼내고
+		// m에서 쓸수있는 포트 꺼냄
+		
+		// m에서 꺼낸 쓸수있는 포트를 쓸수없는거로 바꾸고
+*/		
+		
+		
+		
+		socketIO.setPort(portNum);
+		socketIO.start(Vertx.newVertx());
+		
+		getServletContext().setAttribute("portNum", portNum);
+		
+		System.out.println(portNum);
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		
 		response.setCharacterEncoding("utf-8");
 		PrintWriter	writer = response.getWriter();
-
-		writer.println(sendMessage);
+		
+		writer.println(dockingEnvironmentVO.getDocId());
 		writer.flush();
 	}
 

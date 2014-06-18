@@ -14,7 +14,7 @@ $('#docking_register').click(function(event)
 				{	
 					alert(result);	
 					
-					window.location = "dockingEnvironment.jsp";	
+					window.location = "body/dockingEnvironment.jsp";	
 				}
 		);
  	}

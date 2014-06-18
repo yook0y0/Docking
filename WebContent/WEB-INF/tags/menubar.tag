@@ -1,7 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<script src="../assets/js/showSessionMember.js"></script>
-
 <!-- fixed navbar -->
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
@@ -34,7 +32,7 @@
 						<c:choose>
 							<c:when test="${sessionScope.logInMember.nickName != null}">
 								<li><a href="body/logout.jsp">LOGOUT</a>
-								<li><a href="mainChangeMemberInfo.jsp">ChangeInfo</a>
+								<li><a href="userUpdate.jsp">ChangeInfo</a>
 								
 								<c:if test="${sessionScope.logInMember.memberType == 1 }">
 									<li><a href="editor.jsp">EDITOR</a></li>

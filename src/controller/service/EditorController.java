@@ -1,6 +1,14 @@
 package controller.service;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import com.ibatis.common.resources.Resources;
 
 import service.GenericService;
 import serviceImpl.GenericServiceImpl;
@@ -8,7 +16,7 @@ import vo.EditorVO;
 
 public class EditorController 
 {
-private	GenericService<EditorVO>	genericService;
+	private	GenericService<EditorVO>	genericService;
 	
 	public EditorController()
 	{
@@ -48,5 +56,41 @@ private	GenericService<EditorVO>	genericService;
 	public void delete(String mapper, String id)	throws RuntimeException
 	{
 		genericService.delete(mapper, id);
+	}
+	
+	SqlSession	sqlSession = null;
+	
+	public void	tempConnect()
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+			
+					System.out.println("Session Connect....");
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void tempAdd(String mapper, EditorVO editorVO)
+	{
+		sqlSession.selectList(mapper, editorVO);
+	}
+	
+	public void tempDisConnect()
+	{
+		sqlSession.close();
 	}
 }

@@ -1,7 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<script src="../assets/js/showSessionMember.js"></script>
-
 <!-- fixed navbar -->
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">

@@ -9,8 +9,8 @@ public class SMTPAuthenticator extends Authenticator {
 	private String password;  // 패스워드;
 	
 	public SMTPAuthenticator() {
-		username = "4toppings@gmail.com";
-		password = "fprxhvldk123";
+		username = "docking.d2fest@gmail.com";
+		password = "89090909";
 	}
 	
 	protected PasswordAuthentication getPasswordAuthentication() {

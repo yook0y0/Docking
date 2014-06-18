@@ -11,43 +11,118 @@
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="../assets/js/socket.io.js"></script>
+<script src="assets/js/socket.io.js"></script>
 
 <script>
-	$(document).ready(function() {
-
-		var socket = io.connect("http://localhost:11111");
-		console.log('client socket create..');
+$(document).ready(function() 
+{
+	var portNum = $("#portNum").val();
+	var socket = io.connect("http://localhost:" + portNum);
+	console.log('client socket create..');
+	
+	// receive
+	socket.on('response', function(data) 
+	{
+		console.log('data receive..');
 		
-		// receive
-		socket.on('response', function(data) {
-			console.log('data receive..');
-			
-			/* 서버로부터 실시간 데이터 수신하여 화면에 데이터 뿌려줄 메소드 호출 */
-			jMap.controller.customLoadMap(data);
-		});
-
-		// send
- 		$("body").keydown(function() 
- 		{
-			setTimeout(function() 
-			{ 
-				console.log('data send..');
-			
-				var data = jMap.toXML();
-			
-				socket.emit('data', {data : data});
-			}, 3000); 
-
-		});
+		//jMap.controller.customLoadMap(data);
+		
+		_load_(data);
 	});
+	
+	// send
+	$("body").keydown(function() 
+	{
+		setTimeout(function() 
+		{ 
+			console.log('data send..');
+		
+			//var data = jMap.toXML();
+			
+			var data = _load_data_();
+		
+			socket.emit('data', {data : data});
+			}, 3000); 
+	
+	});
+	
+	$('#memberSearch_button').click(function(event)
+	{
+		var memberId = $("#invite_member").val();
+		
+		$.post("member_search", 
+				{ 
+					memberId: memberId,
+				},
+				
+				function(result) 
+				{	
+					$("#search_result").val(result);
+				}
+		);
+	});
+	
+	$('#inviteMember_button').click(function(event)
+	{
+		var memberId = $("#search_result").val();
+		var docId = $("#docId").val();
+		var portNum = $("#portNum").val();
+		
+		alert(memberId);
+		alert(docId);
+		alert(portNum);
+		
+		$.post("joinedmember_add", 
+				{ 
+					memberId: memberId,
+					docId : docId,
+					portNum : portNum
+				},
+				
+				function(result) 
+				{	
+					alert(result);
+				
+					//location.reload();
+				}
+		);
+	}); 
+});
 </script>
 
 </head>
+
 <body>
-	<myTag:menubar />
-	<%-- <c:import url="http://localhost:8089/Docking/getStartPage?name=testName&editorName=hfhfhf&pName=start.html" /> --%>
-	<c:import url="{startPage}" />
-	<myTag:copyright />
+	<input type="hidden" id="docId" value="${requestScope.docId}" />
+	<input type="hidden" id="portNum" value="${requestScope.portNum }" />
+	
+	${requestScope.docId}
+	${requestScope.portNum }
+
+	<div>
+		<table id="joinedMember_list" class="table">
+			<c:forEach var="item" items="${applicationScope.joinedMemberList }">
+				<tr id="${item.memberId}" class="eventCheckRow">
+					<td>${item.memberId}</td>
+				</tr>
+			</c:forEach>
+		</table> 
+	</div>
+
+	<button id="invite_button" type="button">Invite!</button>
+	
+	<div id="member_search_div">
+		<input type="text" id="invite_member" placeholder="Email" />
+		<button id="memberSearch_button">Search</button>
+	</div>
+
+	<div id="member_searchResult_div">
+		<input type="text" id="search_result" readonly />
+		<button id="inviteMember_button">Invite!</button>
+	</div>
+	
+	<%-- <myTag:menubar />
+		<c:import url="{startPage}" />
+	<myTag:copyright /> --%>
 </body>
 </html>

@@ -4,7 +4,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
+<script>
+	$('#docking_register').click(function(event) {
+		var con = confirm("Do you want to create dockingEnvironment?");
 
+		if (con == true) {
+			var writer = $("#writer").val();
+
+			var f = document.createElement("form");
+			f.setAttribute("method", "post");
+			f.setAttribute("action", "../dockingEnvironment_add");
+			document.body.appendChild(f);
+
+			var i = document.createElement("input");
+			i.setAttribute("type", "hidden");
+			i.setAttribute("name", "writer");
+			i.setAttribute("value", writer);
+			f.appendChild(i);
+
+			f.submit();
+		}
+	});
+</script>
 </head>
 <body>
 	<myTag:menubar />
@@ -43,7 +64,5 @@
 	</div>
 	<!-- /grey -->
 	<myTag:copyright />
-	
-	<script src="../assets/js/dockingRegister.js"></script>
 </body>
 </html>

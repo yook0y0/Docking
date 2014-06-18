@@ -22,6 +22,7 @@
 		<mapper resource="dao/mapper/JoinedMemberDAO.xml"/>
 		<mapper resource="dao/mapper/TempDAO.xml"/>
 		<mapper resource="dao/mapper/EditorDAO.xml"/>
+		<mapper resource="dao/mapper/MemberContentsDAO.xml" />
 	</mappers>
 	
 </configuration>

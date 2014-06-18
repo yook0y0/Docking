@@ -1,7 +1,6 @@
 package util;
 
 import analysis.DockingAnalyzer;
-import analysis.attribute.Attr;
 import analysis.filter.FileExtensionFilter;
 import analysis.filter.FileReaderFilter;
 import analysis.filter.FileUnzipFilter;

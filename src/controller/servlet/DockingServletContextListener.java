@@ -4,7 +4,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import SocketIO.SocketIO;
+import socketIO.SocketIO;
+
 
 @WebListener
 public class DockingServletContextListener  implements ServletContextListener

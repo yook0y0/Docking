@@ -32,8 +32,6 @@ public class GenericDAOImpl<T extends Serializable> implements GenericDAO<T>
 			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
 			
 			sqlSession = sqlMapper.openSession();
-			
-					System.out.println("Session Connect....");
 		} 
 		
 		catch (IOException e) 

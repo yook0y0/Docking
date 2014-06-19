@@ -1,70 +1,55 @@
 package socketIO;
 
-import java.util.Map;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.json.JsonObject;
-
 import com.nhncorp.mods.socket.io.SocketIOServer;
 import com.nhncorp.mods.socket.io.SocketIOSocket;
 import com.nhncorp.mods.socket.io.impl.DefaultSocketIOServer;
 import com.nhncorp.mods.socket.io.impl.Room;
 import com.nhncorp.mods.socket.io.impl.RoomClient;
-import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
+import org.vertx.java.core.Handler;
+import org.vertx.java.core.Vertx;
+import org.vertx.java.core.http.HttpServer;
+import org.vertx.java.core.impl.DefaultVertx;
+import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.deploy.Verticle;
 
-public class SocketIO extends DefaultEmbeddableVerticle 
-{
-	private static 	SocketIOServer io = null;
-	private	int		port;
-	
-	public int getPort() 
-	{
-		return port;
+import java.util.Map;
+
+/**
+ * @author Keesun Baik
+ */
+public class UsingRooms extends Verticle {
+
+	public UsingRooms() {
 	}
-	public void setPort(int port) 
-	{
-		this.port = port;
+
+	public UsingRooms(Vertx vertx) {
+		this.vertx = vertx;
 	}
 
 	@Override
-	public void start(Vertx vertx) 
-	{
-		// HttpServlet ��
+	public void start() {
+		int port = 9000;
 		HttpServer server = vertx.createHttpServer();
-		
-		io = new DefaultSocketIOServer(vertx, server);
-
-		System.out.println("SocketIOServer create");
-		
-		// Connection �̺�Ʈ ����
-		
+		final SocketIOServer io = new DefaultSocketIOServer(vertx, server);
 		io.sockets().onConnection(new Handler<SocketIOSocket>() {
-
-			public void handle(final SocketIOSocket socket) 
-			{
-				System.out.println("Connection handling");
-				// Ư�� Ű ������ ��û�� ������ �̺�Ʈ ����
-				socket.on("room", new Handler<JsonObject>() {
-
+			public void handle(final SocketIOSocket socket) {
+				socket.on("data", new Handler<JsonObject>() {
 					public void handle(JsonObject data) {
 						String room = data.getString("room");
 						socket.join(room);
-						socket.emit("response",room);
+						socket.emit("join:" + room);
 
 						print(io.sockets().manager().rooms());
 						print(io.sockets().clients(room));
 						print(io.sockets().manager().roomClients(socket.getId()));
-						// ��� Ŭ���̾�Ʈ�� �޼��� ���
-						/*io.sockets().emit("response", event.getString("data"));*/
 					}
+
+
 				});
-				socket.on("data", new Handler<JsonObject>() {
+				socket.on("emit", new Handler<JsonObject>() {
 					public void handle(JsonObject data) {
 						String room = data.getString("room");
-						String dt = data.getString("data");
-						io.sockets().in(room).emit("map", data);
+						io.sockets().in(room).emit("emit", data);
 					}
 				});
 				socket.on("unsubscribe", new Handler<JsonObject>() {
@@ -107,5 +92,12 @@ public class SocketIO extends DefaultEmbeddableVerticle
 				System.out.println(client);
 			}
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		Vertx vertx = new DefaultVertx();
+		UsingRooms app = new UsingRooms(vertx);
+		app.start();
+		Thread.sleep(Long.MAX_VALUE);
 	}
 }

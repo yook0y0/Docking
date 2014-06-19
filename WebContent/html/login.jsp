@@ -4,7 +4,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
+<script>
+	function loginChk() {
+		var memberId = $("#id_memberId").val();
+		var memberPw = $("#id_memberPw").val();
 
+		$.post("../login", 
+				{ 
+					memberId: memberId,
+					memberPw: memberPw,
+				},
+				
+				function(result) 
+				{	
+					alert(result);	
+					
+					window.location = "start.jsp";
+		});
+	};
+</script>
 </head>
 <body>
 	<myTag:menubar />
@@ -26,7 +44,7 @@
 								type="password" id="id_memberPw" class="form-control"
 								placeholder="Password" required>
 							<button class="btn btn-lg btn-primary btn-block"
-								id="login_button" type="button">Sign in</button>
+								id="login_button" type="button" onclick="loginChk()">Sign in</button>
 
 
 							<!-- <label class="checkbox pull-left"> <input type="checkbox"
@@ -42,7 +60,5 @@
 		</div>
 	</div>
 	<myTag:copyright />
-	
-	<script src="../assets/js/login.js"></script>
 </body>
 </html>

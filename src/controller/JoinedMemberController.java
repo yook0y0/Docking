@@ -31,10 +31,6 @@ public class JoinedMemberController {
 		String	docId = req.getParameter("docId");
 		String	portNum = req.getParameter("portNum");
 
-		System.out.println(id);
-		System.out.println(docId);
-		System.out.println(portNum);
-
 		String	sendMessage = "Send Invite Message";
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		

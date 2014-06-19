@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.vertx.java.core.Vertx;
 
-import SocketIO.SocketIO;
 
 import controller.ContentsController;
 import controller.DockingEnvironmentController;
@@ -21,14 +20,20 @@ import controller.EditorController;
 import controller.EmailController;
 import controller.JoinedMemberController;
 import controller.LogInOutController;
+import controller.MemberContentsController;
 import controller.MemberController;
 import controller.TempController;
 import controller.action.AddAction;
+import controller.action.ModifyAction;
 import controller.action.SearchAction;
 
+import socketIO.SocketIO;
 import util.Injector;
+import util.SocketPortManager;
+import vo.ContentsVO;
 import vo.DockingEnvironmentVO;
 import vo.JoinedMemberVO;
+import vo.MemberContentsVO;
 import vo.MemberVO;
 
 @WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData", "/joinedMember",
@@ -37,7 +42,8 @@ import vo.MemberVO;
 		"/contents_add", "/contents_modify", "/contents_search", "/contents_searchAll", "/contents_delete",
 		"/temp_add", "/temp_modify", "/temp_search", "/temp_searchAll", "/temp_delete",
 		"/joinedmember_add", "/joinedmember_modify", "/joinedmember_search", "/joinedmember_searchAll", "/joinedmember_delete",
-		"/dockingEnvironment_add", "/dockingEnvironment_modify", "/dockingEnvironment_search", "/dockingEnvironment_searchAll", "/dockingEnvironment_delete"
+		"/dockingEnvironment_add", "/dockingEnvironment_modify", "/dockingEnvironment_search", "/dockingEnvironment_searchAll", "/dockingEnvironment_delete",
+		"/memberContents_search","/startSocket"
 })
 public class DockingServlet extends HttpServlet 
 {
@@ -60,7 +66,7 @@ public class DockingServlet extends HttpServlet
 		String	action = uri.substring(lastIndex + 1);
 
 		req.setCharacterEncoding("utf-8");
-
+		
 		if(action.equals("joinedMember")){
 			joinedMember(req,res);
 		}
@@ -201,6 +207,13 @@ public class DockingServlet extends HttpServlet
 
 		else if(action.equals("dockingEnvironment_delete")){
 			this.dockingEnvironmentDelete(req,res);
+		}
+		
+		else if(action.equals("memberContents_search")){
+			this.memberContentsSearch(req,res);
+		}
+		else if(action.equals("startSocket")){
+			this.startSocket(req,res);
 		}
 
 		if((String)req.getAttribute("dispatchUrl") != null){
@@ -439,56 +452,10 @@ public class DockingServlet extends HttpServlet
 
 	private void dockingEnvironmentAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{	
-		String	writerId = req.getParameter("writer");
-
-		SearchAction searchAction = new SearchAction();
-		MemberVO	memberVO = searchAction.searchMember("member_search", writerId);
-		
-		AddAction addAction = new AddAction();
-
-		DockingEnvironmentVO	dockingEnvironmentVO = new DockingEnvironmentVO();
-
-		long 	time = System.currentTimeMillis(); 
-		Date	date = new Date(time);
-
-		dockingEnvironmentVO.setDocId(memberVO.getId() + "/" + time);
-		dockingEnvironmentVO.setTitle(memberVO.getId());
-		dockingEnvironmentVO.setCreationDate(date);
-		dockingEnvironmentVO.setWriter(memberVO.getId());
-
-		addAction.addDockingEnvironment("dockingEnvironment_add", dockingEnvironmentVO);
-
-		//////////////////////////////////////////////////////////////////////////////////////////////
-		JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
-
-		joinedMemberVO.setKey(dockingEnvironmentVO.getDocId() + "/" + memberVO.getId());
-		joinedMemberVO.setDocId(dockingEnvironmentVO.getDocId());
-		joinedMemberVO.setFlag(1);
-		joinedMemberVO.setMemberId(memberVO.getId());
-
-		addAction.addJoinedMember("joinedMember_add", joinedMemberVO);
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-		List<JoinedMemberVO>	joinedMemberList = searchAction.searchJoinedMemberList("joinedMember_searchAll", dockingEnvironmentVO.getDocId());
-		getServletContext().setAttribute("joinedMemberList", joinedMemberList);
-		/////////////////////////////////////////////////////////////////////////////////////////////
-
-		SocketIO	socketIO = (SocketIO)getServletContext().getAttribute("socketIO");
-
-		int		portNum = -(int)time;
-		portNum %= 51000;
-
-		socketIO.setPort(portNum);
-		socketIO.start(Vertx.newVertx());
-
-		System.out.println(portNum);
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-
-		req.setAttribute("docId", dockingEnvironmentVO.getDocId());
-		req.setAttribute("portNum", portNum);
-
-		req.getRequestDispatcher("./html/editorStartTest.jsp").forward(req, res);
+		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.dockingEnvironmentAdd();
 	}
 
 	private void dockingEnvironmentModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -521,5 +488,41 @@ public class DockingServlet extends HttpServlet
 		con.setRequest(req);
 		con.setResponse(res);
 		con.dockingEnvironmentDelete();
+	}
+	
+	private void memberContentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		MemberContentsController con = (MemberContentsController)Injector.getInstance().getObject(MemberContentsController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.memberContentsSearch();
+	}
+	
+	private void startSocket(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+		String docId = req.getParameter("docId");
+		
+		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		ContentsVO cvo = searchAction.searchContents("contents_search", docId);
+		String port = cvo.getPath();
+		String body = cvo.getBody();
+		
+		cvo.setBody("test");
+		
+/*		// 테스트용
+		port = null;*/
+		
+		if(port.equals("1")){
+			port = String.valueOf(SocketPortManager.getInstance().getPort());
+			cvo.setPath(port);
+			modifyAction.modifyContents("contents_modify", cvo);
+			SocketIO sio = new SocketIO();
+			sio.setPort(Integer.valueOf(port));
+			sio.start(Vertx.newVertx());
+		}
+		
+		req.setAttribute("docId", docId);
+		req.setAttribute("port", port);
+		req.setAttribute("data", body);
+		req.getRequestDispatcher("./html/editorStartTest.jsp").forward(req, res);
 	}
 }

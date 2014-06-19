@@ -6,7 +6,7 @@ public class ContentsVO	implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
-	private	String	contetsId;
+	private	String	contentsId;
 	private String	title;
 	private String	body;
 	private String	type;
@@ -19,10 +19,10 @@ public class ContentsVO	implements Serializable
 		this.path = path;
 	}
 	public String getContetsId() {
-		return contetsId;
+		return contentsId;
 	}
 	public void setContetsId(String contetsId) {
-		this.contetsId = contetsId;
+		this.contentsId = contetsId;
 	}
 	public String getTitle() {
 		return title;
@@ -48,7 +48,7 @@ public class ContentsVO	implements Serializable
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((contetsId == null) ? 0 : contetsId.hashCode());
+				+ ((contentsId == null) ? 0 : contentsId.hashCode());
 		return result;
 	}
 	
@@ -61,16 +61,16 @@ public class ContentsVO	implements Serializable
 		if (getClass() != obj.getClass())
 			return false;
 		ContentsVO other = (ContentsVO) obj;
-		if (contetsId == null) {
-			if (other.contetsId != null)
+		if (contentsId == null) {
+			if (other.contentsId != null)
 				return false;
-		} else if (!contetsId.equals(other.contetsId))
+		} else if (!contentsId.equals(other.contentsId))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "ContentsVO [contetsId=" + contetsId + ", title=" + title
+		return "ContentsVO [contetsId=" + contentsId + ", title=" + title
 				+ ", body=" + body + ", type=" + type + ", path=" + path + "]";
 	}
 }

@@ -27,6 +27,10 @@
 							id="NameInputEmail1" placeholder="Editor Name"> <br>
 					</div>
 					<div class="form-group">
+						<input type="name" name="editor_startPage" class="form-control"
+							id="startPage" placeholder="Start Page Path"> <br>
+					</div>
+					<div class="form-group">
 						<input type="file" name="editor_file" class="form-control">
 						<br>
 					</div>

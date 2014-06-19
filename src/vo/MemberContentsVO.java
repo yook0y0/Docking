@@ -8,7 +8,6 @@ public class MemberContentsVO	implements	Serializable
 	
 	private	String	memberId;
 	private	String	docId;
-	private	Integer	portNum;
 	
 	public String getMemberId() {
 		return memberId;
@@ -22,16 +21,10 @@ public class MemberContentsVO	implements	Serializable
 	public void setDocId(String docId) {
 		this.docId = docId;
 	}
-	public Integer getPortNum() {
-		return portNum;
-	}
-	public void setPortNum(Integer portNum) {
-		this.portNum = portNum;
-	}
 	
 	@Override
 	public String toString() {
 		return "MemberContentsVO [memberId=" + memberId + ", docId=" + docId
-				+ ", portNum=" + portNum + "]";
+				+ "]";
 	}
 }

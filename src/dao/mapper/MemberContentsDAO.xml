@@ -4,23 +4,23 @@
 
 <mapper namespace="dao.MemberContentsDAO">
 	<insert id="memberContents_add" parameterType="vo.MemberContentsVO">
-		insert into memberContents_tb (memberContents_memberId, memberContents_docId, memberContents_portNum)
-		values (#{memberId}, #{docId}, #{portNum})
+		insert into memberContents_tb (memberContents_memberId, memberContents_docId)
+		values (#{memberId}, #{docId})
 	</insert>
 	
 	<update id="memberContents_modify" parameterType="vo.MemberContentsVO">
 		update memberContents_tb
-		set memberContents_memberId=#{memberId}, memberContents_portNum=#{portNum}
+		set memberContents_memberId=#{memberId}, memberContents_docId=#{docId}
 		where memberContents_docId=#{docId}
 	</update>
 	
 	<select id="memberContents_search" parameterType="vo.MemberContentsVO" resultType="vo.MemberContentsVO">
-		select memberContents_memberId memberId, memberContents_docId docId, memberContents_portNum portNum from memberContents_tb 
-		where memberContents_docId=#{docId}
+		select memberContents_memberId memberId, memberContents_docId docId from memberContents_tb 
+		where memberContents_memberId=#{memberId}
 	</select>
 
 	<select id="memberContents_searchAll" resultType="vo.MemberContentsVO">
-		select memberContents_memberId memberId, memberContents_docId docId, memberContents_portNum portNum from memberContents_tb from memberContents_tb
+		select memberContents_memberId memberId, memberContents_docId docId from memberContents_tb from memberContents_tb
 		where memberContents_memberId=#{memberId}
 	</select>
 	

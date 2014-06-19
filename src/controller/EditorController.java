@@ -2,7 +2,11 @@ package controller;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -10,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import util.Injector;
+import vo.ContentsVO;
 import vo.EditorVO;
+import vo.MemberVO;
 import analysis.DockingAnalyzer;
 import analysis.attribute.Attr;
 import analysis.attribute.DataAttribute;
@@ -41,7 +47,8 @@ public class EditorController {
 	public void addEditor() throws ServletException, IOException{
 
 		String savePath = req.getServletContext().getRealPath("tmp/");
-
+		new File(savePath).mkdir();
+		
 		int sizeLimit = 1024*1024*15;
 
 		MultipartRequest multi = null;
@@ -51,16 +58,18 @@ public class EditorController {
 			e.printStackTrace();
 		}
 
-		String name = "testName";
+		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
+		String id = mvo.getId();
+		String startPage = multi.getParameter("editor_startPage");
 		String editorName = multi.getParameter("editor_name");
 		String fileName = multi.getFilesystemName("editor_file");
-
+		
 		String path = savePath + "/" + fileName;
 
 		/*
 		 * address replace �ÿ��� �̸�,���̵���� �ٿ��� ��������
 		 */
-		DockingAnalyzer ds = new StringReplaceFilter(new FileUnzipFilter(new FilePathRegister(path)),"src=\"./","src=\"./getData?value=" + name + "/" + editorName + "/");
+		DockingAnalyzer ds = new StringReplaceFilter(new FileUnzipFilter(new FilePathRegister(path)),"src=\"./","src=\"./getData?value=" + editorName + "/");
 		try {
 			ds.analyze();
 		} catch (Exception e) {
@@ -82,8 +91,10 @@ public class EditorController {
 		addAction.tempConnect();
 		for(int i=0;i<type.length;i++){
 			evo[i] = new EditorVO();
+			evo[i].setId(id);
 			evo[i].setEditorName(editorName);
-			evo[i].setPath(name + "/" + editorName + "/" + new String(type[i]));
+			evo[i].setStartPage(startPage);
+			evo[i].setPath(editorName + "/" + new String(type[i]));
 			evo[i].setCode(new String(data[i]));
 
 			addAction.tempAdd(evo[i]);
@@ -107,12 +118,11 @@ public class EditorController {
 	
 	public void getStartPage() throws IOException 
 	{
-		String pName = req.getParameter("pName");
-		String name = req.getParameter("name");
-		String editorName = req.getParameter("editorName");
-
-
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		String docId = req.getParameter("docId");
+		ContentsVO cvo = searchAction.searchContents("contents_search", docId);
+		String editor = cvo.getType();
+		
 		ServletOutputStream o = null;
 		try {
 			o = res.getOutputStream();
@@ -120,11 +130,29 @@ public class EditorController {
 			e.printStackTrace();
 		}
 
-		EditorVO evo = searchAction.searchEditor("editorCode_search_editor_path",name + "/" + editorName + "/" + pName);
-
+		EditorVO evo = searchAction.searchEditor("editorCode_search",editor);
+		
+		String startPage = evo.getStartPage();
+		
+		evo = searchAction.searchEditor("editorCode_search_editor_path", editor + "/" + startPage);
+		
+		/*
+		 * 임시로
+		 */
+		List<EditorVO> evoList = searchAction.searchAllEditor("editorCode_searchAll");
+		Map<String,String> evoMap = new HashMap<String,String>();
+		for(int i=0;i<evoList.size();i++){
+			if(evoList.get(i).getEditorName().equals(editor)){
+				evoMap.put(evoList.get(i).getPath(), evoList.get(i).getCode());
+			}
+		}
+		req.getSession().removeAttribute("editorSource");
+		req.getSession().setAttribute("editorSource", evoMap);
+		
+		Map<String,String> eMap = (Map<String, String>) req.getSession().getAttribute("editorSource");
+		
 		BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(evo.getCode().getBytes())); 
 		int n = 0;
-
 		byte[] buffer = new byte[1024];
 		while((n=in.read(buffer, 0, 1024)) != -1) {
 			o.write(buffer, 0, n);
@@ -137,6 +165,28 @@ public class EditorController {
 	public void getData() throws IOException{
 
 		String dat = req.getParameter("value");
+		
+		/*Map<String,String> evoMap = (Map<String, String>) req.getSession().getAttribute("editorSource");
+		
+		String source = evoMap.get(dat);
+		
+		byte[] buffer = new byte[1024];
+		ServletOutputStream o = null;
+		try {
+			o = res.getOutputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(source.getBytes())); 
+		int n = 0;
+		while((n=in.read(buffer, 0, 1024)) != -1) {
+			o.write(buffer, 0, n);
+		}
+
+		o.close();
+		in.close();*/
+		
 		byte[] buffer = new byte[1024];
 		ServletOutputStream o = null;
 		try {

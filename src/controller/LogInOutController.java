@@ -29,7 +29,7 @@ public class LogInOutController {
 	{
 		String	id = req.getParameter("memberId");
 		String	pw = req.getParameter("memberPw");
-
+		
 		String	sendMessage = "LOGIN SUCCESS!";
 
 		HttpSession	session = null;

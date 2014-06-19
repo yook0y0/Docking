@@ -5,9 +5,9 @@
 <mapper namespace="dao.EditorDAO">
 	<insert id="editorCode_add" parameterType="vo.EditorVO">
 		insert into
-		editorCode_tb (editor_name, editor_code, editor_path)
+		editorCode_tb (id, editor_name, editor_startPage, editor_code, editor_path)
 		values
-		(#{editorName}, #{code}, #{path})
+		(#{id}, #{editorName}, #{startPage}, #{code}, #{path})
 	</insert>
 	
 	<!-- <insert id="editorCodeList_add" parameterType="java.util.List">
@@ -29,28 +29,27 @@
 	<update id="editorCode_modify" parameterType="vo.EditorVO">
 		update
 		editorCode_tb
-		set editor_name=#{editorName}, editor_code=#{code},
+		set id=#{id}, editor_name=#{editorName}, editor_startPage=#{startPage}, editor_code=#{code},
 		editor_path=#{path}
 		where editor_name=#{editorName}
 	</update>
 
 	<select id="editorCode_search" parameterType="vo.EditorVO"
 		resultType="vo.EditorVO">
-		select editor_name editorName, editor_code code,
+		select id id, editor_name editorName, editor_startPage startPage, editor_code code,
 		editor_path path from editorCode_tb
-		where editor_name=#{editorName}
+		where editor_name=#{editorName} and ROWNUM = 1
 	</select>
 
 	<select id="editorCode_search_editor_path" parameterType="vo.EditorVO"
 		resultType="vo.EditorVO">
-		select editor_name editorName, editor_code code,
+		select id id, editor_name editorName, editor_startPage startPage, editor_code code,
 		editor_path path from editorCode_tb
 		where editor_path=#{path}
 	</select>
 
 	<select id="editorCode_searchAll" resultType="vo.EditorVO">
-		select editor_name
-		editorName, editor_code code, editor_path path from editorCode_tb
+		select id id, editor_name editorName, editor_startPage startPage, editor_code code, editor_path path from editorCode_tb
 	</select>
 
 	<delete id="editorCode_delete" parameterType="vo.EditorVO">

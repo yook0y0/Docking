@@ -41,16 +41,13 @@
 			</div>
 			<div class="row mt centered">
 				<div class="col-lg-4">
-					<div id="docking_register" class="zoom green">
-						<input type="hidden" id="writer"
-							value="${sessionScope.logInMember.id }" /> <img
-							class="img-responsive" src="../assets/img/doc_register.png"
-							alt="" />
-					</div>
+					<a class="zoom green" href="../html/documentRegister.jsp">
+					<img class="img-responsive" src="../assets/img/doc_register.png"
+							alt="" /></a>
 					<H3>REGISTER</H3>
 				</div>
 				<div class="col-lg-4">
-					<a class="zoom green" href="../html/start.jsp"><img
+					<a class="zoom green" href="../memberContents_search"><img
 						class="img-responsive" src="../assets/img/doc_write.png" alt="" /></a>
 					<H3>WRITE</H3>
 				</div>

@@ -10,10 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import util.Injector;
 import vo.MemberVO;
-import controller.action.AddAction;
 import controller.action.SearchAction;
 
-public class LogInOutController {
+public class LogInOutController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
@@ -29,6 +29,9 @@ public class LogInOutController {
 	{
 		String	id = req.getParameter("memberId");
 		String	pw = req.getParameter("memberPw");
+		
+		System.out.println(id);
+		System.out.println(pw);
 		
 		String	sendMessage = "LOGIN SUCCESS!";
 
@@ -68,6 +71,6 @@ public class LogInOutController {
 	{
 		HttpSession hs = req.getSession();
 		hs.removeAttribute("logInMember");
-		res.sendRedirect("start.jsp");
+		res.sendRedirect("html/start.jsp");
 	}
 }

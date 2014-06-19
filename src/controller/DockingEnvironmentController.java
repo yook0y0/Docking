@@ -1,55 +1,48 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.vertx.java.core.Vertx;
-
-import socketIO.SocketIO;
-import util.Injector;
 import vo.ContentsVO;
 import vo.DockingEnvironmentVO;
-import vo.JoinedMemberVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 import controller.action.AddAction;
-import controller.action.SearchAction;
 
-public class DockingEnvironmentController {
+public class DockingEnvironmentController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
-	public void setRequest(HttpServletRequest req){
+	public void setRequest(HttpServletRequest req)
+	{
 		this.req = req;
 	}
 
-	public void setResponse(HttpServletResponse res){
+	public void setResponse(HttpServletResponse res)
+	{
 		this.res = res;
 	}
 	
 	public void dockingEnvironmentAdd() throws ServletException, IOException
 	{	
-		long 	time = System.currentTimeMillis(); 
-		Date	date = new Date(time);
+		long 	time = System.currentTimeMillis();
 		
 		/*
 		 * DockingEnvironmentVO
 		 */
 		String	docId = String.valueOf(time);
 		String 	title = req.getParameter("docTitle");
-		Date	creationDate = new Date(time);
 		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
 		String	writer = mvo.getId();
 		DockingEnvironmentVO	dv = new DockingEnvironmentVO();
 		dv.setDocId(docId);
 		dv.setTitle(title);
-		dv.setCreationDate(creationDate.toString());
+		dv.setCreationDate(new Date(time));
 		dv.setWriter(writer);
 		
 		/*

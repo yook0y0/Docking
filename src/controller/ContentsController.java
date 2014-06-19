@@ -6,7 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ContentsController {
+public class ContentsController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 

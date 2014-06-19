@@ -5,17 +5,20 @@
 <html>
 <%@ include file="import.html"%>
 <script>
-	function emailChk() {
+	function emailChk() 
+	{
 		var emailInfo = $("#emailInfo").val();
 
-		$.post("../emailChk", {
+		$.post("../emailChk", 
+		{
 			emailInfo : emailInfo,
 		},
 
-		function(result) {
+		function(result) 
+		{
 			alert(result);
 
-			window.location = "userRegister.jsp";
+			//window.location = "userRegister.jsp";
 		});
 	};
 </script>

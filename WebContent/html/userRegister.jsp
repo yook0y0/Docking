@@ -4,31 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
-<script>
-	$('#register_button')
-			.click(
-					function(event) {
-						var memberId = $("#id_memberId").val();
-						var memberPw = $("#id_memberPw").val();
-						var memberNickName = $("#id_memberNickName").val();
-						var memberType = document
-								.querySelector('input[name="memberType"]:checked').value;
-						;
 
-						$.post("../member_add", {
-							memberId : memberId,
-							memberPw : memberPw,
-							memberNickName : memberNickName,
-							memberType : memberType,
-						},
-
-						function(result) {
-							alert(result);
-
-							window.location = "start.jsp";
-						});
-					});
-</script>
 </head>
 <body>
 	<myTag:menubar />
@@ -51,11 +27,9 @@
 					<div class="well">
 						<form class="form">
 							<h5>EMAIL</h5>
-							<div class="input-group text-center">
+							<div class="form-group">
 								<input type="text" class="form-control input-lg"
 									id="id_memberId" placeholder="Enter your email address">
-								<span class="input-group-btn"><button
-										class="btn btn-lg btn-primary" type="button">CHECK</button></span>
 							</div>
 						</form>
 						<br>
@@ -83,7 +57,7 @@
 
 					<br>
 
-					<button type="button" class="btn btn-success" id="register_button">Register</button>
+					<button type="button" class="btn btn-success" onclick="memberRegister()">Register</button>
 				</form>
 			</div>
 		</div>
@@ -91,7 +65,32 @@
 	</div>
 	<!-- /container -->
 	<myTag:copyright />
-
-	<script src="../assets/js/register.js"></script>
+	
+	<script>
+	function memberRegister()
+	{
+		alert("dddddddddd");
+		
+		var memberId = $("#id_memberId").val();
+		var memberPw = $("#id_memberPw").val();
+		var memberNickName = $("#id_memberNickName").val();
+		var memberType = document.querySelector('input[name="memberType"]:checked').value;
+	
+		$.post("../member_add",
+		{
+			memberId : memberId,
+			memberPw : memberPw,
+			memberNickName : memberNickName,
+			memberType : memberType,
+		},
+	
+		function(result) 
+		{
+			alert(result);
+	
+			window.location = "start.jsp";
+		});
+	};
+	</script>
 </body>
 </html>

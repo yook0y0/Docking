@@ -9,22 +9,6 @@
 		values
 		(#{id}, #{editorName}, #{startPage}, #{code}, #{path})
 	</insert>
-	
-	<!-- <insert id="editorCodeList_add" parameterType="java.util.List">
-		insert into
-		editorCode_tb (editor_name, editor_code, editor_path)
-		values
-		<foreach collection="list" item="element" index="index" open="(" separator="," close=")">
-			(#{element.editorName), #{element.code}, #{element.path})
-		</foreach>
-	</insert> -->
-	
-	<!-- <insert id="editorCodeList_add" parameterType="java.util.List">
-			<foreach collection="list" item="element" index="index" open="(" separator="," close=")">
-				insert into editorCode_tb (editor_name, editor_code, editor_path) values (#{element.editorName}, #{element.code}, #{element.path})
-			</foreach>
-			select * from editorCode_tb
-	</insert> -->
 
 	<update id="editorCode_modify" parameterType="vo.EditorVO">
 		update

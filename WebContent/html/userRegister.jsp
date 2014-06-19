@@ -27,9 +27,11 @@
 					<div class="well">
 						<form class="form">
 							<h5>EMAIL</h5>
-							<div class="form-group">
+							<div class="input-group text-center">
 								<input type="text" class="form-control input-lg"
 									id="id_memberId" placeholder="Enter your email address">
+								<span class="input-group-btn">
+								<button class="btn btn-lg btn-primary" type="button" onclick="duplicationCheck()">CHECK</button></span>
 							</div>
 						</form>
 						<br>
@@ -69,14 +71,12 @@
 	<script>
 	function memberRegister()
 	{
-		alert("dddddddddd");
-		
 		var memberId = $("#id_memberId").val();
 		var memberPw = $("#id_memberPw").val();
 		var memberNickName = $("#id_memberNickName").val();
 		var memberType = document.querySelector('input[name="memberType"]:checked').value;
 	
-		$.post("../member_add",
+		$.post("../emailChk",
 		{
 			memberId : memberId,
 			memberPw : memberPw,
@@ -86,11 +86,37 @@
 	
 		function(result) 
 		{
-			alert(result);
-	
-			window.location = "start.jsp";
+			alert("Check Your Email to finish memberRegister!");
+
+			window.open('about:blank', '_self').close();
 		});
 	};
+	
+	function duplicationCheck()
+	{
+		var memberId = $("#id_memberId").val();
+		
+		$.post("../duplicationCheck",
+				{
+					memberId : memberId,
+				},
+			
+				function(result) 
+				{
+					var	chk = result.split("|");
+					
+					if(chk[0] == "0")
+					{
+						alert(chk[1]);
+						$("#id_memberId").val("");
+					}	
+					
+					else
+					{
+						alert(chk[1]);
+					}
+				});
+	}
 	</script>
 </body>
 </html>

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.vertx.java.core.Vertx;
 
 
 import controller.ContentsController;
@@ -21,17 +20,15 @@ import controller.LogInOutController;
 import controller.MemberContentsController;
 import controller.MemberController;
 import controller.TempController;
-import controller.action.ModifyAction;
 import controller.action.SearchAction;
 
-import socketIO.SocketIO;
 import util.Injector;
-import util.SocketPortManager;
 import vo.ContentsVO;
 import vo.MemberVO;
 
-@WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData", "/joinedMember",
-		"/login","/logout", "/emailChk",
+@WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData", "/joinedMember", 
+		"/emailChk", "/duplicationCheck", "/inviteEmail",
+		"/login","/logout", 
 		"/member_add", "/member_modify", "/member_search", "/member_searchAll", "/member_delete",
 		"/contents_add", "/contents_modify", "/contents_search", "/contents_searchAll", "/contents_delete",
 		"/temp_add", "/temp_modify", "/temp_search", "/temp_searchAll", "/temp_delete",
@@ -61,11 +58,21 @@ public class DockingServlet extends HttpServlet
 
 		req.setCharacterEncoding("utf-8");
 		
-		if(action.equals("joinedMember")){
+		if(action.equals("joinedMember"))
+		{
 			joinedMember(req,res);
 		}
-		else if(action.equals("emailChk")){
+		else if(action.equals("emailChk"))
+		{
 			this.emailChk(req, res);
+		}
+		else if(action.equals("duplicationCheck"))
+		{
+			this.duplicationCheck(req, res);
+		}
+		else if(action.equals("inviteEmail"))
+		{
+			this.inviteEmail(req,res);
 		}
 
 		/**
@@ -246,6 +253,22 @@ public class DockingServlet extends HttpServlet
 		con.setRequest(req);
 		con.setResponse(res);
 		con.emailConfirm();
+	}
+	
+	private void duplicationCheck(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EmailController con = (EmailController)Injector.getInstance().getObject(EmailController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.duplicationCheck();
+	}
+	
+	private void inviteEmail(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EmailController con = (EmailController)Injector.getInstance().getObject(EmailController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.inviteEmail();
 	}
 
 	//////////////////////////////////////////////////// Login ////////////////////////////////////////////////////
@@ -495,7 +518,6 @@ public class DockingServlet extends HttpServlet
 	{
 		String docId = req.getParameter("docId");
 		
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		ContentsVO cvo = searchAction.searchContents("contents_search", docId);
 		String port = cvo.getPath();
@@ -505,13 +527,9 @@ public class DockingServlet extends HttpServlet
 		
 /*		// 테스트용
 		port = null;*/
-
-/*		if(port.equals("1")){
-=======
 		
-		if(port.equals("1"))
+		/*if(port.equals("1"))
 		{
->>>>>>> b9f8d1a96d6640ff1268295c87db9d71f7c436eb
 			port = String.valueOf(SocketPortManager.getInstance().getPort());
 			cvo.setPath(port);
 			modifyAction.modifyContents("contents_modify", cvo);
@@ -519,9 +537,8 @@ public class DockingServlet extends HttpServlet
 			sio.setPort(Integer.valueOf(port));
 			sio.start(Vertx.newVertx());
 		}*/
-		
+
 		port = "9000";
-		
 		MemberVO mvo = (MemberVO) req.getSession().getAttribute("logInMember");
 		req.setAttribute("memberId", mvo.getId());
 		req.setAttribute("docId", docId);

@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,19 +8,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import util.Injector;
 import vo.JoinedMemberVO;
-import vo.MemberVO;
 import controller.action.AddAction;
-import controller.action.SearchAction;
 
-public class JoinedMemberController {
+public class JoinedMemberController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
-	public void setRequest(HttpServletRequest req){
+	public void setRequest(HttpServletRequest req)
+	{
 		this.req = req;
 	}
 
-	public void setResponse(HttpServletResponse res){
+	public void setResponse(HttpServletResponse res)
+	{
 		this.res = res;
 	}
 	
@@ -29,37 +29,21 @@ public class JoinedMemberController {
 	{
 		String	id = req.getParameter("memberId");
 		String	docId = req.getParameter("docId");
-		String	portNum = req.getParameter("portNum");
 
-		String	sendMessage = "Send Invite Message";
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
+
+		JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
+
+		joinedMemberVO.setKey(docId + "/" + id);
+		joinedMemberVO.setDocId(docId);
+		joinedMemberVO.setFlag(1);
+		joinedMemberVO.setMemberId(id);
+
+		addAction.addJoinedMember("joinedMember_add", joinedMemberVO);
 		
-		MemberVO	memberVO = searchAction.searchMember("member_search", id);
-
-		try
-		{
-			AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
-
-			JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
-
-			joinedMemberVO.setKey(docId + "/" + memberVO.getId());
-			joinedMemberVO.setDocId(docId);
-			joinedMemberVO.setFlag(1);
-			joinedMemberVO.setMemberId(memberVO.getId());
-
-			addAction.addJoinedMember("joinedMember_add", joinedMemberVO);
-		}
-		
-		catch(RuntimeException e)
-		{
-			sendMessage = "Already Invited Member!";
-		}
-
 		res.setCharacterEncoding("utf-8");
-		PrintWriter	writer = res.getWriter();
 
-		writer.println(sendMessage);
-		writer.flush();
+		res.sendRedirect("./startSocket?docId=" + docId);
 	}
 
 	public void joinedMember()	throws ServletException, IOException

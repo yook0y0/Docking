@@ -13,4 +13,6 @@ public class Attr {
 	public static String TEST_FILE_LOCAL_PATH = "C:\\test\\test.txt";
 	public static String TEST_ZIPFILE_LOCAL_PATH = "C:\\test\\test.zip";
 	public static String START_PAGE = "start.html";
+	
+	public static String WEB_SITE_ADDRESS = "http://localhost:8089/Docking/";
 }

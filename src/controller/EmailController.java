@@ -2,11 +2,17 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Random;
+import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import util.Injector;
+import vo.JoinedMemberVO;
+import controller.action.SearchAction;
+
+import analysis.attribute.Attr;
 
 import email.EmailSendable;
 import email.EmailSender;
@@ -28,25 +34,71 @@ public class EmailController
 	
 	public boolean emailConfirm()
 	{
-		String confirmNo = this.createConfirmNo();
+		String 	memberId = req.getParameter("memberId");
+		String	memberPw = req.getParameter("memberPw");
+		String	memberNickName = req.getParameter("memberNickName");
+		String	memberType = req.getParameter("memberType");
 		
-		String email = req.getParameter("emailInfo");
+		String confirmNo = this.createConfirmNo(memberId,memberPw,memberNickName,memberType);
 		
-		this.sendConfirmNo(email, confirmNo);
-		
-		HttpSession session = req.getSession();
-		
-		synchronized (session) 
-		{
-			session.setAttribute("confirmCode", confirmNo);
-		}
-		
-		req.setAttribute("email", email);
-		
-		String	sendMessage = "EMAIL CHECK!";
+		this.sendConfirmNo(memberId, confirmNo, "Docking! 가입 확인메시지!");
 		
 		res.setCharacterEncoding("utf-8");
-		PrintWriter writer;
+		
+		PrintWriter writer = null;
+		
+		try 
+		{
+			writer = res.getWriter();	
+			writer.println("Email Send Success");
+			writer.flush();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	
+		return true;
+	}
+	
+	public void inviteEmail()	throws ServletException, IOException
+	{
+		String 	memberId = req.getParameter("memberId");
+		String	docId = req.getParameter("docId");
+		String	portNum = req.getParameter("portNum");
+		
+		String	sendMessage = "1|Send Invite Email!";
+		int		chk = 1;
+		
+		res.setCharacterEncoding("utf-8");
+		
+		PrintWriter writer = null;
+		
+		SearchAction	searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		List<JoinedMemberVO>	list = searchAction.searchJoinedMemberList("joinedMember_searchAll", docId);
+		
+		for(JoinedMemberVO vo : list)
+		{
+			if(vo.getMemberId().equals(memberId))
+			{
+				chk = 0;
+				
+				break;
+			}
+		}
+		
+		if(chk == 0)
+		{
+			sendMessage = "0|Already Invited Member!";
+		}
+		
+		else
+		{
+			String confirmNo = this.createInviteMessage(memberId,docId,portNum);
+			
+			this.sendConfirmNo(memberId, confirmNo, docId + "의 초대메시지!");
+		}
+		
 		try 
 		{
 			writer = res.getWriter();	
@@ -55,27 +107,52 @@ public class EmailController
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		
-		return true;
 	}
 	
-	private String createConfirmNo()
+	public void duplicationCheck()	throws ServletException, IOException
 	{
-		int confirmCode = new Random().nextInt();
-		return Integer.toString(Math.abs(confirmCode));
+		String	memberId = req.getParameter("memberId");
+		String	sendMessage = "1|Possible Email!";
+		
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		if(searchAction.searchMember("member_search", memberId) != null)
+		{
+			sendMessage = "0|Enter Another Email!";
+		}
+		
+		PrintWriter writer = res.getWriter();	
+		writer.println(sendMessage);
+		writer.flush();
 	}
 	
-	private String sendConfirmNo(String to, String confirmNo)
+	private String createConfirmNo(String memberId , String memberPw , String memberNickName , String memberType)
+	{
+		String	message = "해당 링크를 선택하면 회원가입이 완료됩니다!" + '\n' +
+				Attr.WEB_SITE_ADDRESS + 
+				"member_add?memberId=" + memberId + "&memberPw=" + memberPw + "&memberNickName=" + memberNickName + "&memberType=" + memberType;
+		
+		return message;
+	}
+	
+	private String createInviteMessage(String memberId , String docId , String portNum)
+	{
+		String	message = "해당 링크를 선택하면 초대가 수락됩니다!" + '\n' +
+				Attr.WEB_SITE_ADDRESS + 
+				"joinedmember_add?memberId=" + memberId + "&docId=" + docId + "&portNum=" + portNum;
+		
+		return message;
+	}
+	
+	private String sendConfirmNo(String to, String confirmNo, String subjectMessage)
 	{
 		EmailSendable emailSender = new EmailSender();
 		
 		emailSender.setTo(to);
 		emailSender.setFrom(to);
-		emailSender.setSubject("Docking! 가입 확인메시지!");
+		emailSender.setSubject(subjectMessage);
 		emailSender.setContent(confirmNo);
 		emailSender.sendEmail();
 		

@@ -60,21 +60,12 @@ public class DockingEnvironmentController
 		cv.setType(type);
 		cv.setPath(path);
 		
-
-		
 		/*
 		 * MemberContentsVO
 		 */
 		MemberContentsVO mv = new MemberContentsVO();
 		mv.setDocId(docId);
 		mv.setMemberId(writer);
-		
-		/*
-		 * toString
-		 */
-		System.out.println("cv : " + cv.toString());
-		System.out.println("dv : " + dv.toString());
-		System.out.println("mv : " + mv.toString());	
 
 		AddAction addAction = new AddAction();
 		addAction.addContents("contents_add", cv);

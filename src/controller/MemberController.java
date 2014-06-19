@@ -35,12 +35,8 @@ public class MemberController {
 		String	nickName = req.getParameter("memberNickName");
 		String	type = req.getParameter("memberType");
 
-		String	sendMessage = "REGISTER FINISHED";
-
 		HttpSession	session = null;
 
-		
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
 		MemberVO	memberVO = new MemberVO();
 
@@ -49,25 +45,12 @@ public class MemberController {
 		memberVO.setNickName(nickName);
 		memberVO.setMemberType(Integer.parseInt(type));
 
-		if(searchAction.searchMember("member_search", id) != null)
-		{
-			sendMessage = "ID DUPLICATION!!";
-		}
+		addAction.addMember("member_add", memberVO);
 
-		else
-		{
-			addAction.addMember("member_add", memberVO);
-
-			session = req.getSession();
-
-			session.setAttribute("logInMember", memberVO);
-		}
-
-		res.setCharacterEncoding("utf-8");
-		PrintWriter	writer = res.getWriter();
-
-		writer.println(sendMessage);
-		writer.flush();
+		session = req.getSession();
+		session.setAttribute("logInMember", memberVO);
+		
+		res.sendRedirect("html/start.jsp");
 	}
 	
 	public void memberModify() throws ServletException, IOException

@@ -48,19 +48,12 @@ public class JoinedMemberController {
 			joinedMemberVO.setMemberId(memberVO.getId());
 
 			addAction.addJoinedMember("joinedMember_add", joinedMemberVO);
-
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*			List<JoinedMemberVO>	joinedMemberList = searchAction.searchJoinedMemberList("joinedMember_searchAll", docId);
-			getServletContext().setAttribute("joinedMemberList", joinedMemberList);
-*/			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
+		
 		catch(RuntimeException e)
 		{
 			sendMessage = "Already Invited Member!";
 		}
-
-		//	String url = "http://localhost:8089/Docking/joinedMember" + "?" + "docId=" + docId + "&portNum=" + portNum;
-		//	System.out.println(url);
 
 		res.setCharacterEncoding("utf-8");
 		PrintWriter	writer = res.getWriter();

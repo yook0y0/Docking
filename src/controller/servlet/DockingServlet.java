@@ -1,8 +1,6 @@
 package controller.servlet;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,7 +21,6 @@ import controller.LogInOutController;
 import controller.MemberContentsController;
 import controller.MemberController;
 import controller.TempController;
-import controller.action.AddAction;
 import controller.action.ModifyAction;
 import controller.action.SearchAction;
 
@@ -31,9 +28,6 @@ import socketIO.SocketIO;
 import util.Injector;
 import util.SocketPortManager;
 import vo.ContentsVO;
-import vo.DockingEnvironmentVO;
-import vo.JoinedMemberVO;
-import vo.MemberContentsVO;
 import vo.MemberVO;
 
 @WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData", "/joinedMember",
@@ -222,8 +216,8 @@ public class DockingServlet extends HttpServlet
 		}
 	}
 
-	private void addEditor(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
-
+	private void addEditor(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
 		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
 		con.setRequest(req);
 		con.setResponse(res);
@@ -251,7 +245,6 @@ public class DockingServlet extends HttpServlet
 		EmailController con = (EmailController)Injector.getInstance().getObject(EmailController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.setRequest(req);
 		con.emailConfirm();
 	}
 
@@ -490,14 +483,16 @@ public class DockingServlet extends HttpServlet
 		con.dockingEnvironmentDelete();
 	}
 	
-	private void memberContentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+	private void memberContentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
 		MemberContentsController con = (MemberContentsController)Injector.getInstance().getObject(MemberContentsController.class);
 		con.setRequest(req);
 		con.setResponse(res);
 		con.memberContentsSearch();
 	}
 	
-	private void startSocket(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+	private void startSocket(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
 		String docId = req.getParameter("docId");
 		
 		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
@@ -510,8 +505,13 @@ public class DockingServlet extends HttpServlet
 		
 /*		// 테스트용
 		port = null;*/
-		System.out.println("port : " + port);
+
 /*		if(port.equals("1")){
+=======
+		
+		if(port.equals("1"))
+		{
+>>>>>>> b9f8d1a96d6640ff1268295c87db9d71f7c436eb
 			port = String.valueOf(SocketPortManager.getInstance().getPort());
 			cvo.setPath(port);
 			modifyAction.modifyContents("contents_modify", cvo);
@@ -522,6 +522,8 @@ public class DockingServlet extends HttpServlet
 		
 		port = "9000";
 		
+		MemberVO mvo = (MemberVO) req.getSession().getAttribute("logInMember");
+		req.setAttribute("memberId", mvo.getId());
 		req.setAttribute("docId", docId);
 		req.setAttribute("port", port);
 		req.setAttribute("data", body);

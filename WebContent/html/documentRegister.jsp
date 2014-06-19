@@ -5,7 +5,8 @@
 <html>
 <%@ include file="import.html"%>
 <script>
-function documentRegister() {
+function documentRegister() 
+{
 	var docTitle = $("#doc_title").val();
 	var docEditor = $("#doc_editor").val();
 

@@ -11,15 +11,18 @@ import javax.servlet.http.HttpSession;
 import email.EmailSendable;
 import email.EmailSender;
 
-public class EmailController {
+public class EmailController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
-	public void setRequest(HttpServletRequest req){
+	public void setRequest(HttpServletRequest req)
+	{
 		this.req = req;
 	}
 	
-	public void setResponse(HttpServletResponse res){
+	public void setResponse(HttpServletResponse res)
+	{
 		this.res = res;
 	}
 	
@@ -32,7 +35,9 @@ public class EmailController {
 		this.sendConfirmNo(email, confirmNo);
 		
 		HttpSession session = req.getSession();
-		synchronized (session) {
+		
+		synchronized (session) 
+		{
 			session.setAttribute("confirmCode", confirmNo);
 		}
 		
@@ -42,11 +47,14 @@ public class EmailController {
 		
 		res.setCharacterEncoding("utf-8");
 		PrintWriter writer;
-		try {
+		try 
+		{
 			writer = res.getWriter();	
 			writer.println(sendMessage);
 			writer.flush();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -67,7 +75,7 @@ public class EmailController {
 		
 		emailSender.setTo(to);
 		emailSender.setFrom(to);
-		emailSender.setSubject("인증코드 발송");
+		emailSender.setSubject("Docking! 가입 확인메시지!");
 		emailSender.setContent(confirmNo);
 		emailSender.sendEmail();
 		

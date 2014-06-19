@@ -22,62 +22,74 @@ import vo.TempVO;
 
 public class SearchAction {
 
-	public ContentsVO searchContents(String mapper, String id){
+	public ContentsVO searchContents(String mapper, String id)
+	{
 		GenericService<ContentsVO>	s = new GenericServiceImpl<ContentsVO>();
 		return s.search(mapper, id);
 	}
 
-	public DockingEnvironmentVO searchDockingEnvironment(String mapper, String id){
+	public DockingEnvironmentVO searchDockingEnvironment(String mapper, String id)
+	{
 		GenericService<DockingEnvironmentVO>	s = new GenericServiceImpl<DockingEnvironmentVO>();
 		return s.search(mapper, id);
 	}
 
-	public EditorVO searchEditor(String mapper, String id){
+	public EditorVO searchEditor(String mapper, String id)
+	{
 		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
 		return s.search(mapper, id);
 	}
 
-	public JoinedMemberVO searchJoinedMember(String mapper, String id){
+	public JoinedMemberVO searchJoinedMember(String mapper, String id)
+	{
 		GenericService<JoinedMemberVO>	s = new GenericServiceImpl<JoinedMemberVO>();
 		return s.search(mapper, id);
 	}
 
-	public MemberVO searchMember(String mapper, String id){
+	public MemberVO searchMember(String mapper, String id)
+	{
 		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
 		return s.search(mapper, id);
 	}
 
-	public MemberContentsVO searchMemberContents(String mapper, String id){
+	public MemberContentsVO searchMemberContents(String mapper, String id)
+	{
 		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
 		return s.search(mapper, id);
 	}
 
-	public TempVO searchTemp(String mapper, String id){
+	public TempVO searchTemp(String mapper, String id)
+	{
 		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
 		return s.search(mapper, id);
 	}
 
-	public List<ContentsVO> searchAllContents(String mapper){
+	public List<ContentsVO> searchAllContents(String mapper)
+	{
 		GenericService<ContentsVO>s = new GenericServiceImpl<ContentsVO>();
 		return s.searchAll(mapper);
 	}
 
-	public List<DockingEnvironmentVO> searchAllDockingEnvironment(String mapper){
+	public List<DockingEnvironmentVO> searchAllDockingEnvironment(String mapper)
+	{
 		GenericService<DockingEnvironmentVO>s = new GenericServiceImpl<DockingEnvironmentVO>();
 		return s.searchAll(mapper);
 	}
 
-	public List<EditorVO> searchAllEditor(String mapper){
+	public List<EditorVO> searchAllEditor(String mapper)
+	{
 		GenericService<EditorVO>s = new GenericServiceImpl<EditorVO>();
 		return s.searchAll(mapper);
 	}
 
-	public List<JoinedMemberVO> searchAllJoinedMember(String mapper){
+	public List<JoinedMemberVO> searchAllJoinedMember(String mapper)
+	{
 		GenericService<JoinedMemberVO>s = new GenericServiceImpl<JoinedMemberVO>();
 		return s.searchAll(mapper);
 	}
 
-	public List<MemberVO> searchAllMember(String mapper){
+	public List<MemberVO> searchAllMember(String mapper)
+	{
 		GenericService<MemberVO>s = new GenericServiceImpl<MemberVO>();
 		return s.searchAll(mapper);
 	}

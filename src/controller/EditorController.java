@@ -31,8 +31,8 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import controller.action.AddAction;
 import controller.action.SearchAction;
 
-public class EditorController {
-
+public class EditorController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
@@ -116,6 +116,7 @@ public class EditorController {
 		req.getRequestDispatcher("./html/editorStartTest.jsp").forward(req, res);*/
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getStartPage() throws IOException 
 	{
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
@@ -162,30 +163,9 @@ public class EditorController {
 		in.close();
 	}
 	
-	public void getData() throws IOException{
-
+	public void getData() throws IOException
+	{
 		String dat = req.getParameter("value");
-		
-		/*Map<String,String> evoMap = (Map<String, String>) req.getSession().getAttribute("editorSource");
-		
-		String source = evoMap.get(dat);
-		
-		byte[] buffer = new byte[1024];
-		ServletOutputStream o = null;
-		try {
-			o = res.getOutputStream();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(source.getBytes())); 
-		int n = 0;
-		while((n=in.read(buffer, 0, 1024)) != -1) {
-			o.write(buffer, 0, n);
-		}
-
-		o.close();
-		in.close();*/
 		
 		byte[] buffer = new byte[1024];
 		ServletOutputStream o = null;
@@ -199,7 +179,8 @@ public class EditorController {
 
 		BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(evo.getCode().getBytes())); 
 		int n = 0;
-		while((n=in.read(buffer, 0, 1024)) != -1) {
+		while((n=in.read(buffer, 0, 1024)) != -1) 
+		{
 			o.write(buffer, 0, n);
 		}
 

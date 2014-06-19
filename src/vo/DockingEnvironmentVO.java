@@ -9,7 +9,7 @@ public class DockingEnvironmentVO	implements Serializable
 
 	private	String		docId;
 	private String 		title;
-	private String		creationDate;
+	private Date		creationDate;
 	private	String		writer;
 	
 	public String getDocId() {
@@ -24,10 +24,10 @@ public class DockingEnvironmentVO	implements Serializable
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(String creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 	public String getWriter() {

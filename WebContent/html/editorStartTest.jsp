@@ -16,114 +16,114 @@
 <script>
 $(document).ready(function() 
 {
+	var memberId = $("#memberId").val();
 	var docId = $("#docId").val();
 	var port = $("#port").val();
 	var body = $("#body").val();
-	
-	console.log("docId : " + docId);
-	console.log("body : " + body);
-	console.log("port : " + port);
-	
-	var socket = io.connect("http://localhost:" + port);
-	console.log('client socket create..');
-	socket.emit('room', {room : docId});
-	
-	// receive
-	socket.on('roomCreate', function(data) 
-	{
-		console.log(data);
-		
-		/* jMap.controller.customLoadMap(data);
-		 */
-		//_load_(data);
-	});
-	
-	socket.on('map', function(data) 
-			{
-				console.log(data);
-				
-				jMap.controller.customLoadMap(data);
-				 
-				//_load_(data);
-			});
-	
-	 //send
+   
+   var socket = io.connect("http://localhost:" + port);
+   console.log('client socket create..');
+   socket.emit('room', {room : docId});
+   
+   // receive
+   socket.on('roomCreate', function(data) 
+   {
+      console.log(data);
+      
+      /* jMap.controller.customLoadMap(data);
+       */
+      //_load_(data);
+   });
+   
+   socket.on('map', function(data) 
+         {
+	        var jsonDataList = eval('('+data+')');
+            
+	        jMap.controller.customLoadMap(jsonDataList.data);
+            /* if(jsonDataList.memberId != memberId){
+            	jMap.controller.customLoadMap(jsonDataList.data);
+            } */
+            //_load_(data);
+         });
+   
+    //send
 
-	 
-	 $("body").keydown(function() 
-		       {
-		         setTimeout(function() 
-		         { 
-		            console.log('data send..');
-		         
-		            var data = jMap.toXML();
-		         
-		            socket.emit('data', {data : data, room : docId });
-		         }, 3000); 
+    
+    $("body").keydown(function() 
+             {
+               setTimeout(function() 
+               { 
+                  console.log('data send..');
+               
+                  var data = jMap.toXML();
+               
+                  socket.emit('data', {data : data, room : docId, memberId : memberId});
+               }, 3000); 
 
-		      });
+            });
 
-	/* setTimeout(function() {
-			alert("data send");
+   /* setTimeout(function() {
+         alert("data send");
 
-			console.log('data send..');
+         console.log('data send..');
 
-			var data = jMap.toXML();
+         var data = jMap.toXML();
 
-			//var data = _load_data_();
+         //var data = _load_data_();
 
-			socket.emit('data', {
-				data : data
-			});
-		}, 3000); */
+         socket.emit('data', {
+            data : data
+         });
+      }, 3000); */
 
-		/* $('#memberSearch_button').click(function(event)
-		{
-			var memberId = $("#invite_member").val();
-			
-			$.post("member_search", 
-					{ 
-						memberId: memberId,
-					},
-					
-					function(result) 
-					{	
-						$("#search_result").val(result);
-					}
-			);
-		});	
-		
-		$('#inviteMember_button').click(function(event)
-		{
-			var memberId = $("#search_result").val();
-			var docId = $("#docId").val();
-			var portNum = $("#portNum").val();
-			
-			alert(memberId);
-			alert(docId);
-			alert(portNum);
-			
-			$.post("joinedmember_add", 
-					{ 
-						memberId: memberId,
-						docId : docId,
-						portNum : portNum
-					},
-					
-					function(result) 
-					{	
-						alert(result);
-					
-						//location.reload();
-					}
-			);
-		});  */
-	});
+      /* $('#memberSearch_button').click(function(event)
+      {
+         var memberId = $("#invite_member").val();
+         
+         $.post("member_search", 
+               { 
+                  memberId: memberId,
+               },
+               
+               function(result) 
+               {   
+                  $("#search_result").val(result);
+               }
+         );
+      });   
+      
+      $('#inviteMember_button').click(function(event)
+      {
+         var memberId = $("#search_result").val();
+         var docId = $("#docId").val();
+         var portNum = $("#portNum").val();
+         
+         alert(memberId);
+         alert(docId);
+         alert(portNum);
+         
+         $.post("joinedmember_add", 
+               { 
+                  memberId: memberId,
+                  docId : docId,
+                  portNum : portNum
+               },
+               
+               function(result) 
+               {   
+                  alert(result);
+               
+                  //location.reload();
+               }
+         );
+      });  */
+   });
 </script>
 
 </head>
 
 <body>
+	<input type="hidden" id="memberId" value="${requestScope.memberId}" />
 	<input type="hidden" id="docId" value="${requestScope.docId}" />
 	<input type="hidden" id="body" value="${requestScope.body}" />
 	<input type="hidden" id="port" value="${requestScope.port }" />

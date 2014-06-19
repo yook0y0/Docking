@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import controller.action.SearchAction;
 
 import util.Injector;
-import util.JsonParser;
 import vo.DockingEnvironmentVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 
-public class MemberContentsController {
+public class MemberContentsController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 
@@ -29,7 +28,8 @@ public class MemberContentsController {
 		this.res = res;
 	}
 	
-	public void memberContentsSearch() throws ServletException, IOException{
+	public void memberContentsSearch() throws ServletException, IOException
+	{
 		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
 		String id = mvo.getId();
 		

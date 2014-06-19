@@ -29,7 +29,7 @@ $(document).ready(function()
 	socket.emit('room', {room : docId});
 	
 	// receive
-	socket.on('room create', function(data) 
+	socket.on('roomCreate', function(data) 
 	{
 		console.log(data);
 		
@@ -48,18 +48,20 @@ $(document).ready(function()
 			});
 	
 	 //send
+
 	 
-	 $("body").keydown(function() {
- 			
- 			// '\' �ㅼ뼱�ㅻ㈃ �꾩넚
- 				console.log('data send..');
- 				
- 				/* 蹂대궡�� �ㅼ떆媛� �꾩넚�� �곗씠�곕� data�� �ｌ뼱�쇳븿 */
-				var data = jMap.toXML();
-			
-				socket.emit('data', {data : data, room : docId});
- 
-		});
+	 $("body").keydown(function() 
+		       {
+		         setTimeout(function() 
+		         { 
+		            console.log('data send..');
+		         
+		            var data = jMap.toXML();
+		         
+		            socket.emit('data', {data : data, room : docId });
+		         }, 3000); 
+
+		      });
 
 	/* setTimeout(function() {
 			alert("data send");

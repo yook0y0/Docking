@@ -51,7 +51,7 @@ public class SocketIO extends DefaultEmbeddableVerticle
 					public void handle(JsonObject data) {
 						String room = data.getString("room");
 						socket.join(room);
-						socket.emit("response",room);
+						socket.emit("roomCreate",room);
 
 						print(io.sockets().manager().rooms());
 						print(io.sockets().clients(room));
@@ -63,11 +63,13 @@ public class SocketIO extends DefaultEmbeddableVerticle
 				socket.on("data", new Handler<JsonObject>() {
 					public void handle(JsonObject data) {
 						String room = data.getString("room");
+						System.out.println("data-room : " + room);
 						String dt = data.getString("data");
-						io.sockets().in(room).emit("map", data);
+						System.out.println("data-dt : " + dt);
+						io.sockets().in(room).emit("map", dt);
 					}
 				});
-				socket.on("unsubscribe", new Handler<JsonObject>() {
+				/*socket.on("unsubscribe", new Handler<JsonObject>() {
 					public void handle(JsonObject data) {
 						String room = data.getString("room");
 						socket.leave(room);
@@ -77,7 +79,7 @@ public class SocketIO extends DefaultEmbeddableVerticle
 						print(io.sockets().clients(room));
 						print(io.sockets().manager().roomClients(socket.getId()));
 					}
-				});
+				});*/
 			}
 		});
 		server.listen(port);
@@ -94,17 +96,17 @@ public class SocketIO extends DefaultEmbeddableVerticle
 			return;
 		}
 		for(String client : clients) {
-			System.out.println(client);
+			System.out.println("client : " + client);
 		}
 	}
 
 	private void print(Map<String, Room> rooms) {
 		System.out.println("===================== Rooms ===================");
 		for(Map.Entry<String, Room> entry : rooms.entrySet()){
-			System.out.println(entry.getKey());
+			System.out.println("getKey : " + entry.getKey());
 			Room room  = entry.getValue();
 			for(String client : room.values()) {
-				System.out.println(client);
+				System.out.println("client : " + client);
 			}
 		}
 	}

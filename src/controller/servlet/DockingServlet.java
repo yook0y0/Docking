@@ -510,15 +510,17 @@ public class DockingServlet extends HttpServlet
 		
 /*		// 테스트용
 		port = null;*/
-		
-		if(port.equals("1")){
+		System.out.println("port : " + port);
+/*		if(port.equals("1")){
 			port = String.valueOf(SocketPortManager.getInstance().getPort());
 			cvo.setPath(port);
 			modifyAction.modifyContents("contents_modify", cvo);
 			SocketIO sio = new SocketIO();
 			sio.setPort(Integer.valueOf(port));
 			sio.start(Vertx.newVertx());
-		}
+		}*/
+		
+		port = "9000";
 		
 		req.setAttribute("docId", docId);
 		req.setAttribute("port", port);

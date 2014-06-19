@@ -4,6 +4,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.vertx.java.core.Vertx;
+
 import socketIO.SocketIO;
 
 
@@ -13,7 +15,10 @@ public class DockingServletContextListener  implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent event) 
 	{
-		event.getServletContext().setAttribute("socketIO", new SocketIO());
+		SocketIO sio = new SocketIO();
+		sio.setPort(9000);
+		sio.start(Vertx.newVertx());
+		event.getServletContext().setAttribute("socketIO", sio);
 		
 		System.out.println("ServletContextListener Start");
 	}

@@ -10,7 +10,7 @@ public class Attr {
 	
 	public static int ATTRSET_FILE_DATA = 1;
 	
-	public static String TEST_FILE_LOCAL_PATH = "C:\\test\\test.txt";
+	public static String TEST_FILE_LOCAL_PATH = "C:\\test\\test\\5.txt";
 	public static String TEST_ZIPFILE_LOCAL_PATH = "C:\\test\\test.zip";
 	public static String START_PAGE = "start.html";
 	

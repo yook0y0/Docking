@@ -9,13 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-import controller.ContentsController;
-import controller.DockingEnvironmentController;
+import controller.DocumentController;
 import controller.EditorController;
+import controller.EditorReviewController;
 import controller.EmailController;
-import controller.JoinedMemberController;
 import controller.LogInOutController;
 import controller.MemberContentsController;
 import controller.MemberController;
@@ -23,18 +20,28 @@ import controller.TempController;
 import controller.action.SearchAction;
 
 import util.Injector;
-import vo.ContentsVO;
+import vo.DocumentVO;
 import vo.MemberVO;
 
-@WebServlet(name="DockingServlet", urlPatterns={"/addEditor","/getStartPage","/getData", "/joinedMember", 
+@WebServlet(name="DockingServlet", urlPatterns={
+
+		"/editor_add","/editor_modify","/editor_updateView","/editor_delete","/editor_searchAll",
+
+		"/getStartPage","/getData", "/joinedMember", 
+
 		"/emailChk", "/duplicationCheck", "/inviteEmail",
-		"/login","/logout", 
+
+		"/login","/logout",
+
+		"/editorReview_add","/editorReview_modify","/editorReview_search","/editorReview_searchAll","/editorReview_Delete",
+
 		"/member_add", "/member_modify", "/member_search", "/member_searchAll", "/member_delete",
-		"/contents_add", "/contents_modify", "/contents_search", "/contents_searchAll", "/contents_delete",
+
 		"/temp_add", "/temp_modify", "/temp_search", "/temp_searchAll", "/temp_delete",
-		"/joinedmember_add", "/joinedmember_modify", "/joinedmember_search", "/joinedmember_searchAll", "/joinedmember_delete",
-		"/dockingEnvironment_add", "/dockingEnvironment_modify", "/dockingEnvironment_search", "/dockingEnvironment_searchAll", "/dockingEnvironment_delete",
-		"/memberContents_search","/startSocket"
+
+		"/document_add", "/document_modify", "/document_search", "/document_searchAll", "/document_delete","/document_updateView",
+
+		"/memberContents_search","/startSocket","/document_manage","/editor_init"
 })
 public class DockingServlet extends HttpServlet 
 {
@@ -57,12 +64,9 @@ public class DockingServlet extends HttpServlet
 		String	action = uri.substring(lastIndex + 1);
 
 		req.setCharacterEncoding("utf-8");
-		
-		if(action.equals("joinedMember"))
-		{
-			joinedMember(req,res);
-		}
-		else if(action.equals("emailChk"))
+
+
+		if(action.equals("emailChk"))
 		{
 			this.emailChk(req, res);
 		}
@@ -78,21 +82,50 @@ public class DockingServlet extends HttpServlet
 		/**
 		 * Editor source
 		 */
-		else if (action.equals("addEditor")) {
-			this.addEditor(req,res);
-		} 
+		else if (action.equals("editor_add")) {
+			this.editorAdd(req,res);
+		}
+		else if (action.equals("editor_modify")) {
+			this.editorModify(req,res);
+		}
+		else if (action.equals("editor_delete")) {
+			this.editorDelete(req,res);
+		}
+		else if (action.equals("editor_updateView")) {
+			this.editorUpdateView(req,res);
+		}
+		else if (action.equals("editor_searchAll")) {
+			this.editorSearchAll(req,res);
+		}
 		else if (action.equals("getStartPage")) {
 			this.getStartPage(req, res);
 		}
 		else if (action.equals("getData")) {
 			this.getData(req, res);
 		}
-
 		else if(action.equals("login")){
 			this.login(req,res);
 		}
 		else if(action.equals("logout")){
 			this.logout(req,res);
+		}
+		/*
+		 * 
+		 */
+		else if(action.equals("editorReview_add")){
+			this.editorReviewAdd(req,res);
+		}
+		else if(action.equals("editorReview_modify")){
+			this.editorReviewModify(req,res);
+		}
+		else if(action.equals("editorReview_search")){
+			this.editorReviewSearch(req,res);
+		}
+		else if(action.equals("editorReview_searchAll")){
+			this.editorReviewSearchAll(req,res);
+		}
+		else if(action.equals("editorReview_Delete")){
+			this.editorReviewDelete(req,res);
 		}
 
 		/**
@@ -119,29 +152,6 @@ public class DockingServlet extends HttpServlet
 		}
 
 		/**
-		 * ContentsRequest
-		 */
-		else if(action.equals("contents_add")){
-			this.contentsAdd(req,res);
-		}
-
-		else if(action.equals("contents_modify")){
-			this.contentsModify(req,res);
-		}
-
-		else if(action.equals("contents_search")){
-			this.contentsSearch(req,res);
-		}
-
-		else if(action.equals("contents_searchAll")){
-			this.contentsSearchAll(req,res);
-		}
-
-		else if(action.equals("contents_delete")){
-			this.contentsDelete(req,res);
-		}
-
-		/**
 		 * TempRequest
 		 */
 		else if(action.equals("temp_add")){
@@ -165,51 +175,31 @@ public class DockingServlet extends HttpServlet
 		}
 
 		/**
-		 * JoinedMemberRequest
-		 */
-		else if(action.equals("joinedmember_add")){
-			this.joinedMemberAdd(req,res);
-		}
-
-		else if(action.equals("joinedmember_modify")){
-			this.joinedMemberModify(req,res);
-		}
-
-		else if(action.equals("joinedmember_search")){
-			this.joinedMemberSearch(req,res);
-		}
-
-		else if(action.equals("joinedmember_searchAll")){
-			this.joinedMemberSearchAll(req,res);
-		}
-
-		else if(action.equals("joinedmember_delete")){
-			this.joinedMemberDelete(req,res);
-		}
-
-		/**
 		 * DockingEnvironmentRequest
 		 */
-		else if(action.equals("dockingEnvironment_add")){
-			this.dockingEnvironmentAdd(req,res);
+		else if(action.equals("document_add")){
+			this.documentAdd(req,res);
 		}
 
-		else if(action.equals("dockingEnvironment_modify")){
-			this.dockingEnvironmentModify(req,res);
+		else if(action.equals("document_modify")){
+			this.documentModify(req,res);
 		}
 
-		else if(action.equals("dockingEnvironment_search")){
-			this.dockingEnvironmentSearch(req,res);
+		else if(action.equals("document_search")){
+			this.documentSearch(req,res);
 		}
 
-		else if(action.equals("dockingEnvironment_searchAll")){
-			this.dockingEnvironmentSearchAll(req,res);
+		else if(action.equals("document_searchAll")){
+			this.documentSearchAll(req,res);
 		}
 
-		else if(action.equals("dockingEnvironment_delete")){
-			this.dockingEnvironmentDelete(req,res);
+		else if(action.equals("document_delete")){
+			this.documentDelete(req,res);
 		}
-		
+		else if(action.equals("document_updateView")){
+			this.documentUpdateView(req,res);
+		}
+
 		else if(action.equals("memberContents_search")){
 			this.memberContentsSearch(req,res);
 		}
@@ -223,12 +213,44 @@ public class DockingServlet extends HttpServlet
 		}
 	}
 
-	private void addEditor(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void editorAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.addEditor();
+		con.editorAdd();
+	}
+
+	private void editorModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorModify();
+	}
+
+	private void editorDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorDelete();
+	}
+
+	private void editorUpdateView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorUpdateView();
+	}
+
+	private void editorSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorSearchAll();
 	}
 
 	private void getStartPage(HttpServletRequest req, HttpServletResponse res) throws IOException 
@@ -254,7 +276,7 @@ public class DockingServlet extends HttpServlet
 		con.setResponse(res);
 		con.emailConfirm();
 	}
-	
+
 	private void duplicationCheck(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		EmailController con = (EmailController)Injector.getInstance().getObject(EmailController.class);
@@ -262,7 +284,7 @@ public class DockingServlet extends HttpServlet
 		con.setResponse(res);
 		con.duplicationCheck();
 	}
-	
+
 	private void inviteEmail(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		EmailController con = (EmailController)Injector.getInstance().getObject(EmailController.class);
@@ -288,6 +310,44 @@ public class DockingServlet extends HttpServlet
 		con.logout();
 	}
 
+	/*
+	 * editorReview
+	 */
+	private void editorReviewAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewAdd();
+	}
+	private void editorReviewModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewModify();
+	}
+	private void editorReviewSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewSearch();
+	}
+	private void editorReviewSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewSearchAll();
+	}
+	private void editorReviewDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewDelete();
+	}
 
 	//////////////////////////////////////////////////// MemberRequest ////////////////////////////////////////////////////
 	private void memberAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -328,48 +388,6 @@ public class DockingServlet extends HttpServlet
 		con.setRequest(req);
 		con.setResponse(res);
 		con.memberDelete();
-	}
-
-	//////////////////////////////////////////////////// ContentsRequest ////////////////////////////////////////////////////
-
-	private void contentsAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		ContentsController con = (ContentsController)Injector.getInstance().getObject(ContentsController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.contentsAdd();
-	}
-
-	private void contentsModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		ContentsController con = (ContentsController)Injector.getInstance().getObject(ContentsController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.contentsModify();
-	}
-
-	private void contentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		ContentsController con = (ContentsController)Injector.getInstance().getObject(ContentsController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.contentsSearch();
-	}
-
-	private void contentsSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		ContentsController con = (ContentsController)Injector.getInstance().getObject(ContentsController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.contentsSearchAll();
-	}
-
-	private void contentsDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		ContentsController con = (ContentsController)Injector.getInstance().getObject(ContentsController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.contentsDelete();
 	}
 
 	//////////////////////////////////////////////////// TempRequest ////////////////////////////////////////////////////
@@ -414,98 +432,56 @@ public class DockingServlet extends HttpServlet
 		con.tempDelete();
 	}
 
-	//////////////////////////////////////////////////// JoinedMemberRequest ////////////////////////////////////////////////////
+	//////////////////////////////////////////////////// documentRequest ////////////////////////////////////////////////////
 
-	private void joinedMemberAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMemberAdd();
-	}
-
-	private void joinedMember(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMember();
-	}
-
-	private void joinedMemberModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMemberModify();
-	}
-
-	private void joinedMemberSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMemberSearch();
-	}
-
-	private void joinedMemberSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMemberSearchAll();
-	}
-
-	private void joinedMemberDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
-	{
-		JoinedMemberController con = (JoinedMemberController)Injector.getInstance().getObject(JoinedMemberController.class);
-		con.setRequest(req);
-		con.setResponse(res);
-		con.joinedMemberDelete();
-	}
-
-	//////////////////////////////////////////////////// DockingEnvironmentRequest ////////////////////////////////////////////////////
-
-	private void dockingEnvironmentAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void documentAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{	
-		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.dockingEnvironmentAdd();
+		con.documentAdd();
 	}
 
-	private void dockingEnvironmentModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void documentModify(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.dockingEnvironmentModify();
+		con.documentModify();
 	}
 
-	private void dockingEnvironmentSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void documentSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.dockingEnvironmentSearch();
+		con.documentSearch();
 	}
 
-	private void dockingEnvironmentSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void documentSearchAll(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.dockingEnvironmentSearchAll();
+		con.documentSearchAll();
 	}
 
-	private void dockingEnvironmentDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	private void documentDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		DockingEnvironmentController con = (DockingEnvironmentController)Injector.getInstance().getObject(DockingEnvironmentController.class);
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
 		con.setRequest(req);
 		con.setResponse(res);
-		con.dockingEnvironmentDelete();
+		con.documentDelete();
 	}
-	
+
+	private void documentUpdateView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		DocumentController con = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.documentUpdateView();
+	}
+
 	private void memberContentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		MemberContentsController con = (MemberContentsController)Injector.getInstance().getObject(MemberContentsController.class);
@@ -513,37 +489,19 @@ public class DockingServlet extends HttpServlet
 		con.setResponse(res);
 		con.memberContentsSearch();
 	}
-	
+
 	private void startSocket(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		String docId = req.getParameter("docId");
-		
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		ContentsVO cvo = searchAction.searchContents("contents_search", docId);
-		String port = cvo.getPath();
-		String body = cvo.getBody();
-		
-		cvo.setBody("test");
-		
-/*		// 테스트용
-		port = null;*/
-		
-		/*if(port.equals("1"))
-		{
-			port = String.valueOf(SocketPortManager.getInstance().getPort());
-			cvo.setPath(port);
-			modifyAction.modifyContents("contents_modify", cvo);
-			SocketIO sio = new SocketIO();
-			sio.setPort(Integer.valueOf(port));
-			sio.start(Vertx.newVertx());
-		}*/
+		String id = req.getParameter("docId");
 
-		port = "9000";
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		DocumentVO dv = searchAction.searchDocument(id);
+/*		String content = dv.getContent();
+*/
 		MemberVO mvo = (MemberVO) req.getSession().getAttribute("logInMember");
 		req.setAttribute("memberId", mvo.getId());
-		req.setAttribute("docId", docId);
-		req.setAttribute("port", port);
-		req.setAttribute("data", body);
-		req.getRequestDispatcher("./html/editorStartTest.jsp").forward(req, res);
+		req.setAttribute("docId", id);
+	/*	req.setAttribute("data", content);
+	*/	req.getRequestDispatcher("editorStartTest.jsp").forward(req, res);
 	}
 }

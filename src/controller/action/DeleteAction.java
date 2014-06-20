@@ -2,48 +2,48 @@ package controller.action;
 
 import service.GenericService;
 import serviceImpl.GenericServiceImpl;
-import vo.ContentsVO;
-import vo.DockingEnvironmentVO;
+import vo.DocumentVO;
+import vo.EditorCodeVO;
+import vo.EditorReviewVO;
 import vo.EditorVO;
-import vo.JoinedMemberVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 import vo.TempVO;
 
 public class DeleteAction {
-
-	public void deleteContents(String mapper, String id){
-		GenericService<ContentsVO>	s = new GenericServiceImpl<ContentsVO>();
-		s.delete(mapper, id);
+	
+	public void deleteDocument(String id){
+		GenericService<DocumentVO>	s = new GenericServiceImpl<DocumentVO>();
+		s.delete("document_delete", id);
+	}
+	
+	public void deleteEditorCode(String id){
+		GenericService<EditorCodeVO>	s = new GenericServiceImpl<EditorCodeVO>();
+		s.delete("editorCode_delete", id);
 	}
 
-	public void deleteDockingEnvironment(String mapper, String id){
-		GenericService<DockingEnvironmentVO>	s = new GenericServiceImpl<DockingEnvironmentVO>();
-		s.delete(mapper, id);
-	}
-
-	public void deleteEditor(String mapper, String id){
+	public void deleteEditor(String id){
 		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
-		s.delete(mapper, id);
+		s.delete("editor_delete", id);
+	}
+	
+	public void deleteEditorReview(String id){
+		GenericService<EditorReviewVO>	s = new GenericServiceImpl<EditorReviewVO>();
+		s.delete("editorReview_delete", id);
 	}
 
-	public void deleteJoinedMember(String mapper, String id){
-		GenericService<JoinedMemberVO>	s = new GenericServiceImpl<JoinedMemberVO>();
-		s.delete(mapper, id);
-	}
-
-	public void deleteMember(String mapper, String id){
+	public void deleteMember(String id){
 		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
-		s.delete(mapper, id);
+		s.delete("member_delete", id);
 	}
 
-	public void deleteMemberContents(String mapper, String id){
+	public void deleteMemberContents(String id){
 		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
-		s.delete(mapper, id);
+		s.delete("memberContents_delete", id);
 	}
 
-	public void deleteTemp(String mapper, String id){
+	public void deleteTemp(String id){
 		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
-		s.delete(mapper, id);
+		s.delete("temp_delete", id);
 	}
 }

@@ -21,17 +21,16 @@
 <!--				<li><a id="menu-link-2" href="#slide-2">ABOUT US</a></li> -->
 				<li><a href="document.jsp">DOCUMENT</a></li>
 				
-				<li><a href="board.jsp">BOARD</a></li>
-				<li><a href="contact.jsp">CONTACT</a></li>
+				<li><a href="review.jsp">REVIEW</a></li>
+<!-- 				<li><a href="contact.jsp">CONTACT</a></li> -->
 				
 						<c:choose>
 							<c:when test="${sessionScope.logInMember.nickName != null}">
-								<li><a href="../logout">LOGOUT</a>
-								<li><a href="userUpdate.jsp">ChangeInfo</a>
-								
 								<c:if test="${sessionScope.logInMember.memberType == 1 }">
-									<li><a href="editor.jsp">EDITOR</a></li>
+									<li><a href="editor.jsp">FOR DEVELOPER</a></li>
 								</c:if>
+								<li><a href="user.jsp">MY INFO</a>
+								<li><a href="./logout">LOGOUT</a>
 							</c:when>
 							<c:otherwise>
 								<li><a href="login.jsp">LOGIN</a>

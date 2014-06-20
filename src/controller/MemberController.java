@@ -45,12 +45,12 @@ public class MemberController {
 		memberVO.setNickName(nickName);
 		memberVO.setMemberType(Integer.parseInt(type));
 
-		addAction.addMember("member_add", memberVO);
+		addAction.addMember(memberVO);
 
 		session = req.getSession();
 		session.setAttribute("logInMember", memberVO);
 		
-		res.sendRedirect("html/start.jsp");
+		res.sendRedirect("./start.jsp");
 	}
 	
 	public void memberModify() throws ServletException, IOException
@@ -70,7 +70,7 @@ public class MemberController {
 		memberVO.setNickName(nickName);
 		memberVO.setMemberType(Integer.parseInt(type));
 
-		modifyAction.modifyMember("member_modify", memberVO);
+		modifyAction.modifyMember(memberVO);
 
 		HttpSession	session = req.getSession();
 
@@ -94,7 +94,7 @@ public class MemberController {
 
 		try
 		{
-			memberVO = searchAction.searchMember("member_search", id);
+			memberVO = searchAction.searchMember(id);
 
 			foundId = memberVO.getId();
 		}
@@ -118,7 +118,7 @@ public class MemberController {
 
 		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
 		
-		deleteAction.deleteMember("member_delete", id);
+		deleteAction.deleteMember(id);
 
 		HttpSession	session = req.getSession();
 
@@ -134,7 +134,7 @@ public class MemberController {
 	public void memberSearchAll() throws ServletException, IOException
 	{
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<MemberVO>	memberList = searchAction.searchAllMember("member_searchAll");
+		List<MemberVO>	memberList = searchAction.searchAllMember();
 
 		req.setAttribute("memberList", memberList);
 		req.getRequestDispatcher("testResult.jsp").forward(req, res);

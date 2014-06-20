@@ -4,53 +4,69 @@ import java.io.Serializable;
 
 public class EditorVO	implements Serializable
 {
-	private static final long serialVersionUID = 1L;
 	
-	private String	id;
-	private	String	editorName;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3459403639778800584L;
+	private String	director;
+	private	String	name;
+	private String	info;
 	private String	startPage;
-	private String	code;
-	private String	path;
+	private String	getMethod;
+	private String	setMethod;
 	
-	public String getId() {
-		return id;
+	public String getDirector() {
+		return director;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setDirector(String director) {
+		this.director = director;
 	}
-	public String getEditorName() {
-		return editorName;
+	public String getName() {
+		return name;
 	}
-	public void setEditorName(String editorName) {
-		this.editorName = editorName;
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
 	}
 	public String getStartPage() {
-		return this.startPage;
+		return startPage;
 	}
-	public void setStartPage(String startPage){
+	public void setStartPage(String startPage) {
 		this.startPage = startPage;
 	}
-	public String getCode() {
-		return code;
+	public String getGetMethod() {
+		return getMethod;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setGetMethod(String getMethod) {
+		this.getMethod = getMethod;
 	}
-	public String getPath() {
-		return path;
+	public String getSetMethod() {
+		return setMethod;
 	}
-	public void setPath(String path) {
-		this.path = path;
+	public void setSetMethod(String setMethod) {
+		this.setMethod = setMethod;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result
-				+ ((editorName == null) ? 0 : editorName.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((path == null) ? 0 : path.hashCode());
+				+ ((director == null) ? 0 : director.hashCode());
+		result = prime * result
+				+ ((getMethod == null) ? 0 : getMethod.hashCode());
+		result = prime * result + ((info == null) ? 0 : info.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((setMethod == null) ? 0 : setMethod.hashCode());
 		result = prime * result
 				+ ((startPage == null) ? 0 : startPage.hashCode());
 		return result;
@@ -64,25 +80,30 @@ public class EditorVO	implements Serializable
 		if (getClass() != obj.getClass())
 			return false;
 		EditorVO other = (EditorVO) obj;
-		if (code == null) {
-			if (other.code != null)
+		if (director == null) {
+			if (other.director != null)
 				return false;
-		} else if (!code.equals(other.code))
+		} else if (!director.equals(other.director))
 			return false;
-		if (editorName == null) {
-			if (other.editorName != null)
+		if (getMethod == null) {
+			if (other.getMethod != null)
 				return false;
-		} else if (!editorName.equals(other.editorName))
+		} else if (!getMethod.equals(other.getMethod))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (info == null) {
+			if (other.info != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!info.equals(other.info))
 			return false;
-		if (path == null) {
-			if (other.path != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!path.equals(other.path))
+		} else if (!name.equals(other.name))
+			return false;
+		if (setMethod == null) {
+			if (other.setMethod != null)
+				return false;
+		} else if (!setMethod.equals(other.setMethod))
 			return false;
 		if (startPage == null) {
 			if (other.startPage != null)
@@ -93,8 +114,8 @@ public class EditorVO	implements Serializable
 	}
 	@Override
 	public String toString() {
-		return "EditorVO [id=" + id + ", editorName=" + editorName
-				+ ", startPage=" + startPage + ", code=" + code + ", path="
-				+ path + "]";
+		return "EditorVO [director=" + director + ", name=" + name + ", info="
+				+ info + ", startPage=" + startPage + ", getMethod="
+				+ getMethod + ", setMethod=" + setMethod + "]";
 	}
 }

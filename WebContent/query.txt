@@ -1,0 +1,69 @@
+create table member_tb(
+member_id varchar2(100) primary key,
+member_pw varchar2(20) not null,
+member_nickname varchar2(100) not null,
+member_type number(5) not null);
+
+
+create table document_tb(
+doc_id varchar2(100) primary key,
+doc_writer varchar2(100) not null,
+doc_title varchar2(200) not null,
+doc_content clob,
+doc_type varchar2(100) not null,
+doc_date date not null);
+
+
+create table editor_tb(
+editor_director varchar2(100) not null,
+editor_name varchar2(200) primary key,
+editor_info varchar2(1000),
+editor_startPage varchar2(200),
+editor_getMethod varchar2(200),
+editor_setMethod varchar2(200))
+
+
+
+create table editorCode_tb(
+editorCode_editor varchar2(200),
+editorCode_body clob not null,
+editorCode_path varchar2(500) primary key)
+
+create table editorReview_tb(
+editorReview_reviewId varchar2(100) primary key, 
+editorReview_editor varchar2(200) not null, 
+editorReview_writer varchar2(100) not null,
+editorReview_review varchar2(1000) not null, 
+editorReview_score number)
+
+
+create table temp_tb(
+temp_date date not null,
+temp_editor varchar2(100) not null,
+temp_contentsId varchar2(100) not null);
+
+
+
+create table joinedMember_tb(
+joinedmember_key varchar2(200) primary key,
+joinedmember_docId varchar2(100) not null,
+joinedmember_flag number(10) not null,
+joinedmember_memberId varchar2(100) not null);
+
+
+create table memberContents_tb(
+memberContents_memberId varchar2(100) not null,
+memberContents_docId varchar2(100) not null,
+memberContents_portNum number(20) not null);
+
+
+temp_tb , joinedMember_tb 설계
+
+wrapper 사용 - spring tool suit참고
+
+
+
+long time = System.currentTimeMillis(); 
+Date	date = new Date(time);
+
+새로고침 - window.location.replace("test");

@@ -11,49 +11,49 @@ import com.ibatis.common.resources.Resources;
 
 import service.GenericService;
 import serviceImpl.GenericServiceImpl;
-import vo.ContentsVO;
-import vo.DockingEnvironmentVO;
+import vo.DocumentVO;
+import vo.EditorCodeVO;
+import vo.EditorReviewVO;
 import vo.EditorVO;
-import vo.JoinedMemberVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 import vo.TempVO;
 
 public class AddAction {
 	
-	public void addContents(String mapper, ContentsVO vo){
-		GenericService<ContentsVO>	s = new GenericServiceImpl<ContentsVO>();
-		s.add(mapper, vo);
+	public void addDocument(DocumentVO vo){
+		GenericService<DocumentVO>	s = new GenericServiceImpl<DocumentVO>();
+		s.add("document_add", vo);
 	}
 	
-	public void addDockingEnvironment(String mapper, DockingEnvironmentVO vo){
-		GenericService<DockingEnvironmentVO>	s = new GenericServiceImpl<DockingEnvironmentVO>();
-		s.add(mapper, vo);
+	public void addEditorCode(EditorCodeVO vo){
+		GenericService<EditorCodeVO>	s = new GenericServiceImpl<EditorCodeVO>();
+		s.add("editorCode_add", vo);
 	}
-	
-	public void addEditor(String mapper, EditorVO vo){
+
+	public void addEditor(EditorVO vo){
 		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
-		s.add(mapper, vo);
-	}
-		
-	public void addJoinedMember(String mapper, JoinedMemberVO vo){
-		GenericService<JoinedMemberVO>	s = new GenericServiceImpl<JoinedMemberVO>();
-		s.add(mapper, vo);
+		s.add("editor_add", vo);
 	}
 	
-	public void addMember(String mapper, MemberVO vo){
+	public void addEditorReview(EditorReviewVO vo){
+		GenericService<EditorReviewVO>	s = new GenericServiceImpl<EditorReviewVO>();
+		s.add("editorReview_add", vo);
+	}
+	
+	public void addMember(MemberVO vo){
 		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
-		s.add(mapper, vo);		
+		s.add("member_add", vo);		
 	}
 	
-	public void addMemberContents(String mapper, MemberContentsVO vo){
+	public void addMemberContents(MemberContentsVO vo){
 		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
-		s.add(mapper, vo);
+		s.add("memberContents_add", vo);
 	}
 	
-	public void addTemp(String mapper, TempVO vo){
+	public void addTemp(TempVO vo){
 		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
-		s.add(mapper, vo);
+		s.add("temp_add", vo);
 	}
 	
 	/*
@@ -82,9 +82,9 @@ public class AddAction {
 		}
 	}
 	
-	public void tempAdd(EditorVO editorVO)
+	public void tempAdd(EditorCodeVO editorCodeVO)
 	{
-		sqlSession.selectList("editorCode_add", editorVO);
+		sqlSession.selectList("editorCode_add", editorCodeVO);
 	}
 	
 	public void tempDisConnect()

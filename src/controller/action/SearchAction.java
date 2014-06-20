@@ -12,102 +12,81 @@ import com.ibatis.common.resources.Resources;
 
 import service.GenericService;
 import serviceImpl.GenericServiceImpl;
-import vo.ContentsVO;
-import vo.DockingEnvironmentVO;
+import vo.DocumentVO;
+import vo.EditorCodeVO;
+import vo.EditorReviewVO;
 import vo.EditorVO;
-import vo.JoinedMemberVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 import vo.TempVO;
 
 public class SearchAction {
-
-	public ContentsVO searchContents(String mapper, String id)
+	
+	public DocumentVO searchDocument(String id)
 	{
-		GenericService<ContentsVO>	s = new GenericServiceImpl<ContentsVO>();
-		return s.search(mapper, id);
-	}
-
-	public DockingEnvironmentVO searchDockingEnvironment(String mapper, String id)
-	{
-		GenericService<DockingEnvironmentVO>	s = new GenericServiceImpl<DockingEnvironmentVO>();
-		return s.search(mapper, id);
-	}
-
-	public EditorVO searchEditor(String mapper, String id)
-	{
-		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
-		return s.search(mapper, id);
-	}
-
-	public JoinedMemberVO searchJoinedMember(String mapper, String id)
-	{
-		GenericService<JoinedMemberVO>	s = new GenericServiceImpl<JoinedMemberVO>();
-		return s.search(mapper, id);
-	}
-
-	public MemberVO searchMember(String mapper, String id)
-	{
-		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
-		return s.search(mapper, id);
-	}
-
-	public MemberContentsVO searchMemberContents(String mapper, String id)
-	{
-		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
-		return s.search(mapper, id);
-	}
-
-	public TempVO searchTemp(String mapper, String id)
-	{
-		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
-		return s.search(mapper, id);
-	}
-
-	public List<ContentsVO> searchAllContents(String mapper)
-	{
-		GenericService<ContentsVO>s = new GenericServiceImpl<ContentsVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<DockingEnvironmentVO> searchAllDockingEnvironment(String mapper)
-	{
-		GenericService<DockingEnvironmentVO>s = new GenericServiceImpl<DockingEnvironmentVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<EditorVO> searchAllEditor(String mapper)
-	{
-		GenericService<EditorVO>s = new GenericServiceImpl<EditorVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<JoinedMemberVO> searchAllJoinedMember(String mapper)
-	{
-		GenericService<JoinedMemberVO>s = new GenericServiceImpl<JoinedMemberVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<MemberVO> searchAllMember(String mapper)
-	{
-		GenericService<MemberVO>s = new GenericServiceImpl<MemberVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<MemberContentsVO> searchAllMemberContents(String mapper){
-		GenericService<MemberContentsVO>s = new GenericServiceImpl<MemberContentsVO>();
-		return s.searchAll(mapper);
-	}
-
-	public List<TempVO> searchAllTemp(String mapper){
-		GenericService<TempVO>s = new GenericServiceImpl<TempVO>();
-		return s.searchAll(mapper);
+		GenericService<DocumentVO>	s = new GenericServiceImpl<DocumentVO>();
+		return s.search("document_search", id);
 	}
 	
-	/*
-	 * 
-	 */
-	public List<JoinedMemberVO>	searchJoinedMemberList(String mapper, String id)	throws RuntimeException
+	public EditorCodeVO searchEditorCode(String id)
+	{
+		GenericService<EditorCodeVO>	s = new GenericServiceImpl<EditorCodeVO>();
+		return s.search("editorCode_search", id);
+	}
+
+	public EditorVO searchEditor(String id)
+	{
+		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
+		return s.search("editor_search", id);
+	}
+	
+	public EditorReviewVO searchEditorReview(String id)
+	{
+		GenericService<EditorReviewVO>	s = new GenericServiceImpl<EditorReviewVO>();
+		return s.search("editor_search", id);
+	}
+
+	public MemberVO searchMember(String id)
+	{
+		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
+		return s.search("member_search", id);
+	}
+
+	public MemberContentsVO searchMemberContents(String id)
+	{
+		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
+		return s.search("memberContents_search", id);
+	}
+
+	public TempVO searchTemp(String id)
+	{
+		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
+		return s.search("temp_search", id);
+	}
+
+	public List<EditorVO> searchAllEditor()
+	{
+		GenericService<EditorVO>s = new GenericServiceImpl<EditorVO>();
+		return s.searchAll("editor_searchAll");
+	}
+
+	public List<MemberVO> searchAllMember()
+	{
+		GenericService<MemberVO>s = new GenericServiceImpl<MemberVO>();
+		return s.searchAll("member_searchAll");
+	}
+
+	public List<MemberContentsVO> searchAllMemberContents(){
+		GenericService<MemberContentsVO>s = new GenericServiceImpl<MemberContentsVO>();
+		return s.searchAll("member_searchAll");
+	}
+
+	public List<TempVO> searchAllTemp(){
+		GenericService<TempVO>s = new GenericServiceImpl<TempVO>();
+		return s.searchAll("temp_searchAll");
+	}
+	
+	public List<MemberContentsVO>	searchMemberContentsList(String id)	throws RuntimeException
 	{
 		String resource = "mybatis-config.xml";
 		Reader reader = null;
@@ -128,14 +107,14 @@ public class SearchAction {
 			e.printStackTrace();
 		}
 		
-		List<JoinedMemberVO>	list = sqlSession.selectList(mapper, id);
+		List<MemberContentsVO>	list = sqlSession.selectList("memberContents_search", id);
 		
 		sqlSession.close();
 		
 		return list;
 	}
 	
-	public List<MemberContentsVO>	searchMemberContentsList(String mapper, String id)	throws RuntimeException
+	public List<DocumentVO>	searchDocumentList(String id)	throws RuntimeException
 	{
 		String resource = "mybatis-config.xml";
 		Reader reader = null;
@@ -156,7 +135,91 @@ public class SearchAction {
 			e.printStackTrace();
 		}
 		
-		List<MemberContentsVO>	list = sqlSession.selectList(mapper, id);
+		List<DocumentVO>	list = sqlSession.selectList("document_searchAll", id);
+		
+		sqlSession.close();
+		
+		return list;
+	}
+	
+	public List<EditorCodeVO>	searchEditorCodeList(String id)	throws RuntimeException
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession	sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		List<EditorCodeVO>	list = sqlSession.selectList("editorCode_searchAll", id);
+		
+		sqlSession.close();
+		
+		return list;
+	}
+	
+	public List<EditorVO>	searchEditorList(String id)	throws RuntimeException
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession	sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		List<EditorVO>	list = sqlSession.selectList("editor_searchAll", id);
+		
+		sqlSession.close();
+		
+		return list;
+	}
+	
+	public List<EditorReviewVO>	searchEditorReviewList(String id)	throws RuntimeException
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession	sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		List<EditorReviewVO>	list = sqlSession.selectList("editorReview_searchAll", id);
 		
 		sqlSession.close();
 		

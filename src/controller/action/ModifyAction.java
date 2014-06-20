@@ -2,48 +2,48 @@ package controller.action;
 
 import service.GenericService;
 import serviceImpl.GenericServiceImpl;
-import vo.ContentsVO;
-import vo.DockingEnvironmentVO;
+import vo.DocumentVO;
+import vo.EditorCodeVO;
+import vo.EditorReviewVO;
 import vo.EditorVO;
-import vo.JoinedMemberVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 import vo.TempVO;
 
 public class ModifyAction {
-
-	public void modifyContents(String mapper, ContentsVO vo){
-		GenericService<ContentsVO>	s = new GenericServiceImpl<ContentsVO>();
-		s.modify(mapper, vo);
+	
+	public void modifyDocument(DocumentVO vo){
+		GenericService<DocumentVO>	s = new GenericServiceImpl<DocumentVO>();
+		s.modify("document_modify", vo);
+	}
+	
+	public void modifyEditorCode(EditorCodeVO vo){
+		GenericService<EditorCodeVO>	s = new GenericServiceImpl<EditorCodeVO>();
+		s.modify("editorCode_modify", vo);
 	}
 
-	public void modifyDockingEnvironment(String mapper, DockingEnvironmentVO vo){
-		GenericService<DockingEnvironmentVO>	s = new GenericServiceImpl<DockingEnvironmentVO>();
-		s.modify(mapper, vo);
-	}
-
-	public void modifyEditor(String mapper, EditorVO vo){
+	public void modifyEditor(EditorVO vo){
 		GenericService<EditorVO>	s = new GenericServiceImpl<EditorVO>();
-		s.modify(mapper, vo);
+		s.modify("editor_modify", vo);
+	}
+	
+	public void modifyEditorReview(EditorReviewVO vo){
+		GenericService<EditorReviewVO>	s = new GenericServiceImpl<EditorReviewVO>();
+		s.modify("editorReview_modify", vo);
 	}
 
-	public void modifyJoinedMember(String mapper, JoinedMemberVO vo){
-		GenericService<JoinedMemberVO>	s = new GenericServiceImpl<JoinedMemberVO>();
-		s.modify(mapper, vo);
-	}
-
-	public void modifyMember(String mapper, MemberVO vo){
+	public void modifyMember(MemberVO vo){
 		GenericService<MemberVO>	s = new GenericServiceImpl<MemberVO>();
-		s.modify(mapper, vo);
+		s.modify("member_modify", vo);
 	}
 
-	public void modifyMemberContents(String mapper, MemberContentsVO vo){
+	public void modifyMemberContents(MemberContentsVO vo){
 		GenericService<MemberContentsVO>	s = new GenericServiceImpl<MemberContentsVO>();
-		s.modify(mapper, vo);
+		s.modify("memberContents_modify", vo);
 	}
 
-	public void modifyTemp(String mapper, TempVO vo){
+	public void modifyTemp(TempVO vo){
 		GenericService<TempVO>	s = new GenericServiceImpl<TempVO>();
-		s.modify(mapper, vo);
+		s.modify("temp_modify", vo);
 	}
 }

@@ -38,7 +38,7 @@ public class LogInOutController
 		HttpSession	session = null;
 
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		MemberVO	memberVO = searchAction.searchMember("member_search", id);
+		MemberVO	memberVO = searchAction.searchMember(id);
 
 		if(memberVO != null)
 		{
@@ -71,6 +71,6 @@ public class LogInOutController
 	{
 		HttpSession hs = req.getSession();
 		hs.removeAttribute("logInMember");
-		res.sendRedirect("html/start.jsp");
+		res.sendRedirect("./start.jsp");
 	}
 }

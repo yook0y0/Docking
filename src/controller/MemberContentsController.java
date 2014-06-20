@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import controller.action.SearchAction;
 
 import util.Injector;
-import vo.DockingEnvironmentVO;
+import vo.DocumentVO;
 import vo.MemberContentsVO;
 import vo.MemberVO;
 
@@ -34,17 +34,17 @@ public class MemberContentsController
 		String id = mvo.getId();
 		
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<MemberContentsVO> mvoList = searchAction.searchMemberContentsList("memberContents_search", id);
+		List<MemberContentsVO> mvoList = searchAction.searchMemberContentsList(id);
 
 
-		DockingEnvironmentVO dvo = new DockingEnvironmentVO();
-		List<DockingEnvironmentVO> dvoList = new ArrayList<DockingEnvironmentVO>();
+		DocumentVO dv = new DocumentVO();
+		List<DocumentVO> dvList = new ArrayList<DocumentVO>();
 		for(int i=0;i<mvoList.size();i++){
-			dvo = searchAction.searchDockingEnvironment("dockingEnvironment_search", mvoList.get(i).getDocId());
-			dvoList.add(dvo);
+			dv = searchAction.searchDocument(mvoList.get(i).getDocId());
+			dvList.add(dv);
 		}
 		
-		req.setAttribute("contentsList", dvoList);
-		req.getRequestDispatcher("./html/documentList.jsp").forward(req, res);
+		req.setAttribute("documentList", dvList);
+		req.getRequestDispatcher("documentList.jsp").forward(req, res);
 	}
 }

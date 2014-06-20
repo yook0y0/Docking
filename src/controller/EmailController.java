@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import util.Injector;
-import vo.JoinedMemberVO;
+import vo.MemberContentsVO;
+import vo.MemberVO;
 import controller.action.SearchAction;
 
 import analysis.attribute.Attr;
@@ -75,16 +76,15 @@ public class EmailController
 		PrintWriter writer = null;
 		
 		SearchAction	searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<JoinedMemberVO>	list = searchAction.searchJoinedMemberList("joinedMember_searchAll", docId);
+		MemberVO mvo = searchAction.searchMember(memberId);
 		
-		for(JoinedMemberVO vo : list)
-		{
-			if(vo.getMemberId().equals(memberId))
-			{
-				chk = 0;
-				
-				break;
-			}
+		if(mvo == null){
+			// 없는사람
+		}
+		
+		MemberContentsVO mcvo = searchAction.searchMemberContents(mvo.getId());
+		if(mcvo != null){
+			chk = 0;
 		}
 		
 		if(chk == 0)
@@ -118,7 +118,7 @@ public class EmailController
 		
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		
-		if(searchAction.searchMember("member_search", memberId) != null)
+		if(searchAction.searchMember(memberId) != null)
 		{
 			sendMessage = "0|Enter Another Email!";
 		}

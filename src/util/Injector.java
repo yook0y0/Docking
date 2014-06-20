@@ -1,10 +1,8 @@
 package util;
 
-import controller.ContentsController;
-import controller.DockingEnvironmentController;
+import controller.DocumentController;
 import controller.EditorController;
 import controller.EmailController;
-import controller.JoinedMemberController;
 import controller.LogInOutController;
 import controller.MemberContentsController;
 import controller.MemberController;
@@ -56,13 +54,9 @@ public class Injector
 		/*
 		 * Controller
 		 */
-		else if(type == ContentsController.class)
+		else if(type == DocumentController.class)
 		{
-			return createContentsController();
-		}
-		else if(type == DockingEnvironmentController.class)
-		{
-			return createDockingEnvironmentController();
+			return createDocumentController();
 		}
 		else if(type == EditorController.class)
 		{
@@ -71,10 +65,6 @@ public class Injector
 		else if(type == EmailController.class)
 		{
 			return createEmailController();
-		}
-		else if(type == JoinedMemberController.class)
-		{
-			return createJoinedMemberController();
 		}
 		else if(type == LogInOutController.class)
 		{
@@ -115,11 +105,6 @@ public class Injector
 		return new LogInOutController();
 	}
 
-	private Object createJoinedMemberController() {
-		// TODO Auto-generated method stub
-		return new JoinedMemberController();
-	}
-
 	private Object createEmailController() {
 		// TODO Auto-generated method stub
 		return new EmailController();
@@ -130,16 +115,10 @@ public class Injector
 		return new EditorController();
 	}
 
-	private Object createDockingEnvironmentController() {
+	private Object createDocumentController() {
 		// TODO Auto-generated method stub
-		return new DockingEnvironmentController();
+		return new DocumentController();
 	}
-
-	private Object createContentsController() {
-		// TODO Auto-generated method stub
-		return new ContentsController();
-	}
-
 	private Object createSearchAction() {
 		// TODO Auto-generated method stub
 		return new SearchAction();

@@ -23,7 +23,6 @@ import analysis.attribute.DataAttribute;
 import analysis.filter.FileDeleteFilter;
 import analysis.filter.FileUnzipFilter;
 import analysis.filter.StringReplaceFilter;
-import analysis.filter.TokenDivisionFilter;
 import analysis.register.FilePathRegister;
 import analysis.register.StringRegister;
 
@@ -171,7 +170,7 @@ public class EditorController
 	public void getData() throws IOException
 	{
 		String dat = req.getParameter("value");
-		
+		/*
 		DockingAnalyzer da = new TokenDivisionFilter(new StringRegister(dat),new String[]{"?","%"});
 		try {
 			da.analyze();
@@ -188,7 +187,7 @@ public class EditorController
 		dat = new String(data[0]).replace(new String(type[0]), "");
 		
 		dat = dat.replace("%", "");
-		dat = dat.replace("?","");
+		dat = dat.replace("?","");*/
 		
 		byte[] buffer = new byte[1024];
 		ServletOutputStream o = null;
@@ -358,7 +357,7 @@ public void editorCodeList() throws ServletException, IOException{
 
 		DataAttribute dAttr = (DataAttribute) da.getAttrSet().get(Attr.ATTRSET_FILE_DATA);
 
-		byte[][] type = dAttr.getType();
+		//byte[][] type = dAttr.getType();
 		byte[][] data = dAttr.getData();
 		
 		String r = new String(data[0]);

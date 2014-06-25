@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<%@ include file="import.html"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>네이버 :: Smart Editor 2 &#8482;</title>
@@ -40,7 +42,7 @@ function modify(){
 			
 			function(result) 
 			{	
-				alert("수정되었습니다.");
+				alert("Modify Finished");
 				window.location = "./start.jsp";
 			}
 	);
@@ -48,6 +50,8 @@ function modify(){
 </script>
 </head>
 <body>
+<myTag:menubar />
+<div id="page">
 <form action="sample.php" method="post">
 	<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px; display:none;"></textarea>
 	<!--textarea name="ir1" id="ir1" rows="10" cols="100" style="width:100%; height:412px; min-width:610px; display:none;"></textarea-->
@@ -61,7 +65,7 @@ function modify(){
 <%-- <input type="hidden" id="codeData" value="${requestScope.modifyCode}" /> --%>
 	
  	<input type="hidden" id="path" value="${requestScope.path}" />
-
+</div>
 <script type="text/javascript">
 var oEditors = [];
 

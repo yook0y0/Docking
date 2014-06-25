@@ -1,5 +1,8 @@
 package analysis.attribute;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Attr {
 
@@ -16,4 +19,7 @@ public class Attr {
 	
 	public static String WEB_SITE_ADDRESS = "http://localhost:8089/Docking/";
 	public static boolean EDITOR_DATA_LOCALSAVE = true;
+	
+	public static String	backUpData = "0";
+	public static Map<String,String>	socketList = new HashMap<String,String>();
 }

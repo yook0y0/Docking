@@ -1,11 +1,7 @@
 package test;
 
 import analysis.DockingAnalyzer;
-import analysis.attribute.Attr;
-import analysis.attribute.DataAttribute;
 import analysis.filter.FileDeleteFilter;
-import analysis.filter.DirClearFilter;
-import analysis.filter.FileUnzipFilter;
 import analysis.register.FilePathRegister;
 
 public class FolderDeleteFilterTestMain {

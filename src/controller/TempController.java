@@ -9,7 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import socketIO.SocketIO;
+import analysis.attribute.Attr;
+
 import util.Injector;
 import vo.TempVO;
 import controller.action.AddAction;
@@ -102,7 +103,7 @@ public class TempController
 			}
 		}
 		
-		SocketIO.setBackUpData(buData);
+		Attr.backUpData = buData;
 		
 		res.sendRedirect("startSocket?docId=" + docId + "&lastDate=" + lastDate);
 	}

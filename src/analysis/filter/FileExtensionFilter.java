@@ -1,8 +1,6 @@
 package analysis.filter;
 
 import analysis.DockingAnalyzer;
-import analysis.attribute.Attr;
-import analysis.attribute.DataAttribute;
 
 public class FileExtensionFilter extends TokenDivisionFilter {
 

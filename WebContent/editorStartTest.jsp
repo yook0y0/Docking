@@ -18,13 +18,14 @@
 <script>
 $(document).ready(function() 
 {
+	var doc = "";
 	var memberId = $("#memberId").val();
 	var docId = $("#docId").val();
 	var body = $("#body").val();
    
    var socket = io.connect("http://localhost:9000");
    console.log('client socket create..');
-   socket.emit('room', {room : docId});
+   socket.emit('room', {room : docId, memberId : memberId});
    
    // receive
    socket.on('roomCreate', function(data) 
@@ -33,6 +34,24 @@ $(document).ready(function()
       
       data_set(data);
    });
+   
+   socket.on('userList', function(data)
+	{
+	   var jsonDataList = eval('('+data+')');
+	   var setting = "";
+	   
+	   $('#user_area').html("");
+	   
+	   for(var i = 0 ; i < jsonDataList.length ; i++)
+		{
+		   if(jsonDataList[i] != null)
+			{
+			   setting += "<td><img class='img-responsive' width='32px' height='32px' src='./img/user_img.png' title='" + jsonDataList[i] + "'</img></td>";
+			}  
+		}
+	   
+	   $('#user_area').append(setting);
+	});
    
    socket.on('map', function(data) 
    {
@@ -48,23 +67,48 @@ $(document).ready(function()
          console.log('data send..');
       
          var data = data_get();
+         if(doc != data){
+         doc = data;
       
          socket.emit('data', {data : data, room : docId, memberId : memberId});
+         }
       }, 3000); 
    });
     
 /////////////////////////////////////////////////////////////// 채팅 //////////////////////////////////////////////////////////////	   
 	socket.on('chat_receive', function(data) 
     {
-		$("#chat_area").append("<li>" + data + "</li>");
+		 var jsonDataList = eval('('+data+')');
+		 
+		 var messageType = jsonDataList[0];
+		 var messageId = jsonDataList[1];
+		 var dat = jsonDataList[2];
+		 
+		 var message = "";
+		 
+		 if(messageType == "chat")
+		 {
+			 if(messageId == memberId)
+			 {
+				 messageId = "나";
+			 }
+			 
+			 message = messageId + " : " + dat;
+		 }
+		 
+		 else
+		 {
+			 message = messageId + dat;
+		 }
+		 
+		$("#chat_area").append("<li>" + message + "</li>");
     });
 	   
    $("#btn-chat").click(function()
 	{
-	   var data = memberId + "의 메시지 : ";
-	   data += $("#btn-input").val();
-	   
-	   socket.emit('chat_send', {data : data});
+	   var data = $("#btn-input").val();
+
+	   socket.emit('chat_send', {data : data, memberId : memberId});
 	   
 	   $("#btn-input").val("");
 	});
@@ -101,7 +145,7 @@ $(document).ready(function()
 </head>
 
 <body>
-	<input type="hidden" id="memberId" value="${requestScope.memberId}" />
+	<input type="hidden" id="memberId" value="${sessionScope.logInMember.id}" />
 	<input type="hidden" id="docId" value="${requestScope.docId}" />
 	<input type="hidden" id="body" value="${requestScope.body}" />
 

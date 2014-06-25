@@ -92,6 +92,13 @@
 					<div class="chatting_menu"><button id="showRight">Chatting</button></div>
 					<div class="invite_menu"><button id="showBottom">Invite</button></div>
 					<div class="backUp_menu"><button id="showLeft">BackUpList</button></div>
+					<div class="userList">
+						<table>
+							<tr id="user_area">
+
+							</tr>
+						</table>
+					</div>
 				</section>
 			</div>
 		</div>

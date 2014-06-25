@@ -20,7 +20,8 @@ editor_name varchar2(200) primary key,
 editor_info varchar2(1000),
 editor_startPage varchar2(200),
 editor_getMethod varchar2(200),
-editor_setMethod varchar2(200))
+editor_setMethod varchar2(200),
+editor_type number(5) not null)
 
 
 create table editorCode_tb(
@@ -34,13 +35,21 @@ editorReview_reviewId varchar2(100) primary key,
 editorReview_editor varchar2(200) not null, 
 editorReview_writer varchar2(100) not null,
 editorReview_review varchar2(1000) not null, 
-editorReview_score number);
-
+editorReview_score number,
+editorReview_writtenDate date)
 
 create table temp_tb(
-temp_date date not null,
-temp_editor varchar2(100) not null,
-temp_contentsId varchar2(100) not null);
+temp_buDate varchar2(100) not null,
+temp_backUpData clob not null,
+temp_docId varchar2(100) not null,
+temp_checkLast number(10) not null);
+
+
+CREATE SEQUENCE test_seq
+INCREMENT BY 1
+START WITH 1
+MAXVALUE 1000
+NOCYCLE;
 
 create table memberContents_tb(
 memberContents_memberId varchar2(100) not null,

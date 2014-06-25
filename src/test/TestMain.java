@@ -1,21 +1,8 @@
 package test;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-
-import javax.servlet.ServletOutputStream;
-
 import org.vertx.java.core.Vertx;
 
 import socketIO.SocketIO;
-
-import analysis.DockingAnalyzer;
-import analysis.attribute.Attr;
-import analysis.attribute.DataAttribute;
-import analysis.filter.FileReaderFilter;
-import analysis.filter.FileUnzipFilter;
-import analysis.register.FilePathRegister;
 
 public class TestMain {
 

@@ -19,7 +19,7 @@
 							<bd>date : ${con.writtenDate}</bd>
 						</p>
 						<p>
-							writer : ${con.writer}
+							writer : ${con.reviewId}
 							<br>
 						</p>
 						

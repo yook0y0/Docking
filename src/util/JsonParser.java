@@ -25,11 +25,13 @@ public class JsonParser {
 	 * 만들어 그 값을 리턴한다.<br/>
 	 * ex) str[0]=0 , str[1]=0 , str[2]=0 -> [0,0,0]
 	 */
+	@SuppressWarnings("unchecked")
 	public String jParseArr(String[] str) {
 
 		JSONArray jArr = new JSONArray();
 
-		for (int i = 0; i < str.length; i++) {
+		for (int i = 0; i < str.length; i++) 
+		{
 			jArr.add(str[i]);
 		}
 
@@ -44,10 +46,12 @@ public class JsonParser {
 	 *       val[0]="ㄱ", val[1]="ㄴ", val[2]="ㄷ"<br/>
 	 * -> {"1":"ㄱ","2":"ㄱ","3":"ㄱ"}
 	 */
+	@SuppressWarnings("unchecked")
 	public String jParseObj(String[] key, String[] val) {
 		JSONObject jObj = new JSONObject();
 
-		for (int i = 0; i < val.length; i++) {
+		for (int i = 0; i < val.length; i++) 
+		{
 			jObj.put(key[i], val[i]);
 		}
 

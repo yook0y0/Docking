@@ -188,3 +188,12 @@
 	left:135px;
 	z-index:1000;
 }
+
+.userList
+{
+	position:absolute;
+	top:77px;
+	left:220px;
+	
+	z-index:1000;
+}

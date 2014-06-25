@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -22,6 +23,7 @@ import analysis.attribute.DataAttribute;
 import analysis.filter.FileDeleteFilter;
 import analysis.filter.FileUnzipFilter;
 import analysis.filter.StringReplaceFilter;
+import analysis.filter.TokenDivisionFilter;
 import analysis.register.FilePathRegister;
 import analysis.register.StringRegister;
 
@@ -68,6 +70,7 @@ public class EditorController
 		String getMethod = multi.getParameter("editor_getMethod");
 		String setMethod = multi.getParameter("editor_setMethod");
 		String fileName = multi.getFilesystemName("editor_file");
+		String editorType = multi.getParameter("editor_type");
 		
 		String path = savePath + "/" + fileName;
 
@@ -88,10 +91,6 @@ public class EditorController
 
 		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
 		
-		/*
-		 * path�� unique���� �Ǳ����� ���̵�,�̸��� �߰� �ʿ�
-		 */
-		
 		EditorVO evo = new EditorVO();
 		evo.setDirector(id);
 		evo.setName(editorName);
@@ -99,6 +98,7 @@ public class EditorController
 		evo.setStartPage(startPage);
 		evo.setGetMethod(getMethod);
 		evo.setSetMethod(setMethod);
+		evo.setEditorType(Integer.parseInt(editorType));
 		System.out.println("evo : " + evo.toString());
 		addAction.addEditor(evo);
 		
@@ -109,6 +109,7 @@ public class EditorController
 			ecvo[i].setEditor(editorName);
 			ecvo[i].setBody(new String(data[i]));
 			ecvo[i].setPath(editorName + "/" + new String(type[i]));
+			System.out.println("ecvo : " + ecvo[i].toString());
 			addAction.tempAdd(ecvo[i]);
 		}
 		addAction.tempDisConnect();
@@ -137,8 +138,9 @@ public class EditorController
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println("editor : " + editor);
 		EditorVO evo = searchAction.searchEditor(editor);
+		System.out.println("evo.toString() : " + evo.toString());
 		EditorCodeVO ecvo = searchAction.searchEditorCode(editor + "/" + evo.getStartPage());
 		
 		String startPage = ecvo.getBody();
@@ -170,7 +172,23 @@ public class EditorController
 	{
 		String dat = req.getParameter("value");
 		
-		System.out.println("dat : " + dat);
+		DockingAnalyzer da = new TokenDivisionFilter(new StringRegister(dat),new String[]{"?","%"});
+		try {
+			da.analyze();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		DataAttribute dAttr = (DataAttribute) da.getAttrSet().get(Attr.ATTRSET_FILE_DATA);
+
+		byte[][] type = dAttr.getType();
+		byte[][] data = dAttr.getData();
+		
+		dat = new String(data[0]).replace(new String(type[0]), "");
+		
+		dat = dat.replace("%", "");
+		dat = dat.replace("?","");
 		
 		byte[] buffer = new byte[1024];
 		ServletOutputStream o = null;
@@ -247,8 +265,45 @@ public class EditorController
 		req.setAttribute("evo", evo);
 		req.getRequestDispatcher("editorUpdate.jsp").forward(req, res);
 	}
+	
+public void editorCodeList() throws ServletException, IOException{
+		
+		String editor = req.getParameter("name");
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		List<EditorCodeVO> ecvoList = searchAction.searchEditorCodeList(editor);
 
-	public void editorSearchAll() throws ServletException, IOException {
+		String path = "";
+		String type = "";
+		int len = 0;
+		
+		List<EditorCodeVO> modifyList = new ArrayList<EditorCodeVO>();
+		for(int i=0;i<ecvoList.size();i++){
+			path = ecvoList.get(i).getPath();
+			len = path.lastIndexOf('.');
+			if(len > 0){
+				type = path.substring(len+1,path.length());
+			}
+			else{
+				type = "dir";
+			}
+			if(type.equals("html") || type.equals("css") || type.equals("js")){
+				modifyList.add(ecvoList.get(i));
+			}
+		}
+		
+		req.setAttribute("editorCodeList", modifyList);
+		req.getRequestDispatcher("editorCodeList.jsp").forward(req, res);
+	}
+	
+	public void editorCodeSearch() throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String path = req.getParameter("path");
+		req.setAttribute("path", path);
+		req.getRequestDispatcher("./naverEditor.jsp").forward(req, res);
+	}
+
+	public void editorSearchAll() throws ServletException, IOException 
+	{
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		
 		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
@@ -259,5 +314,72 @@ public class EditorController
 		req.setAttribute("evoList", evoList);
 		req.getRequestDispatcher("editorManage.jsp").forward(req, res);
 	}
+	
+	public void editorReviewEntire()	throws ServletException, IOException
+	{
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		req.setAttribute("entireEditorReview", searchAction.searchAllEditorReview());
+		req.getRequestDispatcher("boardList.jsp").forward(req, res);
+	}
 
+	public void getAllEditor()	throws ServletException, IOException
+	{
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		req.setAttribute("allEditorList", searchAction.searchGetAllEditor());
+		req.getRequestDispatcher("documentRegister.jsp").forward(req, res);
+	}
+	
+	public void getAllEditor2()	throws ServletException, IOException
+	{
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		req.setAttribute("allEditorList", searchAction.searchGetAllEditor());
+		req.getRequestDispatcher("boardRegister.jsp").forward(req, res);
+	}
+	
+	public void editorCodeLoad() throws IOException {
+		// TODO Auto-generated method stub
+		String path = req.getParameter("path");
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		EditorCodeVO ecvo = searchAction.searchEditorCode(path);
+		String editorName = ecvo.getEditor();
+		String body = ecvo.getBody();
+		
+/*		req.setAttribute("modifyCode", "<XMP> " + body + " </XMP>");*/
+		
+		DockingAnalyzer da = new StringReplaceFilter(new StringRegister(body),"src=\"./getData?value="+ editorName +"/","src=\"./");
+		try {
+			da.analyze();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		DataAttribute dAttr = (DataAttribute) da.getAttrSet().get(Attr.ATTRSET_FILE_DATA);
+
+		byte[][] type = dAttr.getType();
+		byte[][] data = dAttr.getData();
+		
+		String r = new String(data[0]);
+		
+		r = r.replace("<", "&lt;");
+		System.out.println("r : " + r);
+		
+		res.getWriter().print(r);
+	}
+
+	public void editorCodeModify() throws IOException {
+		// TODO Auto-generated method stub
+		String path = req.getParameter("path");
+		String code = req.getParameter("code");
+		
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		EditorCodeVO ecvo = searchAction.searchEditorCode(path);
+		ecvo.setBody(code);
+		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
+		modifyAction.modifyEditorCode(ecvo);
+		
+		res.getWriter().print("modify success");
+	}
 }

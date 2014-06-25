@@ -86,6 +86,74 @@ public class SearchAction {
 		return s.searchAll("temp_searchAll");
 	}
 	
+	public List<EditorReviewVO> searchAllEditorReview(){
+		GenericService<EditorReviewVO>s = new GenericServiceImpl<EditorReviewVO>();
+		return s.searchAll("editorReview_entire");
+	}
+
+	public List<EditorVO>	searchGetAllEditor()
+	{
+		GenericService<EditorVO>s = new GenericServiceImpl<EditorVO>();
+		return s.searchAll("editor_getAllEditor");
+	}
+	
+	public List<EditorReviewVO>	searchEditorReviewByEditorName(String editorName)
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession	sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		List<EditorReviewVO>	list = sqlSession.selectList("editorReview_searchAll_by_editorName", editorName);
+		
+		sqlSession.close();
+		
+		return list;
+		
+	}
+	
+	public List<EditorReviewVO>	searchEditorReviewByWriter(String writer)
+	{
+		String resource = "mybatis-config.xml";
+		Reader reader = null;
+		SqlSession	sqlSession = null;
+		SqlSessionFactory	sqlMapper = null;
+		
+		try 
+		{
+			reader = Resources.getResourceAsReader(resource);
+
+			sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+			
+			sqlSession = sqlMapper.openSession();
+		} 
+		
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		List<EditorReviewVO>	list = sqlSession.selectList("editorReview_searchAll", writer);
+		
+		sqlSession.close();
+		
+		return list;
+	}
+	
 	public List<MemberContentsVO>	searchMemberContentsList(String id)	throws RuntimeException
 	{
 		String resource = "mybatis-config.xml";
@@ -198,7 +266,7 @@ public class SearchAction {
 		return list;
 	}
 	
-	public List<EditorReviewVO>	searchEditorReviewList(String id)	throws RuntimeException
+	public List<TempVO>	searchTempByDocId(String docId)
 	{
 		String resource = "mybatis-config.xml";
 		Reader reader = null;
@@ -219,10 +287,11 @@ public class SearchAction {
 			e.printStackTrace();
 		}
 		
-		List<EditorReviewVO>	list = sqlSession.selectList("editorReview_searchAll", id);
+		List<TempVO>	list = sqlSession.selectList("temp_searchAll", docId);
 		
 		sqlSession.close();
 		
 		return list;
+		
 	}
 }

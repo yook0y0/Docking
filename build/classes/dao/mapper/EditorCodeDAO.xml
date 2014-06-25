@@ -29,6 +29,6 @@
 	</select>
 
 	<delete id="editorCode_delete" parameterType="vo.EditorCodeVO">
-		delete from editorCode_tb where editorCode_path=#{path}
+		delete from editorCode_tb where editorCode_editor=#{editor}
 	</delete>
 </mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="myTag" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -16,8 +17,19 @@
 					<img src="./img/docking.png" alt="DOCKING">
 					<h1>Docking</h1>
 					<p>Real-time working environment</p>
-					<a href="./html/login.jsp"><button type="submit"
+					
+					<c:choose>
+						<c:when test="${sessionScope.logInMember.nickName == null}">
+							<a href="login.jsp"><button type="submit"
 							class="btn btn-warning btn-lg">Start !</button></a>
+						</c:when>
+						
+						<c:otherwise>
+							<a href="document.jsp"><button type="submit"
+							class="btn btn-warning btn-lg">Start !</button></a>
+						</c:otherwise>
+					</c:choose>
+						
 				</div>
 				<!-- /col-lg-8 -->
 			</div>

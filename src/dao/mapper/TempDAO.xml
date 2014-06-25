@@ -4,26 +4,27 @@
 
 <mapper namespace="dao.TempDAO">
 	<insert id="temp_add" parameterType="vo.TempVO">
-		insert into temp_tb (temp_date, temp_editor, temp_contentsId)
-		values (#{date}, #{editor}, #{contentsId})
+		insert into temp_tb (temp_buDate, temp_backUpData, temp_docId, temp_checkLast)
+		values (#{buDate}, #{backUpData}, #{docId}, test_seq.NEXTVAL)
 	</insert>
 	
 	<update id="temp_modify" parameterType="vo.TempVO">
-		update temp_tb
-		set temp_editor=#{editor}, temp_contentsId=#{contentsId}
-		where temp_contentsId=#{contentsId}
+		upbuDate temp_tb
+		set temp_backUpData=#{backUpData}, temp_buDate=#{buDate}, temp_checkLast=#{checkLast}
+		where temp_docId=#{docId}
 	</update>
 	
 	<select id="temp_search" parameterType="vo.TempVO" resultType="vo.TempVO">
-		select temp_date date, temp_editor editor, temp_contentsId contentsId from temp_tb 
-		where temp_contentsId=#{contentsId}
+		select temp_buDate buDate, temp_backUpData backUpData, temp_docId docId, temp_checkLast checkLast from temp_tb 
+		where temp_docId=#{docId}
 	</select>
 
 	<select id="temp_searchAll" resultType="vo.TempVO">
-		select temp_date date, temp_editor editor, temp_contentsId contentsId from temp_tb
+		select temp_buDate buDate, temp_backUpData backUpData, temp_docId docId, temp_checkLast checkLast from temp_tb 
+		where temp_docId=#{docId}
 	</select>
 	
 	<delete id="temp_delete" parameterType="vo.TempVO">
-        delete from temp_tb where temp_contentsId=#{contentsId}
+        delete from temp_tb where temp_docId=#{docId}
     </delete>
 </mapper>

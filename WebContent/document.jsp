@@ -19,7 +19,7 @@
 			</div>
 			<div class="row mt centered">
 				<div class="col-lg-4">
-					<a class="zoom green" href="./documentRegister.jsp">
+					<a class="zoom green" href="./getAllEditor">
 					<img class="img-responsive" src="./img/doc_register.png"
 							alt="" /></a>
 					<H3>REGISTER</H3>

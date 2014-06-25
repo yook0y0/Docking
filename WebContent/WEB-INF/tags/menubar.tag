@@ -21,7 +21,7 @@
 <!--				<li><a id="menu-link-2" href="#slide-2">ABOUT US</a></li> -->
 				<li><a href="document.jsp">DOCUMENT</a></li>
 				
-				<li><a href="review.jsp">REVIEW</a></li>
+				<li><a href="./editorReview_entire">REVIEW</a></li>
 <!-- 				<li><a href="contact.jsp">CONTACT</a></li> -->
 				
 						<c:choose>

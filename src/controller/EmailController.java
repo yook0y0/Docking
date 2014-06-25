@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -66,7 +65,6 @@ public class EmailController
 	{
 		String 	memberId = req.getParameter("memberId");
 		String	docId = req.getParameter("docId");
-		String	portNum = req.getParameter("portNum");
 		
 		String	sendMessage = "1|Send Invite Email!";
 		int		chk = 1;
@@ -94,7 +92,7 @@ public class EmailController
 		
 		else
 		{
-			String confirmNo = this.createInviteMessage(memberId,docId,portNum);
+			String confirmNo = this.createInviteMessage(memberId,docId);
 			
 			this.sendConfirmNo(memberId, confirmNo, docId + "의 초대메시지!");
 		}
@@ -137,11 +135,11 @@ public class EmailController
 		return message;
 	}
 	
-	private String createInviteMessage(String memberId , String docId , String portNum)
+	private String createInviteMessage(String memberId , String docId)
 	{
 		String	message = "해당 링크를 선택하면 초대가 수락됩니다!" + '\n' +
 				Attr.WEB_SITE_ADDRESS + 
-				"joinedmember_add?memberId=" + memberId + "&docId=" + docId + "&portNum=" + portNum;
+				"memberContents_add?memberId=" + memberId + "&docId=" + docId;
 		
 		return message;
 	}

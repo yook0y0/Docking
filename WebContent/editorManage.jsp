@@ -12,17 +12,18 @@
 	<div class="container pt">
 		<div class="row mt">
 			<div class="col-lg-6 col-lg-offset-3 centered">
-				<h3>Register Docking!</h3>
+				<h3>Manage Your Editor!</h3>
 				<hr>
-				<p>Input Your Document</p>
+				<p>Modify Your Editor</p>
 			</div>
 		</div>
 		<div class="row mt">
 			<div class="col-lg-6 col-lg-offset-3">
 				<c:forEach items="${evoList}" var="e" varStatus="status">
-					
-					director : ${e.director} // name : ${e.name} // info : ${e.info} // startPage : ${e.startPage} // getMethod : ${e.getMethod} // setMethod : ${e.setMethod}
-					<a href="./editor_updateView?director=${e.director}&name=${e.name}&info=${e.info}&startPage=${e.startPage}&getMethod=${e.getMethod}&setMethod=${e.setMethod}">수정</a>
+					name : ${e.name} / info : ${e.info}
+					<br>
+					<a href="./editorCode_list?name=${e.name}">코드수정</a>
+					<a href="./editor_updateView?director=${e.director}&name=${e.name}&info=${e.info}&startPage=${e.startPage}&getMethod=${e.getMethod}&setMethod=${e.setMethod}">정보수정</a>
 					<a href="./editor_delete?name=${e.name}">삭제</a>
 					<br><br>
 				</c:forEach>

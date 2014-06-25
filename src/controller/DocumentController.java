@@ -64,37 +64,6 @@ public class DocumentController
 		addAction.addDocument(dv);
 		addAction.addMemberContents(mv);
 
-		/*//////////////////////////////////////////////////////////////////////////////////////////////
-		JoinedMemberVO	joinedMemberVO = new JoinedMemberVO();
-
-		joinedMemberVO.setKey(dockingEnvironmentVO.getDocId() + "/" + memberVO.getId());
-		joinedMemberVO.setDocId(dockingEnvironmentVO.getDocId());
-		joinedMemberVO.setFlag(1);
-		joinedMemberVO.setMemberId(memberVO.getId());
-
-		addAction.addJoinedMember("joinedMember_add", joinedMemberVO);
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-		List<JoinedMemberVO>	joinedMemberList = searchAction.searchJoinedMemberList("joinedMember_searchAll", dockingEnvironmentVO.getDocId());
-		getServletContext().setAttribute("joinedMemberList", joinedMemberList);
-		/////////////////////////////////////////////////////////////////////////////////////////////
-
-		SocketIO	socketIO = (SocketIO)getServletContext().getAttribute("socketIO");
-
-		int		portNum = -(int)time;
-		portNum %= 51000;
-
-		socketIO.setPort(portNum);
-		socketIO.start(Vertx.newVertx());
-
-		System.out.println(portNum);
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-
-		req.setAttribute("docId", dockingEnvironmentVO.getDocId());
-		req.setAttribute("portNum", portNum);
-
-		req.getRequestDispatcher("start.jsp").forward(req, res);*/
 		res.setCharacterEncoding("utf-8");
 		res.getWriter().println("success");
 		res.getWriter().flush();

@@ -15,37 +15,54 @@
 			<div class="col-lg-6 col-lg-offset-3 centered">
 				<h3>UPLOAD EDITOR</h3>
 				<hr>
-				<p>Test Page..</p>
+				<p>Select Your Editor</p>
 			</div>
 		</div>
 		<div class="row mt">
 			<div class="col-lg-8 col-lg-offset-2">
 				<form action="./editor_add" method="post"
 					enctype="multipart/form-data">
+					
 					<div class="form-group">
 						<input type="name" name="editor_name" class="form-control"
 							id="name" placeholder="Editor Name"> <br>
 					</div>
+					
 					<div class="form-group">
 						<input type="name" name="editor_info" class="form-control"
 							id="name" placeholder="Editor Info"> <br>
 					</div>
+					
 					<div class="form-group">
 						<input type="name" name="editor_startPage" class="form-control"
 							id="startPage" placeholder="Start Page Path"> <br>
 					</div>
+					
 					<div class="form-group">
 						<input type="name" name="editor_getMethod" class="form-control"
 							id="getMethod" placeholder="getMethod name"> <br>
 					</div>
+					
 					<div class="form-group">
 						<input type="name" name="editor_setMethod" class="form-control"
 							id="setMethod" placeholder="setMethod name"> <br>
 					</div>
+					
 					<div class="form-group">
 						<input type="file" name="editor_file" class="form-control">
 						<br>
 					</div>
+
+						EditorType
+						<br>
+						<select name="editor_type">
+						    <option value="1">TextEditor</option>
+						    <option value="2">MindMap</option>
+						    <option value="3">Questionnaire</option>
+						    <option value="4">Else</option>
+						</select>
+						<br>
+						<br>
 					<button type="submit" class="btn btn-success">UPLOAD</button>
 				</form>
 			</div>

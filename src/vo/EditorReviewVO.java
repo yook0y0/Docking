@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class EditorReviewVO implements Serializable {
 
@@ -13,7 +14,9 @@ public class EditorReviewVO implements Serializable {
 	private String editor;
 	private String writer;
 	private String review;
-	private int score;
+	private Integer score;
+	private Date writtenDate;
+	
 	public String getReviewId() {
 		return reviewId;
 	}
@@ -38,11 +41,17 @@ public class EditorReviewVO implements Serializable {
 	public void setReview(String review) {
 		this.review = review;
 	}
-	public int getScore() {
+	public Integer getScore() {
 		return score;
 	}
-	public void setScore(int score) {
+	public void setScore(Integer score) {
 		this.score = score;
+	}
+	public Date getWrittenDate() {
+		return writtenDate;
+	}
+	public void setWrittenDate(Date writtenDate) {
+		this.writtenDate = writtenDate;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -57,6 +66,8 @@ public class EditorReviewVO implements Serializable {
 				+ ((reviewId == null) ? 0 : reviewId.hashCode());
 		result = prime * result + score;
 		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
+		result = prime * result
+				+ ((writtenDate == null) ? 0 : writtenDate.hashCode());
 		return result;
 	}
 	@Override
@@ -90,12 +101,19 @@ public class EditorReviewVO implements Serializable {
 				return false;
 		} else if (!writer.equals(other.writer))
 			return false;
+		if (writtenDate == null) {
+			if (other.writtenDate != null)
+				return false;
+		} else if (!writtenDate.equals(other.writtenDate))
+			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
 		return "EditorReviewVO [reviewId=" + reviewId + ", editor=" + editor
 				+ ", writer=" + writer + ", review=" + review + ", score="
-				+ score + "]";
+				+ score + ", writtenDate=" + writtenDate + "]";
 	}
+	
+	
 }

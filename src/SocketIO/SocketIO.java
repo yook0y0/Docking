@@ -1,5 +1,6 @@
 package socketIO;
 
+import java.util.List;
 import java.util.Map;
 
 import org.vertx.java.core.Handler;
@@ -7,7 +8,9 @@ import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.json.JsonObject;
 
+import util.Injector;
 import util.JsonParser;
+import vo.TempVO;
 
 import com.nhncorp.mods.socket.io.SocketIOServer;
 import com.nhncorp.mods.socket.io.SocketIOSocket;
@@ -16,10 +19,18 @@ import com.nhncorp.mods.socket.io.impl.Room;
 import com.nhncorp.mods.socket.io.impl.RoomClient;
 import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
 
+import controller.action.SearchAction;
+
 public class SocketIO extends DefaultEmbeddableVerticle 
 {
-   private static    SocketIOServer io = null;
-   private   int      port;
+   private static SocketIOServer io = null;
+   private int     	port;
+   private static String	backUpData;
+   
+   static
+   {
+	   backUpData = "0";
+   }
    
    public int getPort() 
    {
@@ -29,8 +40,18 @@ public class SocketIO extends DefaultEmbeddableVerticle
    {
       this.port = port;
    }
-
-   @Override
+   
+   public static String getBackUpData() 
+   {
+	   return backUpData;
+   }
+   
+   public static void setBackUpData(String backUpData) 
+   {
+	   SocketIO.backUpData = backUpData;
+   }
+   
+@Override
    public void start(Vertx vertx) 
    {
       // HttpServlet ��
@@ -47,45 +68,93 @@ public class SocketIO extends DefaultEmbeddableVerticle
          public void handle(final SocketIOSocket socket) 
          {
             System.out.println("Connection handling");
-            // Ư�� Ű ������ ��û�� ������ �̺�Ʈ ����
+           
             socket.on("room", new Handler<JsonObject>() {
 
-               public void handle(JsonObject data) {
+               public void handle(JsonObject data) 
+               {
                   String room = data.getString("room");
                   socket.join(room);
-                  socket.emit("roomCreate",room);
-
+                  
+                  String	initData = setInitData(room);
+                  
+                  if(!initData.equals("0"))
+                  { 
+                      socket.emit("roomCreate",initData);
+                  }
+                  
                   print(io.sockets().manager().rooms());
                   print(io.sockets().clients(room));
                   print(io.sockets().manager().roomClients(socket.getId()));
-                  // ��� Ŭ���̾�Ʈ�� �޼��� ���
-                  /*io.sockets().emit("response", event.getString("data"));*/
                }
             });
-            socket.on("data", new Handler<JsonObject>() {
+            
+            socket.on("data", new Handler<JsonObject>() 
+            {
                public void handle(JsonObject data) {
                   String room = data.getString("room");
                   String dt = data.getString("data");
                   String memberId = data.getString("memberId");
-                  /*io.sockets().in(room).emit("map", dt);*/
+                  
+                  if(!backUpData.equals("0"))
+                  {
+                	  dt = backUpData;
+                	  
+                	  System.out.println("SocketIO comming");
+                  }
+                 
                   String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId"}, new String[]{dt,memberId});
                   io.sockets().in(room).emit("map", res);
                }
             });
-            /*socket.on("unsubscribe", new Handler<JsonObject>() {
-               public void handle(JsonObject data) {
-                  String room = data.getString("room");
-                  socket.leave(room);
-                  socket.emit("leave:" + room);
-
-                  print(io.sockets().manager().rooms());
-                  print(io.sockets().clients(room));
-                  print(io.sockets().manager().roomClients(socket.getId()));
+            
+            socket.on("backUp_send", new Handler<JsonObject>() 
+            {
+               public void handle(JsonObject data) 
+               {
+            	   io.sockets().emit("backUp_receive", data.getString("data"));
                }
-            });*/
+            });
+
+            socket.on("chat_send", new Handler<JsonObject>() 
+            {
+               public void handle(JsonObject data) 
+               {
+            	   io.sockets().emit("chat_receive", data.getString("data"));
+               }
+            });
          }
       });
+      
       server.listen(port);
+   }
+   
+   private String setInitData(String room)
+   {
+	   	String	docId = room;
+		
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		List<TempVO>	tempList = searchAction.searchTempByDocId(docId);
+		
+		String	backUpData = "0";
+
+		if(tempList.size() != 0)
+		{
+			int	lastDate = tempList.get(0).getCheckLast();
+			
+			for(TempVO vo : tempList)
+			{
+				if(vo.getCheckLast() >= lastDate)
+				{
+					lastDate = vo.getCheckLast();
+					
+					backUpData = vo.getBackUpData();
+				}
+			}
+		}
+		
+		return backUpData;
    }
 
    private void print(RoomClient roomClient) {

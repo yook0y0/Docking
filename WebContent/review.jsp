@@ -19,7 +19,7 @@
 			</div>
 			<div class="row mt centered">
 			<div class="col-lg-6">
-					<a class="zoom green" href="./board.jsp"><img
+					<a class="zoom green" href="./editorReview_searchAll"><img
 						class="img-responsive" src="./img/review.png"
 						alt="" /></a>
 					<H3>REVIEW</H3>

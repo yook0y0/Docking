@@ -14,7 +14,7 @@
 				<div class="col-lg-6 col-lg-offset-3 centered">
 					<h3>MY EDITOR</h3>
 					<hr>
-					<p>Menu related to the editor</p>
+					<p>Menu related to the developer</p>
 				</div>
 			</div>
 			<div class="row mt centered">
@@ -31,7 +31,7 @@
 					<H3>MANAGE</H3>
 				</div>
 				<div class="col-lg-4">
-					<a class="zoom green" href="./start.jsp"><img
+					<a class="zoom green" href="./editorReview_searchAll?writer=${sessionScope.logInMember.id}"><img
 						class="img-responsive" src="./img/editor_chart.png"
 						alt="" /></a>
 					<H3>REVIEW</H3>

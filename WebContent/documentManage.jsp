@@ -12,25 +12,24 @@
 	<div class="container pt">
 		<div class="row mt">
 			<div class="col-lg-6 col-lg-offset-3 centered">
-				<h3>Register Docking!</h3>
+				<h3>Manage Your Document!</h3>
 				<hr>
-				<p>Input Your Document</p>
+				<p>Modify Your Document</p>
 			</div>
 		</div>
 		<div class="row mt">
 			<div class="col-lg-6 col-lg-offset-3">
 				<c:forEach items="${documentList}" var="con" varStatus="status">
-					
-					docId : ${con.id} // title : ${con.title} // date : ${con.creationDate} // writer : ${con.writer} // type : ${con.type}
-					<a href="./document_updateView?id=${con.id}&writer=${con.writer}&title=${con.title}&content=${con.content}&type=${con.type}&creationDate=${con.creationDate}">수정</a>
-					<a href="./document_delete?id=${con.id}">삭제</a>
+					date : ${con.creationDate} // title : ${con.title} // type : ${con.type}
+					<br>
+					<a href="./document_updateView?id=${con.id}&writer=${con.writer}&title=${con.title}&content=${con.content}&type=${con.type}&creationDate=${con.creationDate}">Modify</a>
+					<a href="./document_delete?id=${con.id}">Delete</a>
 					<br><br>
 				</c:forEach>
 			</div>
 		</div>
 		<!-- /row -->
 	</div>
-	<!-- /container -->
-	<myTag:copyright />
+
 </body>
 </html>

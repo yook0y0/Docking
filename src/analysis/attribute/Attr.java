@@ -15,4 +15,5 @@ public class Attr {
 	public static String START_PAGE = "start.html";
 	
 	public static String WEB_SITE_ADDRESS = "http://localhost:8089/Docking/";
+	public static boolean EDITOR_DATA_LOCALSAVE = true;
 }

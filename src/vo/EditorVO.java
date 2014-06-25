@@ -4,17 +4,15 @@ import java.io.Serializable;
 
 public class EditorVO	implements Serializable
 {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3459403639778800584L;
+	
 	private String	director;
 	private	String	name;
 	private String	info;
 	private String	startPage;
 	private String	getMethod;
 	private String	setMethod;
+	private	Integer	editorType;
 	
 	public String getDirector() {
 		return director;
@@ -52,8 +50,13 @@ public class EditorVO	implements Serializable
 	public void setSetMethod(String setMethod) {
 		this.setMethod = setMethod;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	
+
+	public Integer getEditorType() {
+		return editorType;
+	}
+	public void setEditorType(Integer editorType) {
+		this.editorType = editorType;
 	}
 	@Override
 	public int hashCode() {
@@ -112,10 +115,12 @@ public class EditorVO	implements Serializable
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return "EditorVO [director=" + director + ", name=" + name + ", info="
 				+ info + ", startPage=" + startPage + ", getMethod="
-				+ getMethod + ", setMethod=" + setMethod + "]";
+				+ getMethod + ", setMethod=" + setMethod + ", editorType="
+				+ editorType + "]";
 	}
 }

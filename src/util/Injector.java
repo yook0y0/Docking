@@ -2,6 +2,7 @@ package util;
 
 import controller.DocumentController;
 import controller.EditorController;
+import controller.EditorReviewController;
 import controller.EmailController;
 import controller.LogInOutController;
 import controller.MemberContentsController;
@@ -82,7 +83,15 @@ public class Injector
 		{
 			return createTempController();
 		}
+		else if(type == EditorReviewController.class)
+		{
+			return createEditorReviewController();
+		}
 		return null;
+	}
+	
+	private Object createEditorReviewController(){
+		return new EditorReviewController();
 	}
 	
 	private Object createTempController() {

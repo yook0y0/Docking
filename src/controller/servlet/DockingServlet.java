@@ -1,6 +1,8 @@
 package controller.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,13 +21,16 @@ import controller.MemberController;
 import controller.TempController;
 import controller.action.SearchAction;
 
+
 import util.Injector;
-import vo.DocumentVO;
 import vo.MemberVO;
+import vo.TempVO;
 
 @WebServlet(name="DockingServlet", urlPatterns={
 
 		"/editor_add","/editor_modify","/editor_updateView","/editor_delete","/editor_searchAll",
+		
+		"/editorCode_list", "/editorCode_search", "/editorCode_Load", "/editorCode_modify",
 
 		"/getStartPage","/getData", "/joinedMember", 
 
@@ -33,15 +38,15 @@ import vo.MemberVO;
 
 		"/login","/logout",
 
-		"/editorReview_add","/editorReview_modify","/editorReview_search","/editorReview_searchAll","/editorReview_Delete",
+		"/editorReview_add","/editorReview_modify","/editorReview_search","/editorReview_searchAll","/editorReview_delete","/editorReview_updateAll", "/editorReview_entire",
 
 		"/member_add", "/member_modify", "/member_search", "/member_searchAll", "/member_delete",
 
 		"/temp_add", "/temp_modify", "/temp_search", "/temp_searchAll", "/temp_delete",
 
-		"/document_add", "/document_modify", "/document_search", "/document_searchAll", "/document_delete","/document_updateView",
+		"/document_add", "/document_modify", "/document_search", "/document_searchAll", "/document_delete","/document_updateView", "/getAllEditor", "/getAllEditor2",
 
-		"/memberContents_search","/startSocket","/document_manage","/editor_init"
+		"/memberContents_add", "/memberContents_search","/startSocket","/document_manage","/editor_init"
 })
 public class DockingServlet extends HttpServlet 
 {
@@ -124,8 +129,15 @@ public class DockingServlet extends HttpServlet
 		else if(action.equals("editorReview_searchAll")){
 			this.editorReviewSearchAll(req,res);
 		}
-		else if(action.equals("editorReview_Delete")){
+		else if(action.equals("editorReview_delete")){
 			this.editorReviewDelete(req,res);
+		}
+		else if(action.equals("editorReview_updateView")){
+			this.editorReviewUpdateView(req, res);
+		}
+		else if(action.equals("editorReview_entire"))
+		{
+			this.editorReviewEntire(req,res);
 		}
 
 		/**
@@ -199,6 +211,21 @@ public class DockingServlet extends HttpServlet
 		else if(action.equals("document_updateView")){
 			this.documentUpdateView(req,res);
 		}
+		
+		else if(action.equals("getAllEditor"))
+		{
+			this.getAllEditor(req,res);
+		}
+		
+		else if(action.equals("getAllEditor2"))
+		{
+			this.getAllEditor2(req,res);
+		}
+		
+		else if(action.equals("memberContents_add"))
+		{
+			this.memberContentsAdd(req,res);
+		}
 
 		else if(action.equals("memberContents_search")){
 			this.memberContentsSearch(req,res);
@@ -206,11 +233,61 @@ public class DockingServlet extends HttpServlet
 		else if(action.equals("startSocket")){
 			this.startSocket(req,res);
 		}
+		else if(action.equals("editorCode_list")){
+			this.editorCodeList(req,res);
+		}
+		else if(action.equals("editorCode_search")){
+			this.editorCodeSearch(req,res);
+		}
+		else if(action.equals("editorCode_Load")){
+			this.editorCodeLoad(req,res);
+		}
+		else if(action.equals("editorCode_modify")){
+			this.editorCodeModify(req,res);
+		}
+		
+		/*
+		 * board
+		 */
 
 		if((String)req.getAttribute("dispatchUrl") != null){
 			RequestDispatcher	rd = req.getRequestDispatcher((String)req.getAttribute("dispatchUrl"));
 			rd.forward(req, res);
 		}
+	}
+	
+	private void editorCodeModify(HttpServletRequest req,
+			HttpServletResponse res) throws IOException {
+		// TODO Auto-generated method stub
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorCodeModify();
+	}
+
+	private void editorCodeLoad(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorCodeLoad();
+	}
+
+	private void editorCodeSearch(HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorCodeSearch();
+	}
+
+	private void editorCodeList(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorCodeList();
 	}
 
 	private void editorAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
@@ -251,6 +328,14 @@ public class DockingServlet extends HttpServlet
 		con.setRequest(req);
 		con.setResponse(res);
 		con.editorSearchAll();
+	}
+	
+	private void editorReviewEntire(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewEntire();
 	}
 
 	private void getStartPage(HttpServletRequest req, HttpServletResponse res) throws IOException 
@@ -347,6 +432,14 @@ public class DockingServlet extends HttpServlet
 		con.setRequest(req);
 		con.setResponse(res);
 		con.editorReviewDelete();
+	}
+	
+	private void editorReviewUpdateView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorReviewController con = (EditorReviewController)Injector.getInstance().getObject(EditorReviewController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.editorReviewUpdateView();
 	}
 
 	//////////////////////////////////////////////////// MemberRequest ////////////////////////////////////////////////////
@@ -481,7 +574,31 @@ public class DockingServlet extends HttpServlet
 		con.setResponse(res);
 		con.documentUpdateView();
 	}
-
+	
+	private void getAllEditor(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.getAllEditor();
+	}
+	
+	private void getAllEditor2(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		EditorController con = (EditorController)Injector.getInstance().getObject(EditorController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.getAllEditor2();
+	}
+	
+	private void memberContentsAdd(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	{
+		MemberContentsController con = (MemberContentsController)Injector.getInstance().getObject(MemberContentsController.class);
+		con.setRequest(req);
+		con.setResponse(res);
+		con.memberContentsAdd();
+	}
+	
 	private void memberContentsSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		MemberContentsController con = (MemberContentsController)Injector.getInstance().getObject(MemberContentsController.class);
@@ -492,16 +609,45 @@ public class DockingServlet extends HttpServlet
 
 	private void startSocket(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
-		String id = req.getParameter("docId");
+		String 	id = req.getParameter("docId");
+		String	tempLastDate = req.getParameter("lastDate");
 
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		DocumentVO dv = searchAction.searchDocument(id);
-/*		String content = dv.getContent();
-*/
 		MemberVO mvo = (MemberVO) req.getSession().getAttribute("logInMember");
 		req.setAttribute("memberId", mvo.getId());
 		req.setAttribute("docId", id);
-	/*	req.setAttribute("data", content);
-	*/	req.getRequestDispatcher("editorStartTest.jsp").forward(req, res);
+		
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
+		
+		List<TempVO>	tempList = searchAction.searchTempByDocId(id);
+		List<TempVO>	setTempList = new ArrayList<TempVO>();
+		
+		int	lastDate = Integer.parseInt(tempLastDate);
+		
+		if(tempList.size() != 0)
+		{
+			if(lastDate == 0)
+			{
+				for(TempVO vo : tempList)
+				{
+					if(vo.getCheckLast() > lastDate)
+					{
+						lastDate = vo.getCheckLast();
+					}
+				}
+			}
+			
+			int	temp = lastDate - 10;
+			
+			for(TempVO vo : tempList)
+			{
+				if(vo.getCheckLast() > temp && vo.getCheckLast() <= lastDate)
+				{
+					setTempList.add(vo);
+				}
+			}
+		}
+		
+		req.setAttribute("tempList", setTempList);
+		req.getRequestDispatcher("editorStartTest.jsp").forward(req, res);
 	}
 }

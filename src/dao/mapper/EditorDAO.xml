@@ -5,27 +5,31 @@
 <mapper namespace="dao.EditorDAO">
 	<insert id="editor_add" parameterType="vo.EditorVO">
 		insert into
-		editor_tb (editor_director, editor_name, editor_info, editor_startPage, editor_getMethod, editor_setMethod)
+		editor_tb (editor_director, editor_name, editor_info, editor_startPage, editor_getMethod, editor_setMethod, editor_type)
 		values
-		(#{director}, #{name}, #{info}, #{startPage}, #{getMethod}, #{setMethod})
+		(#{director}, #{name}, #{info}, #{startPage}, #{getMethod}, #{setMethod}, #{editorType})
 	</insert>
 
 	<update id="editor_modify" parameterType="vo.EditorVO">
 		update
 		editor_tb
-		set editor_director=#{director}, editor_name=#{name}, editor_info=#{info}, editor_startPage=#{startPage}, editor_getMethod=#{getMethod}, editor_setMethod=#{setMethod}
+		set editor_director=#{director}, editor_name=#{name}, editor_info=#{info}, editor_startPage=#{startPage}, editor_getMethod=#{getMethod}, editor_setMethod=#{setMethod}, editor_type=#{editorType}
 		where editor_name=#{name}
 	</update>
 
 	<select id="editor_search" parameterType="vo.EditorVO"
 		resultType="vo.EditorVO">
-		select editor_director director, editor_name name, editor_info info, editor_startPage startPage, editor_getMethod getMethod, editor_setMethod setMethod from editor_tb
+		select editor_director director, editor_name name, editor_info info, editor_startPage startPage, editor_getMethod getMethod, editor_setMethod setMethod, editor_type editorType from editor_tb
 		where editor_name=#{editorName}
 	</select>
 
 	<select id="editor_searchAll" resultType="vo.EditorVO">
-		select editor_director director, editor_name name, editor_info info, editor_startPage startPage, editor_getMethod getMethod, editor_setMethod setMethod from editor_tb
+		select editor_director director, editor_name name, editor_info info, editor_startPage startPage, editor_getMethod getMethod, editor_setMethod setMethod, editor_type editorType from editor_tb
 		where editor_director=#{director}
+	</select>
+	
+	<select id="editor_getAllEditor" resultType="vo.EditorVO">
+		select editor_director director, editor_name name, editor_info info, editor_startPage startPage, editor_getMethod getMethod, editor_setMethod setMethod, editor_type editorType from editor_tb
 	</select>
 
 	<delete id="editor_delete" parameterType="vo.EditorVO">

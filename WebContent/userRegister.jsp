@@ -87,8 +87,8 @@
 		{
 			alert("Check Your Email to finish memberRegister!");
 
-			/* window.open('about:blank', '_self').close(); */
-			window.location = "start.jsp";
+			window.open('about:blank', '_self').close();
+			//window.location = "start.jsp";
 		});
 	};
 	

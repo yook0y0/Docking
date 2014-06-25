@@ -4,55 +4,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
-<script>
-$('#modify_button').click(function(event)
-		{
-			var memberId = $("#modify_memberId").val();
-			var memberPw = $("#modify_memberPw").val();
-			var memberNickName = $("#modify_memberNickName").val();
-			var memberType = document.querySelector('input[name="memberType"]:checked').value;
-			
-			$.post("../member_modify", 
-					{ 
-						memberId: memberId,
-						memberPw: memberPw,
-						memberNickName: memberNickName,
-						memberType: memberType,
-					},
-					
-					function(result) 
-					{	
-						alert(result);	
-						
-						window.location = "start.jsp";	
-					}
-			);
-		});
-
-		$('#delete_button').click(function(event)
-		{
-			var memberId = $("#modify_memberId").val();
-			var con = confirm("Do you really want to quit docking?");
-		 	
-			if(con == true)
-			{
-				$.post("../member_delete", 
-						{ 
-							memberId: memberId,
-						},
-						
-						function(result) 
-						{	
-							alert(result);	
-							
-							window.location = "start.jsp";	
-						}
-				);
-		 	}
-			
-			else{}
-		});
-</script>
 </head>
 <body>
 	<myTag:menubar />
@@ -99,8 +50,6 @@ $('#modify_button').click(function(event)
 					<br>
 
 					<button type="button" class="btn btn-success" id="modify_button">Modify</button>
-					<button type="button" class="btn btn-success" id="delete_button">Quit
-						Docking</button>
 				</form>
 			</div>
 		</div>
@@ -108,5 +57,31 @@ $('#modify_button').click(function(event)
 	</div>
 	<!-- /container -->
 	<myTag:copyright />
+	
+	<script>
+$('#modify_button').click(function(event)
+		{
+			var memberId = $("#modify_memberId").val();
+			var memberPw = $("#modify_memberPw").val();
+			var memberNickName = $("#modify_memberNickName").val();
+			var memberType = document.querySelector('input[name="memberType"]:checked').value;
+			
+			$.post("./member_modify", 
+					{ 
+						memberId: memberId,
+						memberPw: memberPw,
+						memberNickName: memberNickName,
+						memberType: memberType,
+					},
+					
+					function(result) 
+					{	
+						alert(result);	
+						
+						window.location = "start.jsp";	
+					}
+			);
+		});
+</script>
 </body>
 </html>

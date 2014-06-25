@@ -31,30 +31,70 @@ $(document).ready(function()
    {
       console.log(data);
       
-      /* jMap.controller.customLoadMap(data);
-       */
+      data_set(data);
    });
    
    socket.on('map', function(data) 
-         {
-	        var jsonDataList = eval('('+data+')');
-            
-	        data_set(jsonDataList.data);
-	        
-         });
+   {
+	   var jsonDataList = eval('('+data+')');
+	      
+	   data_set(jsonDataList.data);  
+   });
     
     $("body").keydown(function() 
-             {
-               setTimeout(function()
-               {
-                  console.log('data send..');
-               
-                  var data = data_get();
-               
-                  socket.emit('data', {data : data, room : docId, memberId : memberId});
-               }, 3000); 
+    {
+      setTimeout(function()
+      {
+         console.log('data send..');
+      
+         var data = data_get();
+      
+         socket.emit('data', {data : data, room : docId, memberId : memberId});
+      }, 3000); 
+   });
+    
+/////////////////////////////////////////////////////////////// 채팅 //////////////////////////////////////////////////////////////	   
+	socket.on('chat_receive', function(data) 
+    {
+		$("#chat_area").append("<li>" + data + "</li>");
+    });
+	   
+   $("#btn-chat").click(function()
+	{
+	   var data = memberId + "의 메시지 : ";
+	   data += $("#btn-input").val();
+	   
+	   socket.emit('chat_send', {data : data});
+	   
+	   $("#btn-input").val("");
+	});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            });
+///////////////////////////////////////////////////////////////// 백업 //////////////////////////////////////////////////////////////
+		
+	setInterval(function()
+	{
+	   var docId = $("#docId").val();
+	   var data = data_get();
+	
+	   $.post("./temp_add", 
+		{ 
+   			docId : docId,
+			data : data
+		},
+		
+		function(result) 
+		{	
+			var	data = result.split("|");
+			
+			var docId = data[0];
+			var lastDate = data[1];
+			var date = data[2];
+			
+			 $("#backUp_area").append("<li><a href='./temp_searchAll?docId=" + docId + "&lastDate=" + lastDate + "'>" + date + "</a></li>");
+		});
+	}, 10000);   
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    });
 </script>
 
@@ -65,22 +105,12 @@ $(document).ready(function()
 	<input type="hidden" id="docId" value="${requestScope.docId}" />
 	<input type="hidden" id="body" value="${requestScope.body}" />
 
-	<button id="invite_button" type="button">Invite!</button>
-
-	<div id="member_search_div">
-		<input type="text" id="invite_member" placeholder="Email" />
-		<button id="memberSearch_button">Search</button>
-	</div>
-
-	<div id="member_searchResult_div">
-		<input type="text" id="search_result" readonly />
-		<button id="inviteMember_button">Invite!</button>
-	</div>
-
+	
+	<c:import url="chat_invite.jsp" />
 
 	<myTag:menubar />
+	
 	<c:import
 		url="http://localhost:8089/Docking/getStartPage?docId=${requestScope.docId}" />
-	<myTag:copyright />
 </body>
 </html>

@@ -8,6 +8,7 @@ public class MemberContentVO	implements	Serializable
 	
 	private String	documentId;
 	private	String	memberId;
+	private Integer memberPosition;
 	
 	public String getDocumentId() {
 		return documentId;
@@ -21,10 +22,15 @@ public class MemberContentVO	implements	Serializable
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	
+	public Integer getMemberPosition(){
+		return memberPosition;
+	}
+	public void setMemberPosition(Integer memberPosition){
+		this.memberPosition = memberPosition;
+	}
 	@Override
 	public String toString() {
 		return "MemberContentVO [documentId=" + documentId + ", memberId="
-				+ memberId + "]";
+				+ memberId + ", memberPosition=" + memberPosition + "]";
 	}
 }

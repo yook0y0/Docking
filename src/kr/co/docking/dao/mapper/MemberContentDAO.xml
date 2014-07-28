@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.MemberContentDAO">
+	<insert id="memberContent_add" parameterType="kr.co.docking.vo.MemberContentVO">
+		insert into memberContent_tb (memberContent_memberId, memberContent_documentId)
+		values (#{memberId}, #{documentId})
+	</insert>
+	
+	<update id="memberContent_modify" parameterType="kr.co.docking.vo.MemberContentVO">
+		update memberContent_tb
+		set memberContent_memberId=#{memberId}, memberContent_documentId=#{documentId}
+		where memberContent_documentId=#{documentId}
+	</update>
+	
+	<select id="memberContent_search" parameterType="kr.co.docking.vo.MemberContentVO" resultType="kr.co.docking.vo.MemberContentVO">
+		select memberContent_memberId memberId, memberContent_documentId documentId from memberContent_tb 
+		where memberContent_memberId=#{memberId}
+	</select>
+	
+	<select id="memberContent_searchAll_key" parameterType="kr.co.docking.vo.EditorCodeVO" resultType="kr.co.docking.vo.EditorCodeVO">
+		select memberContent_memberId memberId, memberContent_documentId documentId 
+		from memberContent_tb
+		where memberContent_memberId=#{memberId}
+	</select>
+
+	<select id="memberContent_searchAll" resultType="kr.co.docking.vo.MemberContentVO">
+		select memberContent_memberId memberId, memberContent_documentId documentId 
+		from memberContent_tb
+	</select>
+	
+	<delete id="memberContent_delete" parameterType="kr.co.docking.vo.MemberContentVO">
+        delete from memberContent_tb 
+        where memberContent_documentId=#{documentId}
+    </delete>
+    
+    <delete id="memberContent_delete_all">
+        delete from memberContent_tb
+    </delete>
+</mapper>

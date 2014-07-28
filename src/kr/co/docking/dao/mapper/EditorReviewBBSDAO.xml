@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.EditorReviewBBSDAO">
+	<insert id="editorReview_add" parameterType="kr.co.docking.vo.EditorReviewBBSVO">
+		insert into editorReview_tb (editorReview_reviewId, editorReview_editorId, editorReview_memberId, editorReview_body, editorReview_score, editorReview writtenDate)
+		values (#{reviewId}, #{editorId}, #{memberId}, #{body}, #{score}, #{writtenDate})
+	</insert>
+	
+	<update id="editorReview_modify" parameterType="kr.co.docking.vo.EditorReviewBBSVO">
+		update editorReview_tb
+		set editorReview_reviewId=#{reviewId}, editorReview_editorId=#{editorId}, editorReview_memberId=#{memberId}, editorReview_body=#{body}, editorReview_score=#{score}, editorReview writtenDate=#{writtenDate}
+		where editorReview_reviewId=#{reviewId}
+	</update>
+	
+	<select id="editorReview_search" parameterType="kr.co.docking.vo.EditorReviewBBSVO" resultType="kr.co.docking.vo.EditorReviewBBSVO">
+		select editorReview_reviewId reviewId, editorReview_editorId editorId, editorReview_memberId memberId, editorReview_body body, editorReview_score score, editorReview writtenDate writtenDate
+		from editorReview_tb 
+		where editorReview_reviewId=#{reviewId}
+	</select>
+
+	<select id="editorReview_searchAll_key" parameterType="kr.co.docking.vo.EditorReviewBBSVO" resultType="kr.co.docking.vo.EditorReviewBBSVO">
+		select editorReview_reviewId reviewId, editorReview_editorId editorId, editorReview_memberId memberId, editorReview_body body, editorReview_score score, editorReview writtenDate writtenDate
+		from editorReview_tb 
+		where editorReview_editorId=#{editorId}
+	</select>
+	
+	<select id="editorReview_searchAll" resultType="kr.co.docking.vo.EditorReviewBBSVO">
+		select editorReview_reviewId reviewId, editorReview_editorId editorId, editorReview_memberId memberId, editorReview_body body, editorReview_score score, editorReview writtenDate writtenDate
+		from editorReview_tb  
+	</select>
+	
+	<delete id="editorReview_delete" parameterType="kr.co.docking.vo.EditorReviewBBSVO">
+        delete from editorReview_tb 
+		where editorReview_reviewId=#{reviewId}
+    </delete>
+    
+    <delete id="editorReview_delete_all">
+        delete from editorReview_tb
+    </delete>
+</mapper>

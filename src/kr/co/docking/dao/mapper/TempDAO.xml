@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.TempDAO">
+	<insert id="temp_add" parameterType="kr.co.docking.vo.TempVO">
+		insert into temp_tb (temp_tempId, temp_contentId, temp_memberId, temp_contentsBody, temp_date)
+		values (temp_seq.NEXTVAL, #{contentId}, #{memberId}, #{contentsBody}, #{date})
+	</insert>
+	
+	<update id="temp_modify" parameterType="kr.co.docking.vo.TempVO">
+		update temp_tb
+		set temp_memberId=#{memberId}, temp_contentsBody=#{contentsBody}, temp_date=#{date}
+		where temp_tempId=#{tempId}
+	</update>
+	
+	<select id="temp_search" parameterType="kr.co.docking.vo.TempVO" resultType="kr.co.docking.vo.TempVO">
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		from temp_tb 
+		where temp_tempId=#{tempId}
+	</select>
+
+	<select id="temp_searchAll_key" parameterType="kr.co.docking.vo.TempVO" resultType="kr.co.docking.vo.TempVO">
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		from temp_tb 
+		where temp_tempId=#{tempId}
+	</select>
+	
+	<select id="temp_searchAll" resultType="kr.co.docking.vo.TempVO">
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		from temp_tb 
+	</select>
+	
+	<delete id="temp_delete" parameterType="kr.co.docking.vo.TempVO">
+        delete from temp_tb where temp_tempId=#{tempId}
+    </delete>
+    
+    <delete id="temp_delete_all">
+        delete from temp_tb
+    </delete>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.EditorCodeDAO">
+	<insert id="editorCode_add" parameterType="kr.co.docking.vo.EditorCodeVO">
+		insert into
+		editorCode_tb (editorCode_editorId, editorCode_code, editorCode_path)
+		values
+		(#{editorId}, #{code}, #{path})
+	</insert>
+
+	<update id="editorCode_modify" parameterType="kr.co.docking.vo.EditorCodeVO">
+		update
+		editorCode_tb
+		set editorCode_editorId=#{editorId}, editorCode_code=#{code}, editorCode_path=#{path}
+		where editorCode_path=#{path}
+	</update>
+
+	<select id="editorCode_search" parameterType="kr.co.docking.vo.EditorCodeVO"
+		resultType="kr.co.docking.vo.EditorCodeVO">
+		select editorCode_editorId editorId, editorCode_code code, editorCode_path path 
+		from editorCode_tb
+		where editorCode_path=#{path}
+	</select>
+	
+	<select id="editorCode_searchAll_key" parameterType="kr.co.docking.vo.EditorCodeVO" resultType="kr.co.docking.vo.EditorCodeVO">
+		select editorCode_editorId editorId, editorCode_code code, editorCode_path path
+		from editorCode_tb 
+		where editorCode_editorId=#{editorId}
+	</select>
+
+	<select id="editorCode_searchAll" resultType="kr.co.docking.vo.EditorCodeVO">
+		select editorCode_editorId editorId, editorCode_code code, editorCode_path path 
+		from editorCode_tb
+	</select>
+
+	<delete id="editorCode_delete" parameterType="kr.co.docking.vo.EditorCodeVO">
+		delete from editorCode_tb where editorCode_editorId=#{editorId}
+	</delete>
+	
+	<delete id="editorCode_delete_all">
+        delete from editorCode_tb
+    </delete>
+</mapper>

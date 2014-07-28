@@ -1,0 +1,60 @@
+create table member_tb(
+member_memberId varchar2(100) primary key,
+member_pw varchar2(20) not null,
+member_memberName varchar2(100) not null,
+member_type number(5) not null);
+
+
+create table document_tb(
+document_documentId varchar2(100) primary key,
+document_writer varchar2(100) not null,
+document_title varchar2(200) not null,
+document_creationDate varchar2(100) not null);
+
+
+create table content_tb(
+content_documentId varchar2(100) not null,
+content_contentId varchar2(100) primary key,
+content_body clob not null,
+content_editorId varchar2(100) not null);
+
+
+create table editorCode_tb(
+editorCode_editorId varchar2(100),
+editorCode_code clob not null,
+editorCode_path varchar2(500) primary key);
+
+
+create table editor_tb(
+editor_editorId varchar2(100) primary key,
+editor_director varchar2(100) not null,
+editor_description varchar2(1000),
+editor_editorType number(5) not null);
+
+
+create table memberContent_tb(
+memberContents_memberId varchar2(100) not null,
+memberContents_docId varchar2(100) not null);
+
+
+create table temp_tb(
+temp_tempId varchar2(100) primary key,
+temp_contentId varchar2(100) not null,
+temp_memberId varchar2(100) not null,
+temp_contentsBody clob not null,
+temp_date varchar2(100) not null);
+
+
+create table editorReview_tb(
+editorReview_reviewId varchar2(100) primary key, 
+editorReview_editorId varchar2(100) not null, 
+editorReview_memberId varchar2(100) not null,
+editorReview_body varchar2(1000) not null, 
+editorReview_score number(30) not null,
+editorReview_writtenDate varchar2(100) not null);
+
+CREATE SEQUENCE temp_seq
+INCREMENT BY 1
+START WITH 1
+MAXVALUE 10000
+NOCYCLE;

@@ -23,7 +23,7 @@
 	<select id="document_searchAll_key" parameterType="kr.co.docking.vo.DocumentVO" resultType="kr.co.docking.vo.DocumentVO">
 		select document_documentId documentId, document_writer writer, document_title title, document_creationDate creationDate
 		from document_tb 
-		where document_documentId=#{documentId}
+		where document_writer=#{writer}
 	</select>
 	
 	<select id="document_searchAll" resultType="kr.co.docking.vo.DocumentVO">
@@ -35,7 +35,7 @@
         delete from document_tb where document_documentId=#{documentId}
     </delete>
     
-    <delete id="document_delete_all">
+    <delete id="document_deleteAll">
         delete from document_tb
     </delete>
 </mapper>

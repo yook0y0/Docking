@@ -35,7 +35,7 @@
         delete from temp_tb where temp_tempId=#{tempId}
     </delete>
     
-    <delete id="temp_delete_all">
+    <delete id="temp_deleteAll">
         delete from temp_tb
     </delete>
 </mapper>

@@ -27,7 +27,7 @@
 	<select id="editor_searchAll_key" parameterType="kr.co.docking.vo.EditorVO" resultType="kr.co.docking.vo.EditorVO">
 		select editor_editorId editorId, editor_director director, editor_description description, editor_editorType editorType
 		from editor_tb 
-		where editor_editorId=#{editorId}
+		where editor_director=#{director}
 	</select>
 
 	<select id="editor_searchAll" resultType="kr.co.docking.vo.EditorVO">
@@ -39,7 +39,7 @@
 		delete from editor_tb where editor_editorId=#{editorId}
 	</delete>
 	
-	<delete id="editor_delete_all">
+	<delete id="editor_deleteAll">
         delete from editor_tb
     </delete>
 </mapper>

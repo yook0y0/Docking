@@ -36,7 +36,7 @@
 		where editorReview_reviewId=#{reviewId}
     </delete>
     
-    <delete id="editorReview_delete_all">
+    <delete id="editorReview_deleteAll">
         delete from editorReview_tb
     </delete>
 </mapper>

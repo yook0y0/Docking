@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import kr.co.docking.action.AddAction;
 import kr.co.docking.action.DeleteAction;
@@ -27,7 +26,8 @@ public class MemberController {
 		this.res = res;
 	}
 
-	public void memberCreate() throws IOException {
+	public void memberCreate() throws IOException 
+	{
 		String memberId = req.getParameter("memberId");
 		String pw = req.getParameter("pw");
 		String memberName = req.getParameter("memberName");
@@ -49,12 +49,12 @@ public class MemberController {
 		pWriter.flush();
 	}
 
-	public void memberUpdate() throws IOException {
+	public void memberUpdate() throws IOException 
+	{
 		String memberId = req.getParameter("memberId");
 		String pw = req.getParameter("pw");
 		String memberName = req.getParameter("memberName");
 		Integer type = Integer.valueOf(req.getParameter("type"));
-
 
 		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
 		MemberVO   mvo = new MemberVO();
@@ -74,22 +74,28 @@ public class MemberController {
 		writer.flush();
 	}
 
-	public void memberRead() throws IOException {
-
-		String   memberId = req.getParameter("memberId");
-
+	public void memberRead() throws IOException 
+	{
+		String  memberId = req.getParameter("memberId");
+		
+		String	sendMessage = "Possible Id";
+		
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		MemberVO mvo = searchAction.memberSearch(memberId);
-
+		
+		if(mvo != null)
+		{
+			sendMessage = "Impossible Id";
+		}
+		
+		res.setCharacterEncoding("utf-8");
 		PrintWriter   pw = res.getWriter();
-		/*
-		 * MemberVO ½÷Áà¾ßÇÒµí
-		 */
-		pw.write("memberRead");
+		pw.write(sendMessage);
 		pw.flush();
 	}
 
-	public void memberReadAll() throws IOException, ServletException {
+	public void memberReadAll() throws IOException, ServletException 
+	{
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		List<MemberVO> memberList = searchAction.memberSearchAll();
 
@@ -97,12 +103,12 @@ public class MemberController {
 		
 		pw.write("memberReadAll");
 		/*
-		 * MemberVO List Å¸ÀÔ º¸³»¾ßÇÒµí
+		 * MemberVO List Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½
 		 */
 		pw.flush();
 	}
 
-	public void memberReadAllByKey() { /*³ªÁßÀÇ È®Àå¼ºÀ» À§ÇØ ¸¸µé¾î¸¸ ³õÀ½.*/}
+	public void memberReadAllByKey() { /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½å¼ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¸¸ ï¿½ï¿½ï¿½ï¿½.*/}
 
 	public void memberDelete() throws IOException {
 		String memberId = req.getParameter("memberId");
@@ -117,5 +123,5 @@ public class MemberController {
 		pw.flush();
 	}
 
-	public void memberDeleteAll() {/*³ªÁßÀÇ È®Àå¼ºÀ» À§ÇØ ¸¸µé¾î¸¸ ³õÀ½.*/}
+	public void memberDeleteAll() {/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½å¼ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¸¸ ï¿½ï¿½ï¿½ï¿½.*/}
 }

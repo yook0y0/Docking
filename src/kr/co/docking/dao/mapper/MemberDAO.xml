@@ -35,7 +35,7 @@
         delete from member_tb where member_memberId=#{memberId}
     </delete>
     
-    <delete id="member_delete_all">
+    <delete id="member_deleteAll">
         delete from member_tb
     </delete>
 </mapper>

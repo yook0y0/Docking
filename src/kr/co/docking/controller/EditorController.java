@@ -10,6 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
 import kr.co.docking.action.AddAction;
 import kr.co.docking.action.DeleteAction;
 import kr.co.docking.action.ModifyAction;
@@ -36,8 +39,8 @@ public class EditorController {
 		this.res = res;
 	}
 	
-	public void editorRegister() {
-		
+	public void editorRegister() throws Exception 
+	{
 		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
 		
 		String savePath = req.getServletContext().getRealPath("tmp/");
@@ -54,13 +57,13 @@ public class EditorController {
 		String zipFileName = multi.getFilesystemName("zipFile");
 
 		String editorId = multi.getParameter("editorId");
-		String director = multi.getParameter("director");
+		//String director = multi.getParameter("director");
 		String description = multi.getParameter("description");
 		Integer editorType = Integer.valueOf(multi.getParameter("editorType"));		
 		EditorVO evo = new EditorVO();
 		evo.setEditorId(editorId);
-		evo.setDirector(director);
-		evo.setEditorId(editorId);
+		evo.setDirector(mvo.getMemberId());
+		evo.setDescription(description);
 		evo.setEditorType(editorType);
 		
 		String path = savePath + "/" + zipFileName;
@@ -125,7 +128,7 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.println("editorSearch");
 		/*
-		 * EditorVO º¸³»¾ßÇÔ
+		 * EditorVO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();		
 	}
@@ -137,7 +140,7 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.println("editorSearchAll");
 		/*
-		 * EditorVO List º¸³»¾ßÇÔ
+		 * EditorVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -150,7 +153,7 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.write("editorSearchAllByKey");
 		/*
-		 * EditorVO List º¸³»¾ßÇÔ
+		 * EditorVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -168,7 +171,7 @@ public class EditorController {
 	
 	public void editorDeleteAll() {
 		/*
-		 * ¾ø¾îµµ µÉµí
+		 * ï¿½ï¿½îµµ ï¿½Éµï¿½
 		 */
 	}
 
@@ -208,7 +211,7 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.write("editorCodeSearch");
 		/*
-		 * EditorCodeVO º¸³»¾ßÇÔ
+		 * EditorCodeVO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -221,7 +224,7 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.write("editorCodeSearchByEditorId");
 		/*
-		 * EditorCodeVO List º¸³»¾ßÇÔ
+		 * EditorCodeVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();		
 	}

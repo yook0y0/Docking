@@ -53,7 +53,14 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 	@Override
 	public void add(List<T> list) throws RuntimeException 
 	{
-
+		connect();
+		
+		for(T t : list)
+		{
+			sqlSession.selectList(mapper, t);
+		}
+		
+		disconnect();
 	}
 
 	@Override
@@ -79,7 +86,14 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 	@Override
 	public void modify(List<T> list) throws RuntimeException 
 	{
+		connect();
 		
+		for(T t : list)
+		{
+			sqlSession.selectList(mapper, t);
+		}
+		
+		disconnect();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,7 +148,14 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 	@Override
 	public void deleteAll(List<T> list) throws RuntimeException 
 	{
+		connect();
 		
+		for(T t : list)
+		{
+			sqlSession.selectList(mapper, t);
+		}
+		
+		disconnect();
 	}
 
 	@Override

@@ -36,10 +36,16 @@
 	</select>
 
 	<delete id="editorCode_delete" parameterType="kr.co.docking.vo.EditorCodeVO">
-		delete from editorCode_tb where editorCode_editorId=#{editorId}
+		delete from editorCode_tb 
+		where editorCode_path=#{path}
 	</delete>
 	
-	<delete id="editorCode_delete_all">
+	<delete id="editorCode_deleteByEditorId" parameterType="kr.co.docking.vo.EditorCodeVO">
+		delete from editorCode_tb 
+		where editorCode_editorId=#{editorId}
+	</delete> 
+	
+	<delete id="editorCode_deleteAll">
         delete from editorCode_tb
     </delete>
 </mapper>

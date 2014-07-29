@@ -32,10 +32,16 @@
 	</select>
 	
 	<delete id="content_delete" parameterType="kr.co.docking.vo.ContentVO">
-        delete from content_tb where content_contentId=#{contentId}
+        delete from content_tb 
+        where content_contentId=#{contentId}
     </delete>
     
-    <delete id="content_delete_all">
+    <delete id="content_deleteByDocumentId" parameterType="kr.co.docking.vo.ContentVO">
+        delete from content_tb 
+        where content_documentId=#{documentId}
+    </delete>
+    
+    <delete id="content_deleteAll">
         delete from content_tb
     </delete>
 </mapper>

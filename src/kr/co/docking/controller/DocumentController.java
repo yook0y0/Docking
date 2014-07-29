@@ -71,7 +71,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("documentRead");
 		/*
-		 * DocumentVO,ContentVO List,MemberContentVO List º¸³»¾ßÇÔ
+		 * DocumentVO,ContentVO List,MemberContentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -83,7 +83,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("documentReadAll");
 		/*
-		 * DocumentVO List º¸³»¾ßÇÔ
+		 * DocumentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -96,7 +96,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("documentOwnerList");
 		/*
-		 * DocumentVO List º¸³»¾ßÇÔ
+		 * DocumentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -114,12 +114,12 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("documentJoinList");
 		/*
-		 * DocumentVO List º¸³»¾ßÇÔ
+		 * DocumentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();		
 	}
 	
-	public void documentDelete() {
+	public void documentDelete() throws IOException {
 		String documentId = req.getParameter("docuemntId");
 		
 		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
@@ -129,7 +129,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("documentDelete");
 		/*
-		 * DocumentVO List º¸³»¾ßÇÔ
+		 * DocumentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -151,7 +151,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("contentCreate");
 		/*
-		 * DocumentVO List º¸³»¾ßÇÔ
+		 * DocumentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -179,7 +179,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("contentRead");
 		/*
-		 * ContentVO º¸³»¾ßÇÔ
+		 * ContentVO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -196,7 +196,7 @@ public class DocumentController
 		PrintWriter pw = res.getWriter();
 		pw.write("contentReadAllByKey");
 		/*
-		 * ContentVO List º¸³»¾ßÇÔ
+		 * ContentVO List ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		 */
 		pw.flush();
 	}
@@ -230,7 +230,8 @@ public class DocumentController
 		pw.flush();		
 	}
 	
-	public void memberExpel() throws IOException {
+	public void memberExpel() throws IOException 
+	{
 		MemberContentVO mcvo = new MemberContentVO();
 		mcvo.setDocumentId(req.getParameter("documnetId"));
 		mcvo.setMemberId(req.getParameter("memberId"));

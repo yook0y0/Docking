@@ -3,34 +3,19 @@ package kr.co.docking.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-
-import kr.co.docking.action.AddAction;
-import kr.co.docking.action.DeleteAction;
-import kr.co.docking.action.ModifyAction;
-import kr.co.docking.action.SearchAction;
-import kr.co.docking.analysis.analysis.DockingAnalyzer;
-import kr.co.docking.analysis.attribute.Attr;
-import kr.co.docking.analysis.attribute.DataAttribute;
-import kr.co.docking.analysis.filter.FileDeleteFilter;
-import kr.co.docking.analysis.filter.FileUnzipFilter;
-import kr.co.docking.analysis.register.FilePathRegister;
-import kr.co.docking.service.DocumentService;
-import kr.co.docking.service.DocumentServiceImpl;
 import kr.co.docking.service.EditorService;
 import kr.co.docking.service.EditorServiceImpl;
-import kr.co.docking.util.Injector;
 import kr.co.docking.vo.EditorCodeVO;
 import kr.co.docking.vo.EditorVO;
 import kr.co.docking.vo.MemberVO;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class EditorController {
 	private HttpServletRequest req;
@@ -51,9 +36,8 @@ public class EditorController {
 		this.res = res;
 	}
 	
-	public void editorAdd() throws Exception 
+	public void editorAdd()
 	{
-		
 		String savePath = req.getServletContext().getRealPath("tmp/");
 		new File(savePath).mkdir();
 		int sizeLimit = 1024*1024*15;
@@ -137,7 +121,7 @@ public class EditorController {
 		ecvo.setCode(req.getParameter("code"));
 		ecvo.setPath(req.getParameter("path"));
 		
-		Integer code = es.editorCodeAdd(evo);
+		Integer code = es.editorCodeAdd(ecvo);
 
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
@@ -179,14 +163,11 @@ public class EditorController {
 	
 	public void codeList() throws IOException{
 		String editorId = req.getParameter("editorId");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<EditorCodeVO> ecvoList = searchAction.editorCodeSearchByEditorId(editorId);
+
+		String jRes = es.codeList(editorId);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("editorCodeSearchByEditorId");
-		/*
-		 * EditorCodeVO List 占쏙옙占쏙옙占쏙옙占쏙옙
-		 */
+		pw.write(jRes);
 		pw.flush();
 	}
 }

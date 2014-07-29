@@ -5,13 +5,13 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.util.List;
 
+import kr.co.docking.dao.generic.GenericDAO;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.ibatis.common.resources.Resources;
-
-import kr.co.docking.dao.generic.GenericDAO;
 
 public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 {

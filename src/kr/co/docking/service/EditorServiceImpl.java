@@ -14,7 +14,6 @@ import kr.co.docking.dao.serviceImpl.GenericServiceImpl;
 import kr.co.docking.util.JsonParser;
 import kr.co.docking.vo.EditorCodeVO;
 import kr.co.docking.vo.EditorVO;
-import kr.co.docking.vo.TempVO;
 
 public class EditorServiceImpl implements EditorService {
 

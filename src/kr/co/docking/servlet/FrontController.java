@@ -1,6 +1,7 @@
 package kr.co.docking.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -93,14 +94,14 @@ public class FrontController extends HttpServlet
 			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
 			ec.setReq(req);
 			ec.setRes(res);
-			ec.editorModify()
+			ec.editorModify();
 		}
 		else if(action.equals("editorSearch"))
 		{
 			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
 			ec.setReq(req);
 			ec.setRes(res);
-			ec.editorSearch()
+			ec.editorSearch();
 		}
 		else if(action.equals("editorDelete"))
 		{

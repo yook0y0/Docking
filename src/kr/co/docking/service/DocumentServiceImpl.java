@@ -37,20 +37,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 */
 		return res;	
 	}
-
-	@Override
-	public Integer documentDelete(String documentId) {
-		// TODO Auto-generated method stub
-		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
-		genericService.delete("document_delete", documentId);
-
-		Integer res = 0;
-		/*
-		 * res 값 처리 필요
-		 */
-		return res;
-	}
-
+	
 	@Override
 	public String documentSearch(String documentId) {
 		// TODO Auto-generated method stub
@@ -70,6 +57,21 @@ public class DocumentServiceImpl implements DocumentService {
 		 */
 		return jRes;
 	}
+
+
+	@Override
+	public Integer documentDelete(String documentId) {
+		// TODO Auto-generated method stub
+		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
+		genericService.delete("document_delete", documentId);
+
+		Integer res = 0;
+		/*
+		 * res 값 처리 필요
+		 */
+		return res;
+	}
+
 
 	@Override
 	public String ownDocumentList(String writer) {
@@ -133,19 +135,6 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public Integer contentDelete(String contentId) {
-		// TODO Auto-generated method stub
-		GenericService<ContentVO>	genericService = new GenericServiceImpl<ContentVO>();
-		genericService.delete("content_delete", contentId);
-
-		Integer res = 0;
-		/*
-		 * res 값 처리 필요
-		 */
-		return res;
-	}
-
-	@Override
 	public String contentSearch(String contentId) {
 		// TODO Auto-generated method stub
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
@@ -157,6 +146,19 @@ public class DocumentServiceImpl implements DocumentService {
 		 * Json 타입 캐스팅 필요
 		 */
 		return jRes;
+	}
+
+	@Override
+	public Integer contentDelete(String contentId) {
+		// TODO Auto-generated method stub
+		GenericService<ContentVO>	genericService = new GenericServiceImpl<ContentVO>();
+		genericService.delete("content_delete", contentId);
+
+		Integer res = 0;
+		/*
+		 * res 값 처리 필요
+		 */
+		return res;
 	}
 
 	@Override

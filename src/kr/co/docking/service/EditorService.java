@@ -7,8 +7,8 @@ public interface EditorService {
 
 	public Integer editorAdd(String path, EditorVO editor);
 	public Integer editorModify(EditorVO editor);
-	public Integer editorDelete(String editorId);
 	public String editorSearch(String editorId);
+	public Integer editorDelete(String editorId);
 	
 	public String ownEditorList(String director);
 	

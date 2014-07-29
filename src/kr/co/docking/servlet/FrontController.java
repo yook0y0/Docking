@@ -7,11 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.docking.controller.DocumentController;
+import kr.co.docking.controller.EditorController;
 import kr.co.docking.controller.MemberController;
+import kr.co.docking.controller.ReviewController;
 import kr.co.docking.util.Injector;
 
 @WebServlet(name="/FrontController", urlPatterns={
-		"/member_add", "/member_modify", "/member_search", "/member_delete"
+		
+		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete",
+		
+		"/editorAdd", "/editorModify", "/editorSearch", "/editorDelete","/ownEditorList","/editorCodeAdd","/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList",
+
+		"/documentAdd", "/documentModify", "/documentDelete", "/documentSearch", "/ownDocumentList", "/joinDocumentList", "/contentAdd", "/contentModify", "/contentDelete", "/contentSearch", "/contentsList", "/memberInvite", "/memberExpel", "/memberPositionUpdate",
+		
+		"/reviewAdd", "/reviewModify", "/reviewSearch", "/reviewDelete", "/reviewList", "/reviewListByEditor", "/reviewListByWriter",
 })
 public class FrontController extends HttpServlet 
 {
@@ -19,37 +29,282 @@ public class FrontController extends HttpServlet
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
-
+		this.process(req, res);
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
-		process(req,res);
+		this.process(req, res);
 	}
 	
 	private void process(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
 	{
 		req.setCharacterEncoding("UTF-8");
+		res.setCharacterEncoding("UTF-8");
 		String	uri = req.getRequestURI();
 		int		lastIndex = uri.lastIndexOf("/");
 		String	action = uri.substring(lastIndex + 1);
 
-		req.setCharacterEncoding("utf-8");
 
-
-		if(action.equals("member_add"))
+		/*
+		 * MemberController
+		 */
+		if(action.equals("memberAdd"))
 		{
-			MemberController	memberController = (MemberController)Injector.getInstance().getObject(MemberController.class);
-			memberController.setReq(req);
-			memberController.setRes(res);
-			memberController.memberCreate();
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberAdd();
 		}
-		else if(action.equals("member_search"))
+		else if(action.equals("memberModify"))
 		{
-			MemberController	memberController = (MemberController)Injector.getInstance().getObject(MemberController.class);
-			memberController.setReq(req);
-			memberController.setRes(res);
-			memberController.memberRead();
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberModify();
+		}
+		else if(action.equals("memberSearch"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberSearch();
+		}
+		else if(action.equals("memberDelete"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberDelete();
+		}
+		
+		/*
+		 * EditorController
+		 */
+		else if(action.equals("editorAdd"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorAdd();
+		}
+		else if(action.equals("editorModify"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorModify()
+		}
+		else if(action.equals("editorSearch"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorSearch()
+		}
+		else if(action.equals("editorDelete"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorDelete();
+		}
+		else if(action.equals("ownEditorList"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.ownEditorList();
+		}
+		else if(action.equals("editorCodeAdd"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorCodeAdd();
+		}
+		else if(action.equals("editorCodeModify"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorCodeModify();
+		}
+		else if(action.equals("editorCodeSearch"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorCodeSearch();
+		}
+		else if(action.equals("editorCodeDelete"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.editorCodeDelete();
+		}
+		else if(action.equals("codeList"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.codeList();
+		}
+		
+		/*
+		 * DocumentController
+		 */
+		else if(action.equals("documentAdd"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.documentAdd();
+		}
+		else if(action.equals("documentModify"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.documentModify();
+		}
+		else if(action.equals("documentSearch"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.documentSearch();
+		}
+		else if(action.equals("documentDelete"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.documentDelete();
+		}
+		else if(action.equals("ownDocumentList"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.ownDocumentList();
+		}
+		else if(action.equals("joinDocumentList"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.joinDocumentList();
+		}
+		else if(action.equals("contentAdd"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.contentAdd();
+		}
+		else if(action.equals("contentModify"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.contentModify();
+		}
+		else if(action.equals("contentSearch"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.contentSearch();
+		}
+		else if(action.equals("contentDelete"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.contentDelete();
+		}
+		else if(action.equals("contentsList"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.contentsList();
+		}
+		else if(action.equals("memberInvite"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.memberInvite();
+		}
+		else if(action.equals("memberExpel"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.memberExpel();
+		}
+		else if(action.equals("memberPositionUpdate"))
+		{
+			DocumentController dc = (DocumentController)Injector.getInstance().getObject(DocumentController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.memberPositionUpdate();
+		}
+		
+		/*
+		 * ReviewController
+		 */
+		else if(action.equals("reviewAdd"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewAdd();
+		}
+		else if(action.equals("reviewModify"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewModify();
+		}
+		else if(action.equals("reviewSearch"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewSearch();
+		}
+		else if(action.equals("reviewDelete"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewDelete();
+		}
+		else if(action.equals("reviewList"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewList();
+		}
+		else if(action.equals("reviewListByEditor"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewListByEditor();
+		}
+		else if(action.equals("reviewListByWriter"))
+		{
+			ReviewController rc = (ReviewController)Injector.getInstance().getObject(ReviewController.class);
+			rc.setReq(req);
+			rc.setRes(res);
+			rc.reviewListByWriter();
 		}
 	}
 }

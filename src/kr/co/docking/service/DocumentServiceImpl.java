@@ -41,6 +41,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public String documentSearch(String documentId) {
 		// TODO Auto-generated method stub
+
 		GenericService<DocumentVO>	docService = new GenericServiceImpl<DocumentVO>();
 		DocumentVO dvo = docService.search("document_search", documentId);
 
@@ -49,13 +50,43 @@ public class DocumentServiceImpl implements DocumentService {
 
 		GenericService<MemberContentVO>	memService = new GenericServiceImpl<MemberContentVO>();
 		List<MemberContentVO> mcvoList = memService.searchAll("memberContent_searchAll_key", documentId);
-
-		String jRes = null;
-		JsonParser.getInstance();
+		
 		/*
-		 * Json 타입 캐스팅 필요
+		 * Json Obj name으로 쓸거
 		 */
-		return jRes;
+		String[] objName = new String[]{"documentVO","contentVOList","memberContentVOList"};
+		String[] dvoField = new String[]{"documentId","writer","title","creationDate"};
+		String[] cvoField = new String[]{"documentId","contentId","body","editorId"};
+		String[] mcvoField = new String[]{"documentId","memberId","memberPosition"};
+
+		/*
+		 * DocumentVO Json으로 변환
+		 */
+		String jDvo = JsonParser.getInstance().jParseObj(dvoField, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
+		List<String> tmpList = new ArrayList<String>();		
+		
+		/*
+		 * ContentVO List Json으로 변환
+		 */
+		for(ContentVO tcvo : cvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(cvoField, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
+		}
+		String[] cvoArr = new String[cvoList.size()];
+		cvoArr = cvoList.toArray(cvoArr);
+		String jCvoList = JsonParser.getInstance().jParseArr(cvoArr);
+		
+		/*
+		 * MemberContentVO Json으로 변환
+		 */
+		tmpList.clear();
+		for(MemberContentVO tmcvo : mcvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(mcvoField, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
+		}
+		String[] mcvoArr = new String[mcvoList.size()];
+		mcvoArr = mcvoList.toArray(mcvoArr);
+		String jMcvoList = JsonParser.getInstance().jParseArr(mcvoArr);
+		
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jDvo,jCvoList,jMcvoList});
 	}
 
 

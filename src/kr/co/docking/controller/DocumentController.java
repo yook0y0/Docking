@@ -2,17 +2,10 @@ package kr.co.docking.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import kr.co.docking.action.AddAction;
-import kr.co.docking.action.DeleteAction;
-import kr.co.docking.action.ModifyAction;
-import kr.co.docking.action.SearchAction;
-import kr.co.docking.util.Injector;
+import kr.co.docking.service.DocumentService;
+import kr.co.docking.service.DocumentServiceImpl;
 import kr.co.docking.vo.ContentVO;
 import kr.co.docking.vo.DocumentVO;
 import kr.co.docking.vo.MemberContentVO;
@@ -21,199 +14,148 @@ public class DocumentController
 {
 	private HttpServletRequest req;
 	private HttpServletResponse res;
+	
+	private DocumentService ds;
+	
+	public DocumentController(){
+		this.req = null;
+		this.res = null;
+		this.ds = new DocumentServiceImpl();
+	}
+	
 	public void setReq(HttpServletRequest req) {
 		this.req = req;
 	}
-	
 	public void setRes(HttpServletResponse res) {
 		this.res = res;
 	}
 	
-	public void documentCreate() throws IOException {
+	public void documentAdd() throws IOException {
 		DocumentVO dvo = new DocumentVO();
 		dvo.setDocumentId(req.getParameter("documentId"));
 		dvo.setWriter(req.getParameter("writer"));
 		dvo.setTitle(req.getParameter("title"));
 		dvo.setCreationDate(req.getParameter("creationDate"));
 		
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);		
-		addAction.documentAdd(dvo);
+		Integer code = ds.documentAdd(dvo);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("documentCreate");
+		pw.write(code);
 		pw.flush();
 	}
 	
-	public void documentUpdate() throws IOException {
+	public void documentModify() throws IOException {
 		DocumentVO dvo = new DocumentVO();
 		dvo.setDocumentId(req.getParameter("documentId"));
 		dvo.setWriter(req.getParameter("writer"));
 		dvo.setTitle(req.getParameter("title"));
 		dvo.setCreationDate(req.getParameter("creationDate"));
 
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-		modifyAction.documentModify(dvo);
+		Integer code = ds.documentModify(dvo);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("documentUpdate");
+		pw.write(code);
 		pw.flush();
-	}
-	
-	public void documentInfo() throws IOException {
-		String documentId = req.getParameter("documentId");
-		
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		
-		DocumentVO dvo = searchAction.documentSearch(documentId);
-		List<ContentVO> cvoList = searchAction.contentSearchByDocumentId(documentId);
-		List<MemberContentVO> mcvoList = searchAction.memberContentSearchByDocumentId(documentId);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("documentRead");
-		/*
-		 * DocumentVO,ContentVO List,MemberContentVO List ��������
-		 */
-		pw.flush();
-	}
-	
-	public void documentReadAll() throws IOException {
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<DocumentVO> dvo = searchAction.documentSearchAll();
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("documentReadAll");
-		/*
-		 * DocumentVO List ��������
-		 */
-		pw.flush();
-	}
-	
-	public void documentOwnerList() throws IOException {
-		String writer = req.getParameter("writer");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<DocumentVO> dvo = searchAction.documentSearchByWriter(writer);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("documentOwnerList");
-		/*
-		 * DocumentVO List ��������
-		 */
-		pw.flush();
-	}
-	
-	public void documentJoinList() throws IOException {
-		String memberId = req.getParameter("memberId");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<MemberContentVO> mcvoList = searchAction.memberContentSearchByMemberId(memberId);
-		
-		List<DocumentVO> dvoList = new ArrayList<DocumentVO>();
-		for(int i=0;i<mcvoList.size();i++){
-			dvoList.set(i, searchAction.documentSearch(mcvoList.get(i).getDocumentId()));
-		}
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("documentJoinList");
-		/*
-		 * DocumentVO List ��������
-		 */
-		pw.flush();		
 	}
 	
 	public void documentDelete() throws IOException {
 		String documentId = req.getParameter("docuemntId");
 		
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.documentDelete(documentId);
-		deleteAction.contentDeleteByDocumentId(documentId);
+		Integer code = ds.documentDelete(documentId);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("documentDelete");
-		/*
-		 * DocumentVO List ��������
-		 */
+		pw.write(code);
 		pw.flush();
 	}
 	
-	public void documentDeleteAll() {
-		
-	}
-	
-	public void contentCreate() throws IOException {
-		ContentVO cvo = new ContentVO();
-		cvo.setDocumentId(req.getParameter("documentId"));
-		cvo.setContentId(req.getParameter("contentId"));
-		cvo.setBody(req.getParameter("body"));
-		cvo.setEditorId(req.getParameter("editorId"));
-		
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);		
-		addAction.contentAdd(cvo);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("contentCreate");
-		/*
-		 * DocumentVO List ��������
-		 */
-		pw.flush();
-	}
-	
-	public void contentUpdate() throws IOException {
-		ContentVO cvo = new ContentVO();
-		cvo.setDocumentId(req.getParameter("documentId"));
-		cvo.setContentId(req.getParameter("contentId"));
-		cvo.setBody(req.getParameter("body"));
-		cvo.setEditorId(req.getParameter("editorId"));
-		
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-		modifyAction.contentModify(cvo);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("contentUpdate");
-		pw.flush();
-	}
-	
-	public void contentRead() throws IOException {
-		String contentId = req.getParameter("contentId");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		ContentVO cvo = searchAction.contentSearch(contentId);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("contentRead");
-		/*
-		 * ContentVO ��������
-		 */
-		pw.flush();
-	}
-	
-	public void contentReadAll() {
-	
-	}
-	
-	public void contentReadAllByKey() throws IOException {
+	public void documentSearch() throws IOException {
 		String documentId = req.getParameter("documentId");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<ContentVO> cvoList = searchAction.contentSearchByDocumentId(documentId);
+		
+		String jRes = ds.documentSearch(documentId);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("contentReadAllByKey");
-		/*
-		 * ContentVO List ��������
-		 */
+		pw.write(jRes);
+		pw.flush();
+	}
+	
+	public void ownDocumentList() throws IOException {
+		String writer = req.getParameter("writer");
+
+		String jRes = ds.ownDocumentList(writer);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+	
+	public void joinDocumentList() throws IOException {
+		String memberId = req.getParameter("memberId");
+
+		String jRes = ds.joinDocumentList(memberId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();		
+	}
+	
+
+	
+	public void contentAdd() throws IOException {
+		ContentVO cvo = new ContentVO();
+		cvo.setDocumentId(req.getParameter("documentId"));
+		cvo.setContentId(req.getParameter("contentId"));
+		cvo.setBody(req.getParameter("body"));
+		cvo.setEditorId(req.getParameter("editorId"));
+		
+		Integer code = ds.contentAdd(cvo);
+
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
+		pw.flush();
+	}
+	
+	public void contentModify() throws IOException {
+		ContentVO cvo = new ContentVO();
+		cvo.setDocumentId(req.getParameter("documentId"));
+		cvo.setContentId(req.getParameter("contentId"));
+		cvo.setBody(req.getParameter("body"));
+		cvo.setEditorId(req.getParameter("editorId"));
+		
+		Integer code = ds.contentModify(cvo);
+
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
 		pw.flush();
 	}
 	
 	public void contentDelete() throws IOException {
 		String contentId = req.getParameter("contentId");
 		
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.contentDelete(contentId);
-		
+		Integer code = ds.contentDelete(contentId);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("contentDelete");
+		pw.write(code);
 		pw.flush();
 	}
 	
-	public void contentDeleteAll() {
+	public void contentSearch() throws IOException {
+		String contentId = req.getParameter("contentId");
+
+		String jRes = ds.contentSearch(contentId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
 	
+	public void contentsList() throws IOException {
+		String documentId = req.getParameter("documentId");
+		
+		String jRes = ds.contentsList(documentId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
 	}
 	
 	public void memberInvite() throws IOException {
@@ -222,12 +164,11 @@ public class DocumentController
 		mcvo.setMemberId(req.getParameter("memberId"));
 		mcvo.setMemberPosition(Integer.valueOf(req.getParameter("memberPosition")));
 
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);		
-		addAction.memberContentAdd(mcvo);
-		
+		Integer code = ds.memberInvite(mcvo);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("memberInvite");
-		pw.flush();		
+		pw.write(code);
+		pw.flush();	
 	}
 	
 	public void memberExpel() throws IOException 
@@ -237,12 +178,11 @@ public class DocumentController
 		mcvo.setMemberId(req.getParameter("memberId"));
 		mcvo.setMemberPosition(Integer.valueOf(req.getParameter("memberPosition")));
 		
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.memberContentDelete(mcvo);
-		
+		Integer code = ds.memberExpel(mcvo);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("memberExpel");
-		pw.flush();				
+		pw.write(code);
+		pw.flush();		
 	}
 	
 	public void memberPositionUpdate() throws IOException {
@@ -251,11 +191,10 @@ public class DocumentController
 		mcvo.setMemberId(req.getParameter("memberId"));
 		mcvo.setMemberPosition(Integer.valueOf(req.getParameter("memberPosition")));
 		
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-		modifyAction.memberContentModify(mcvo);
+		Integer code = ds.memberPositionUpdate(mcvo);
 
 		PrintWriter pw = res.getWriter();
-		pw.write("memberPositionUpdate");
-		pw.flush();
+		pw.write(code);
+		pw.flush();	
 	}
 }

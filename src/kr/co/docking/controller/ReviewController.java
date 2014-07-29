@@ -13,136 +13,121 @@ import kr.co.docking.action.AddAction;
 import kr.co.docking.action.DeleteAction;
 import kr.co.docking.action.ModifyAction;
 import kr.co.docking.action.SearchAction;
+import kr.co.docking.service.ReviewService;
+import kr.co.docking.service.ReviewServiceImpl;
 import kr.co.docking.util.Injector;
 import kr.co.docking.vo.EditorReviewBBSVO;
 
 public class ReviewController
 {
-   private HttpServletRequest req;
-   private HttpServletResponse res;
-   
-   public void setReq(HttpServletRequest req) 
-   {
-      this.req = req;
-   }
-   
-   public void setRes(HttpServletResponse res) 
-   {
-      this.res = res;
-   }
-   
-   public void editorReviewBBSCreate() throws IOException 
-   {
-      SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-      
-      EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
-      ervo.setReviewId(req.getParameter("reviewId"));
-      ervo.setEditorId(req.getParameter("editorId"));
-      ervo.setMemberId(req.getParameter("memberId"));
-      ervo.setBody(req.getParameter("body"));
-      ervo.setScore(Integer.valueOf(req.getParameter("score")));
-      ervo.setWrittenDate(mSimpleDateFormat.format(new Date()));
-      
-      AddAction   addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
-      addAction.editorReviewBBSAdd(ervo);
-      
-      PrintWriter writer = res.getWriter();
+	private HttpServletRequest req;
+	private HttpServletResponse res;
+	private ReviewService rs;
 
-      writer.write("editorReviewBBSCreate");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSUpdate() throws IOException 
-   {
-      SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ("yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-      
-      EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
-      ervo.setReviewId(req.getParameter("reviewId"));
-      ervo.setEditorId(req.getParameter("editorId"));
-      ervo.setMemberId(req.getParameter("memberId"));
-      ervo.setBody(req.getParameter("body"));
-      ervo.setScore(Integer.valueOf(req.getParameter("score")));
-      ervo.setWrittenDate(mSimpleDateFormat.format (new Date()));
-      
-      ModifyAction   modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-      modifyAction.editorReviewBBSModify(ervo);
-      
-      PrintWriter writer = res.getWriter();
+	public ReviewController(){
+		this.req = req;
+		this.res = res;
+		this.rs = new ReviewServiceImpl();
+	}
 
-      writer.write("editorReviewBBSUpdate");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSRead() throws IOException 
-   {
-      String   reviewId = req.getParameter("reviewId");
-      
-      SearchAction   searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-      searchAction.editorReviewBBSSearch(reviewId);
-      
-      PrintWriter writer = res.getWriter();
+	public void setReq(HttpServletRequest req) 
+	{
+		this.req = req;
+	}
 
-      writer.write("editorReviewBBSRead");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSReadAll() throws IOException 
-   {
-      SearchAction   searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-      searchAction.editorReviewBBSSearchAll();
-      
-      PrintWriter writer = res.getWriter();
+	public void setRes(HttpServletResponse res) 
+	{
+		this.res = res;
+	}
 
-      writer.write("editorReviewBBSReadAll");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSReadAllByEditorId() throws IOException 
-   {
-      String   editorId = req.getParameter("editorId");
-      
-      SearchAction   searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-      searchAction.editorReviewBBSSearchByEditorId(editorId);
-      
-      PrintWriter writer = res.getWriter();
+	public void reviewAdd() throws IOException 
+	{
+		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
 
-      writer.write("editorReviewBBSReadAllByEditorId");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSReadAllByMemberId() throws IOException 
-   {
-      String   memberId = req.getParameter("memberId");
-      
-      SearchAction   searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-      searchAction.editorReviewBBSSearchByEditorId(memberId);
-      
-      PrintWriter writer = res.getWriter();
+		EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
+		ervo.setReviewId(req.getParameter("reviewId"));
+		ervo.setEditorId(req.getParameter("editorId"));
+		ervo.setMemberId(req.getParameter("memberId"));
+		ervo.setBody(req.getParameter("body"));
+		ervo.setScore(Integer.valueOf(req.getParameter("score")));
+		ervo.setWrittenDate(mSimpleDateFormat.format(new Date()));
 
-      writer.write("editorReviewBBSReadAllByEditorId");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSDelete() throws IOException 
-   {
-      String   reviewId = req.getParameter("reviewId");
-      
-      DeleteAction   deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-      deleteAction.editorReviewBBSDelete(reviewId);   
-      
-      PrintWriter writer = res.getWriter();
+		Integer code = rs.reviewAdd(ervo);
 
-      writer.write("editorReviewBBSDelete");
-      writer.flush();
-   }
-   
-   public void editorReviewBBSDeleteAll() 
-   {
-      
-   }
-   
-   public void orderByReview() 
-   {
-   
-   }
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
+		pw.flush();
+	}
+
+	public void reviewModify() throws IOException 
+	{
+		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ("yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+
+		EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
+		ervo.setReviewId(req.getParameter("reviewId"));
+		ervo.setEditorId(req.getParameter("editorId"));
+		ervo.setMemberId(req.getParameter("memberId"));
+		ervo.setBody(req.getParameter("body"));
+		ervo.setScore(Integer.valueOf(req.getParameter("score")));
+		ervo.setWrittenDate(mSimpleDateFormat.format (new Date()));
+
+		Integer code = rs.reviewModify(ervo);
+
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
+		pw.flush();
+	}
+
+	public void reviewDelete() throws IOException 
+	{
+		String   reviewId = req.getParameter("reviewId");
+
+		Integer code = rs.reviewDelete(reviewId);
+
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
+		pw.flush();
+	}
+
+	public void reviewSearch() throws IOException 
+	{
+		String   reviewId = req.getParameter("reviewId");
+
+		String jRes = rs.reviewSearch(reviewId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+
+	public void reviewList() throws IOException 
+	{
+		String jRes = rs.reviewList();
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+
+	public void reviewListByEditor() throws IOException 
+	{
+		String   editorId = req.getParameter("editorId");
+
+		String jRes = rs.reviewListByEditor(editorId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+
+	public void reviewListByWriter() throws IOException 
+	{
+		String   memberId = req.getParameter("memberId");
+
+		String jRes = rs.reviewListByWriter(memberId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
 }

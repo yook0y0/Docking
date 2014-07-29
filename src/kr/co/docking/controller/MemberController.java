@@ -12,12 +12,22 @@ import kr.co.docking.action.AddAction;
 import kr.co.docking.action.DeleteAction;
 import kr.co.docking.action.ModifyAction;
 import kr.co.docking.action.SearchAction;
+import kr.co.docking.service.MemberService;
+import kr.co.docking.service.MemberServiceImpl;
 import kr.co.docking.util.Injector;
 import kr.co.docking.vo.MemberVO;
 
 public class MemberController {
 	private HttpServletRequest req;
 	private HttpServletResponse res;
+	private MemberService ms;
+	
+	public MemberController(){
+		this.req = null;
+		this.res = null;
+		this.ms = new MemberServiceImpl();
+	}
+	
 	public void setReq(HttpServletRequest req) {
 		this.req = req;
 	}
@@ -26,30 +36,28 @@ public class MemberController {
 		this.res = res;
 	}
 
-	public void memberCreate() throws IOException 
+	public void memberAdd() throws IOException 
 	{
 		String memberId = req.getParameter("memberId");
 		String pw = req.getParameter("pw");
 		String memberName = req.getParameter("memberName");
 		Integer type = Integer.valueOf(req.getParameter("type"));
 
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
 		MemberVO   mvo = new MemberVO();
-
 		mvo.setMemberId(memberId);
 		mvo.setPw(pw);
 		mvo.setMemberName(memberName);
 		mvo.setType(type);
-
-		addAction.memberAdd(mvo);
+		
+		Integer code = ms.memberAdd(mvo);
 
 		req.getSession().setAttribute("loginMember", mvo);
 		PrintWriter pWriter = res.getWriter();
-		pWriter.write("memberCreate");
+		pWriter.write(code);
 		pWriter.flush();
 	}
 
-	public void memberUpdate() throws IOException 
+	public void memberModify() throws IOException 
 	{
 		String memberId = req.getParameter("memberId");
 		String pw = req.getParameter("pw");
@@ -64,64 +72,34 @@ public class MemberController {
 		mvo.setMemberName(memberName);
 		mvo.setType(type);
 		
-		modifyAction.memberModify(mvo);
+		Integer code = ms.memberModify(mvo);
 
 		req.getSession().setAttribute("logInMember", mvo);
-
-		res.setCharacterEncoding("utf-8");
-		PrintWriter   writer = res.getWriter();
-		writer.write("memberUpdate");
-		writer.flush();
+		PrintWriter pWriter = res.getWriter();
+		pWriter.write(code);
+		pWriter.flush();
 	}
 
-	public void memberRead() throws IOException 
+	public void memberSearch() throws IOException 
 	{
 		String  memberId = req.getParameter("memberId");
-		
-		String	sendMessage = "Possible Id";
-		
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		MemberVO mvo = searchAction.memberSearch(memberId);
-		
-		if(mvo != null)
-		{
-			sendMessage = "Impossible Id";
-		}
-		
-		res.setCharacterEncoding("utf-8");
-		PrintWriter   pw = res.getWriter();
-		pw.write(sendMessage);
-		pw.flush();
-	}
 
-	public void memberReadAll() throws IOException, ServletException 
-	{
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<MemberVO> memberList = searchAction.memberSearchAll();
-
+		String jRes = ms.memberSearch(memberId);
+		
 		PrintWriter pw = res.getWriter();
-		
-		pw.write("memberReadAll");
-		/*
-		 * MemberVO List Ÿ�� �������ҵ�
-		 */
+		pw.write(jRes);
 		pw.flush();
 	}
-
-	public void memberReadAllByKey() { /*������ Ȯ�强�� ���� ���� ����.*/}
-
+	
 	public void memberDelete() throws IOException {
 		String memberId = req.getParameter("memberId");
 
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.memberDelete(memberId);
+		Integer code = ms.memberDelete(memberId);
 
 		req.getSession().removeAttribute("logInMember");
 
 		PrintWriter pw = res.getWriter();
-		pw.println("memberDelete");
+		pw.println(code);
 		pw.flush();
 	}
-
-	public void memberDeleteAll() {/*������ Ȯ�强�� ���� ���� ����.*/}
 }

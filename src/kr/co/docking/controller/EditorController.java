@@ -23,6 +23,10 @@ import kr.co.docking.analysis.attribute.DataAttribute;
 import kr.co.docking.analysis.filter.FileDeleteFilter;
 import kr.co.docking.analysis.filter.FileUnzipFilter;
 import kr.co.docking.analysis.register.FilePathRegister;
+import kr.co.docking.service.DocumentService;
+import kr.co.docking.service.DocumentServiceImpl;
+import kr.co.docking.service.EditorService;
+import kr.co.docking.service.EditorServiceImpl;
 import kr.co.docking.util.Injector;
 import kr.co.docking.vo.EditorCodeVO;
 import kr.co.docking.vo.EditorVO;
@@ -31,6 +35,14 @@ import kr.co.docking.vo.MemberVO;
 public class EditorController {
 	private HttpServletRequest req;
 	private HttpServletResponse res;
+	private EditorService es;
+	
+	public EditorController(){
+		this.req = null;
+		this.res = null;
+		this.es = new EditorServiceImpl();
+	}
+	
 	public void setReq(HttpServletRequest req) {
 		this.req = req;
 	}
@@ -39,14 +51,13 @@ public class EditorController {
 		this.res = res;
 	}
 	
-	public void editorRegister() throws Exception 
+	public void editorAdd() throws Exception 
 	{
-		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
 		
 		String savePath = req.getServletContext().getRealPath("tmp/");
 		new File(savePath).mkdir();
 		int sizeLimit = 1024*1024*15;
-
+		
 		MultipartRequest multi = null;
 		try {
 			multi = new MultipartRequest(req, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
@@ -55,11 +66,12 @@ public class EditorController {
 		}
 		
 		String zipFileName = multi.getFilesystemName("zipFile");
-
 		String editorId = multi.getParameter("editorId");
 		//String director = multi.getParameter("director");
 		String description = multi.getParameter("description");
 		Integer editorType = Integer.valueOf(multi.getParameter("editorType"));		
+		
+		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
 		EditorVO evo = new EditorVO();
 		evo.setEditorId(editorId);
 		evo.setDirector(mvo.getMemberId());
@@ -68,39 +80,10 @@ public class EditorController {
 		
 		String path = savePath + "/" + zipFileName;
 		
-		DockingAnalyzer ds = new FileUnzipFilter(new FilePathRegister(path));
-		try {
-			ds.analyze();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		DataAttribute dAttr = (DataAttribute) ds.getAttrSet().get(Attr.ATTRSET_FILE_DATA);
-
-		byte[][] type = dAttr.getType();
-		byte[][] data = dAttr.getData();
-
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);		
-		addAction.editorAdd(evo);
-
-		EditorCodeVO ecvo = new EditorCodeVO();
-		List<EditorCodeVO> ecvoList = new ArrayList<EditorCodeVO>();
-		
-		for(int i=0;i<data.length;i++){
-			ecvo.setEditorId(editorId);
-			ecvo.setCode(String.valueOf(data[i]));
-			ecvo.setPath(editorId + "/" + String.valueOf(type[i]));
-			ecvoList.add(ecvo);
-		}
-		addAction.editorCodeListAdd(ecvoList);
-		
-		ds = null;
-		ds = new FileDeleteFilter(new FilePathRegister(path));
-		ds.analyze();
+		Integer code = es.editorAdd(path, evo);
 
 		PrintWriter pw = res.getWriter();
-		
-		pw.write("EditorRegister");
+		pw.write(code);
 		pw.flush();
 	}
 	
@@ -111,81 +94,53 @@ public class EditorController {
 		evo.setDescription(req.getParameter("description"));
 		evo.setEditorType(Integer.valueOf(req.getParameter("editorType")));
 		
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-		modifyAction.editorModify(evo);
-		
-		PrintWriter pw = res.getWriter();
-		pw.println("editorModify");
-		pw.flush();
-	}
-	
-	public void editorSearch() throws ServletException, IOException {
-		String editorId = req.getParameter("editorId");
-		
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		EditorVO evo = searchAction.editorSearch(editorId);
-		
-		PrintWriter pw = res.getWriter();
-		pw.println("editorSearch");
-		/*
-		 * EditorVO ��������
-		 */
-		pw.flush();		
-	}
-	
-	public void editorSearchAll() throws IOException {
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<EditorVO> ecvoList = searchAction.editorSearchAll();
-		
-		PrintWriter pw = res.getWriter();
-		pw.println("editorSearchAll");
-		/*
-		 * EditorVO List ��������
-		 */
-		pw.flush();
-	}
-	
-	public void editorSearchByDirector() throws IOException {
-		String director = req.getParameter("director");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		List<EditorVO> ecvoList = searchAction.editorSearchByDirector(director);
+		Integer code = es.editorModify(evo);
 
 		PrintWriter pw = res.getWriter();
-		pw.write("editorSearchAllByKey");
-		/*
-		 * EditorVO List ��������
-		 */
+		pw.write(code);
 		pw.flush();
 	}
 	
 	public void editorDelete() throws IOException {
 		String editorId = req.getParameter("editorId");
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.editorDelete(editorId);
-		deleteAction.editorCodeDeleteByEditorId(editorId);
 		
+		Integer code = es.editorDelete(editorId);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("editorDelete");
+		pw.write(code);
 		pw.flush();
 	}
 	
-	public void editorDeleteAll() {
-		/*
-		 * �� �ɵ�
-		 */
+	public void editorSearch() throws ServletException, IOException {
+		String editorId = req.getParameter("editorId");
+
+		String jRes = es.editorSearch(editorId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+	
+	public void ownEditorList() throws IOException {
+		String director = req.getParameter("director");
+
+		String jRes = es.ownEditorList(director);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
 	}
 
-	public void editorCodeRegister() throws IOException{
+	public void editorCodeAdd() throws IOException{
 		EditorCodeVO ecvo = new EditorCodeVO();
 		ecvo.setEditorId(req.getParameter("editorId"));
 		ecvo.setCode(req.getParameter("code"));
 		ecvo.setPath(req.getParameter("path"));
 		
-		AddAction addAction = (AddAction)Injector.getInstance().getObject(AddAction.class);
-		addAction.editorCodeAdd(ecvo);
-		
+		Integer code = es.editorCodeAdd(evo);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("editorCodeMoidfy");
+		pw.write(code);
 		pw.flush();
 	}
 	
@@ -195,28 +150,34 @@ public class EditorController {
 		ecvo.setCode(req.getParameter("code"));
 		ecvo.setPath(req.getParameter("path"));
 		
-		ModifyAction modifyAction = (ModifyAction)Injector.getInstance().getObject(ModifyAction.class);
-		modifyAction.editorCodeModify(ecvo);
-		
+		Integer code = es.editorCodeModify(ecvo);
+
 		PrintWriter pw = res.getWriter();
-		pw.write("editorCodeMoidfy");
+		pw.write(code);
 		pw.flush();
 	}
 	
 	public void editorCodeSearch() throws IOException{
 		String path = req.getParameter("path");
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-		EditorCodeVO ecvo = searchAction.editorCodeSearch(path);
+		
+		String jRes = es.editorCodeSearch(path);
 		
 		PrintWriter pw = res.getWriter();
-		pw.write("editorCodeSearch");
-		/*
-		 * EditorCodeVO ��������
-		 */
+		pw.write(jRes);
 		pw.flush();
 	}
 	
-	public void editorCodeSearchByEditorId() throws IOException{
+	public void editorCodeDelete() throws IOException{
+		String path = req.getParameter("path");
+		
+		Integer code = es.editorCodeDelete(path);
+
+		PrintWriter pw = res.getWriter();
+		pw.write(code);
+		pw.flush();
+	}
+	
+	public void codeList() throws IOException{
 		String editorId = req.getParameter("editorId");
 		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 		List<EditorCodeVO> ecvoList = searchAction.editorCodeSearchByEditorId(editorId);
@@ -224,19 +185,8 @@ public class EditorController {
 		PrintWriter pw = res.getWriter();
 		pw.write("editorCodeSearchByEditorId");
 		/*
-		 * EditorCodeVO List ��������
+		 * EditorCodeVO List 占쏙옙占쏙옙占쏙옙占쏙옙
 		 */
-		pw.flush();		
-	}
-	
-	public void editorCodeDelete() throws IOException{
-		String path = req.getParameter("path");
-		
-		DeleteAction deleteAction = (DeleteAction)Injector.getInstance().getObject(DeleteAction.class);
-		deleteAction.editorCodeDelete(path);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write("editorCodeDelete");
 		pw.flush();
 	}
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.ContentDAO">
+	<insert id="content_add" parameterType="kr.co.docking.vo.ContentVO">
+		insert into content_tb (content_documentId, content_contentId, content_body, content_editorId)
+		values (#{documentId}, #{contentId}, #{body}, #{editorId})
+	</insert>
+	
+	<update id="content_modify" parameterType="kr.co.docking.vo.ContentVO">
+		update content_tb
+		set content_documentId=#{documentId}, content_contentId=#{contentId}, content_body=#{body}, content_editorId=#{editorId}
+		where content_contentId=#{contentId}
+	</update>
+	
+	<select id="content_search" parameterType="kr.co.docking.vo.ContentVO" resultType="kr.co.docking.vo.ContentVO">
+		select content_documentId documentId, content_contentId contentId, content_body body, content_editorId editorId
+		from content_tb 
+		where content_contentId=#{contentId}
+	</select>
+
+	<select id="content_searchAll_key" parameterType="kr.co.docking.vo.ContentVO" resultType="kr.co.docking.vo.ContentVO">
+		select content_documentId documentId, content_contentId contentId, content_body body, content_editorId editorId
+		from content_tb 
+		where content_contentId=#{contentId}
+	</select>
+	
+	<select id="content_searchAll" resultType="kr.co.docking.vo.ContentVO">
+		select content_documentId documentId, content_contentId contentId, content_body body, content_editorId editorId
+		from content_tb 
+	</select>
+	
+	<delete id="content_delete" parameterType="kr.co.docking.vo.ContentVO">
+        delete from content_tb 
+        where content_contentId=#{contentId}
+    </delete>
+    
+    <delete id="content_deleteByDocumentId" parameterType="kr.co.docking.vo.ContentVO">
+        delete from content_tb 
+        where content_documentId=#{documentId}
+    </delete>
+    
+    <delete id="content_deleteAll">
+        delete from content_tb
+    </delete>
+</mapper>

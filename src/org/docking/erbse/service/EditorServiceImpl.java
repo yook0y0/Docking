@@ -11,6 +11,7 @@ import org.docking.erbse.analysis.filter.FileUnzipFilter;
 import org.docking.erbse.analysis.register.FilePathRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.JsonParseData;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorVO;
@@ -36,10 +37,10 @@ public class EditorServiceImpl implements EditorService {
 
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		editService.add("editor_add", editor);
-		
+
 		EditorCodeVO ecvo = new EditorCodeVO();
 		List<EditorCodeVO> editorCodeList = new ArrayList<EditorCodeVO>();
-		
+
 		for(int i=0;i<data.length;i++){
 			ecvo.setEditorId(editor.getEditorId());
 			ecvo.setCode(String.valueOf(data[i]));
@@ -60,7 +61,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -73,7 +74,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -89,7 +90,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -100,12 +101,14 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
 		EditorVO evo = genericService.search("editor_search", editorId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"editorVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO Json
 		 */
-		return jRes;
+		String jEvo = JsonParser.getInstance().jParseObj(JsonParseData.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())});
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
 	}
 
 	@Override
@@ -114,12 +117,21 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		List<EditorVO> evoList = editService.searchAll("editor_searchAll_key", director);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"EditorVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(EditorVO evo : evoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+		}
+		String[] evoArr = new String[evoList.size()];
+		evoArr = tmpList.toArray(evoArr);
+		String jEvoList = JsonParser.getInstance().jParseArr(evoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvoList});
 	}
 
 	@Override
@@ -130,7 +142,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -143,7 +155,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -154,12 +166,14 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		EditorCodeVO ecvo = editCodeService.search("editorCode_search", path);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"editorCodeVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO Json
 		 */
-		return jRes;
+		String jEcvo = JsonParser.getInstance().jParseObj(JsonParseData.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()});
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jEcvo});
 	}
 
 	@Override
@@ -170,7 +184,7 @@ public class EditorServiceImpl implements EditorService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -181,11 +195,20 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", editorId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"EditorCodeVOList"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(EditorCodeVO ecvo : ecvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()}));
+		}
+		String[] ecvoArr = new String[ecvoList.size()];
+		ecvoArr = tmpList.toArray(ecvoArr);
+		String jEcvoList = JsonParser.getInstance().jParseArr(ecvoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jEcvoList});
 	}
 }

@@ -2,46 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.co.docking.dao.dao.MemberContentDAO">
-	<insert id="memberContent_add" parameterType="kr.co.docking.vo.MemberContentVO">
+<mapper namespace="org.docking.erbse.dao.dao.MemberContentDAO">
+	<insert id="memberContent_add" parameterType="org.docking.erbse.vo.MemberContentVO">
 		insert into memberContent_tb (memberContent_memberId, memberContent_documentId, memberContent_memberPosition)
 		values (#{memberId}, #{documentId}, #{memberPosition})
 	</insert>
 	
-	<update id="memberContent_modify" parameterType="kr.co.docking.vo.MemberContentVO">
+	<update id="memberContent_modify" parameterType="org.docking.erbse.vo.MemberContentVO">
 		update memberContent_tb
 		set memberContent_memberId=#{memberId}, memberContent_documentId=#{documentId}, memberContent_memberPosition=#{memberPosition}
 		where memberContent_documentId=#{documentId}
 	</update>
 	
-	<select id="memberContent_search" parameterType="kr.co.docking.vo.MemberContentVO" resultType="kr.co.docking.vo.MemberContentVO">
+	<select id="memberContent_search" parameterType="org.docking.erbse.vo.MemberContentVO" resultType="org.docking.erbse.vo.MemberContentVO">
 		select memberContent_memberId memberId, memberContent_documentId documentId, memberContent_memberPosition memberPosition
 		from memberContent_tb 
 		where memberContent_memberId=#{memberId}
 	</select>
 	
-	<select id="memberContent_searchAll_key" parameterType="kr.co.docking.vo.EditorCodeVO" resultType="kr.co.docking.vo.EditorCodeVO">
+	<select id="memberContent_searchAllbyDocId" parameterType="org.docking.erbse.vo.MemberContentVO" resultType="org.docking.erbse.vo.MemberContentVO">
+		select memberContent_memberId memberId, memberContent_documentId documentId, memberContent_memberPosition memberPosition 
+		from memberContent_tb
+		where memberContent_documentId=#{documentId}
+	</select>
+	
+	<select id="memberContent_searchAllbyMemberId" parameterType="org.docking.erbse.vo.MemberContentVO" resultType="org.docking.erbse.vo.MemberContentVO">
 		select memberContent_memberId memberId, memberContent_documentId documentId, memberContent_memberPosition memberPosition 
 		from memberContent_tb
 		where memberContent_memberId=#{memberId}
 	</select>
 
-	<select id="memberContent_searchAll" resultType="kr.co.docking.vo.MemberContentVO">
+	<select id="memberContent_searchAll" resultType="org.docking.erbse.vo.MemberContentVO">
 		select memberContent_memberId memberId, memberContent_documentId documentId, memberContent_memberPosition memberPosition 
 		from memberContent_tb
 	</select>
 	
-	<delete id="memberContent_deleteByDocumentId" parameterType="kr.co.docking.vo.MemberContentVO">
+	<delete id="memberContent_deleteByDocumentId" parameterType="org.docking.erbse.vo.MemberContentVO">
         delete from memberContent_tb 
         where memberContent_documentId=#{documentId}
     </delete>
     
-    <delete id="memberContent_deleteByMemberId" parameterType="kr.co.docking.vo.MemberContentVO">
+    <delete id="memberContent_deleteByMemberId" parameterType="org.docking.erbse.vo.MemberContentVO">
         delete from memberContent_tb 
         where memberContent_memberId=#{memberId}
     </delete>
     
-    <delete id="memberContent_delete" parameterType="kr.co.docking.vo.MemberContentVO">
+    <delete id="memberContent_delete" parameterType="org.docking.erbse.vo.MemberContentVO">
         delete from memberContent_tb 
         where memberContent_memberId=#{memberId} and memberContent_documentId=#{documentId}
     </delete>

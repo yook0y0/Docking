@@ -2,36 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.co.docking.dao.dao.MemberDAO">
-	<insert id="member_add" parameterType="kr.co.docking.vo.MemberVO">
+<mapper namespace="org.docking.erbse.dao.dao.MemberDAO">
+	<insert id="member_add" parameterType="org.docking.erbse.vo.MemberVO">
 		insert into member_tb (member_memberId, member_pw, member_memberName, member_type)
 		values (#{memberId}, #{pw}, #{memberName}, #{type})
 	</insert>
 	
-	<update id="member_modify" parameterType="kr.co.docking.vo.MemberVO">
+	<update id="member_modify" parameterType="org.docking.erbse.vo.MemberVO">
 		update member_tb
 		set member_memberId=#{memberId}, member_pw=#{pw}, member_memberName=#{memberName}, member_type=#{type}
 		where member_memberId=#{memberId}
 	</update>
 	
-	<select id="member_search" parameterType="kr.co.docking.vo.MemberVO" resultType="kr.co.docking.vo.MemberVO">
+	<select id="member_search" parameterType="org.docking.erbse.vo.MemberVO" resultType="org.docking.erbse.vo.MemberVO">
 		select member_memberId memberId, member_pw pw, member_memberName memberName, member_type type
 		from member_tb 
 		where member_memberId=#{memberId}
 	</select>
 
-	<select id="member_searchAll_key" parameterType="kr.co.docking.vo.MemberVO" resultType="kr.co.docking.vo.MemberVO">
+	<select id="member_searchAll_key" parameterType="org.docking.erbse.vo.MemberVO" resultType="org.docking.erbse.vo.MemberVO">
 		select member_memberId memberId, member_pw pw, member_memberName memberName, member_type type
 		from member_tb 
 		where member_memberId=#{memberId}
 	</select>
 	
-	<select id="member_searchAll" resultType="kr.co.docking.vo.MemberVO">
+	<select id="member_searchAll" resultType="org.docking.erbse.vo.MemberVO">
 		select member_memberId memberId, member_pw pw, member_memberName memberName, member_type type
 		from member_tb 
 	</select>
 	
-	<delete id="member_delete" parameterType="kr.co.docking.vo.MemberVO">
+	<delete id="member_delete" parameterType="org.docking.erbse.vo.MemberVO">
         delete from member_tb where member_memberId=#{memberId}
     </delete>
     

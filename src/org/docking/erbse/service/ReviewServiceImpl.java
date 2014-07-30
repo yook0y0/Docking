@@ -1,11 +1,14 @@
 package org.docking.erbse.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.JsonParseData;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorReviewBBSVO;
+import org.docking.erbse.vo.EditorVO;
 
 
 public class ReviewServiceImpl implements ReviewService {
@@ -18,7 +21,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -31,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -44,7 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -55,12 +58,15 @@ public class ReviewServiceImpl implements ReviewService {
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
 		EditorReviewBBSVO ervo = reviewService.search("editorReview_search", reviewId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"editorReviewBBSVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO Json
 		 */
-		return jRes;
+		String jErvo = JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()});
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvo});
+
 	}
 
 	@Override
@@ -69,12 +75,21 @@ public class ReviewServiceImpl implements ReviewService {
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
 		List<EditorReviewBBSVO> ervoList = reviewService.searchAll("editorReview_searchAll");
 		
-		String jRes = null;
-		JsonParser.getInstance();
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"editorReviewBBSVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(EditorReviewBBSVO ervo : ervoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
+		}
+		String[] ervoArr = new String[ervoList.size()];
+		ervoArr = tmpList.toArray(ervoArr);
+		String jErvoList = JsonParser.getInstance().jParseArr(ervoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvoList});
 	}
 
 	@Override
@@ -83,12 +98,21 @@ public class ReviewServiceImpl implements ReviewService {
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
 		List<EditorReviewBBSVO> ervoList = reviewService.searchAll("editorReview_searchAll_key", editorId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"editorReviewBBSVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(EditorReviewBBSVO ervo : ervoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
+		}
+		String[] ervoArr = new String[ervoList.size()];
+		ervoArr = tmpList.toArray(ervoArr);
+		String jErvoList = JsonParser.getInstance().jParseArr(ervoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvoList});
 	}
 
 	@Override
@@ -100,12 +124,12 @@ public class ReviewServiceImpl implements ReviewService {
 		String jRes = null;
 		JsonParser.getInstance();
 		
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * Json Å¸ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 
 		return jRes;*/
 		
 		/*
-		 * Writer ·Î ¸®ºä°Ë»ö ³ª¿Í¾ßÇÔ.
+		 * Writer ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½Í¾ï¿½ï¿½ï¿½.
 		 */
 		return null;
 	}

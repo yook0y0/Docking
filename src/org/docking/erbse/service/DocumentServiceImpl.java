@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.JsonParseData;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
@@ -21,7 +22,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -34,7 +35,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;	
 	}
@@ -51,45 +52,38 @@ public class DocumentServiceImpl implements DocumentService {
 
 		GenericService<MemberContentVO>	memService = new GenericServiceImpl<MemberContentVO>();
 		List<MemberContentVO> mcvoList = memService.searchAll("memberContent_searchAll_key", documentId);
+
+		String[] objName = new String[]{"documentVO","contentVOList","memberContentVOList"};
 		
 		/*
-		 * Json Obj nameÀ¸·Î ¾µ°Å
+		 * DocumentVO Json
 		 */
-		String[] objName = new String[]{"documentVO","contentVOList","memberContentVOList"};
-		String[] dvoField = new String[]{"documentId","writer","title","creationDate"};
-		String[] cvoField = new String[]{"documentId","contentId","body","editorId"};
-		String[] mcvoField = new String[]{"documentId","memberId","memberPosition"};
-
-		/*
-		 * DocumentVO JsonÀ¸·Î º¯È¯
-		 */
-		String jDvo = JsonParser.getInstance().jParseObj(dvoField, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
+		String jDvo = JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
 		List<String> tmpList = new ArrayList<String>();		
 		
 		/*
-		 * ContentVO List JsonÀ¸·Î º¯È¯
+		 * ContentVO List Json
 		 */
 		for(ContentVO tcvo : cvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(cvoField, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
 		}
 		String[] cvoArr = new String[cvoList.size()];
-		cvoArr = cvoList.toArray(cvoArr);
+		cvoArr = tmpList.toArray(cvoArr);
 		String jCvoList = JsonParser.getInstance().jParseArr(cvoArr);
 		
 		/*
-		 * MemberContentVO JsonÀ¸·Î º¯È¯
+		 * MemberContentVO Json
 		 */
 		tmpList.clear();
 		for(MemberContentVO tmcvo : mcvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(mcvoField, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.MEMCON_VO_FIELD, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
 		}
 		String[] mcvoArr = new String[mcvoList.size()];
-		mcvoArr = mcvoList.toArray(mcvoArr);
+		mcvoArr = tmpList.toArray(mcvoArr);
 		String jMcvoList = JsonParser.getInstance().jParseArr(mcvoArr);
 		
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jDvo,jCvoList,jMcvoList});
 	}
-
 
 	@Override
 	public Integer documentDelete(String documentId) {
@@ -99,7 +93,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -111,31 +105,63 @@ public class DocumentServiceImpl implements DocumentService {
 		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
 		List<DocumentVO> dvoList = genericService.searchAll("document_searchAll_key", writer);
 		
-		String jRes = null;
-		JsonParser.getInstance();
+		List<String> tmpList = new ArrayList<String>();
+		
+		String[] objName = new String[]{"documentVOList"};
+		
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(DocumentVO tdvo : dvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{tdvo.getDocumentId(),tdvo.getWriter(),tdvo.getTitle(),tdvo.getCreationDate()}));
+		}
+		String[] dvoArr = new String[dvoList.size()];
+		dvoArr = tmpList.toArray(dvoArr);
+		String jDvoList = JsonParser.getInstance().jParseArr(dvoArr);
+		
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jDvoList});
 	}
 
 	@Override
 	public String joinDocumentList(String memberId) {
 		// TODO Auto-generated method stub
 		GenericService<MemberContentVO>	memService = new GenericServiceImpl<MemberContentVO>();
-		List<MemberContentVO> mcvoList = memService.searchAll("memberContent_searchAll_key", memberId);
+		List<MemberContentVO> mcvoList = memService.searchAll("memberContent_searchAllbyMemberId", memberId);
 
+		System.out.println("mcvoList size : " + mcvoList.size());
 		GenericService<DocumentVO>	docService = new GenericServiceImpl<DocumentVO>();
 
 		List<DocumentVO> dvoList = new ArrayList<DocumentVO>();
 		for(int i=0;i<mcvoList.size();i++){
-			dvoList.set(i, docService.search("document_search", mcvoList.get(i).getDocumentId()));
+			dvoList.add(i, docService.search("document_search", mcvoList.get(i).getDocumentId()));
 		}
-		/*
-		 * Json String
-		 */
+		System.out.println("dvoList size : " + dvoList.size());
 		
-		return null;
+		String[] objName = new String[]{"memberContentVOList","documentVOList"};
+
+		List<String> tmpList = new ArrayList<String>();		
+		
+		/*
+		 * DocumentVO List Json
+		 */
+		for(MemberContentVO mcvo : mcvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.MEMCON_VO_FIELD, new String[]{mcvo.getDocumentId(),mcvo.getMemberId(),String.valueOf(mcvo.getMemberPosition())}));
+		}
+		String[] mcvoArr = new String[dvoList.size()];
+		mcvoArr = tmpList.toArray(mcvoArr);
+		String jMcvoList = JsonParser.getInstance().jParseArr(mcvoArr);
+
+		/*
+		 * DocumentVO List Json
+		 */
+		for(DocumentVO dvo : dvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()}));
+		}
+		String[] dvoArr = new String[dvoList.size()];
+		dvoArr = tmpList.toArray(dvoArr);
+		String jDvoList = JsonParser.getInstance().jParseArr(dvoArr);
+		
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jMcvoList,jDvoList});
 	}
 
 	@Override
@@ -146,7 +172,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -159,7 +185,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;	
 	}
@@ -170,12 +196,14 @@ public class DocumentServiceImpl implements DocumentService {
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
 		ContentVO cvo = conService.search("content_search", contentId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"contentVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO Json
 		 */
-		return jRes;
+		String jCvo = JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()});
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jCvo});
 	}
 
 	@Override
@@ -186,7 +214,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -195,14 +223,22 @@ public class DocumentServiceImpl implements DocumentService {
 	public String contentsList(String documentId) {
 		// TODO Auto-generated method stub
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
-		List<ContentVO> cvo = conService.searchAll("content_searchAll_key", documentId);
+		List<ContentVO> cvoList = conService.searchAll("content_searchAll_key", documentId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"contentVOList"};
+		List<String> tmpList = new ArrayList<String>();		
+		
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO List Json
 		 */
-		return jRes;
+		for(ContentVO cvo : cvoList){
+			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()}));
+		}
+		String[] cvoArr = new String[cvoList.size()];
+		cvoArr = tmpList.toArray(cvoArr);
+		String jCvoList = JsonParser.getInstance().jParseArr(cvoArr);
+		
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jCvoList});
 	}
 
 	@Override
@@ -213,7 +249,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -226,7 +262,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -239,7 +275,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}

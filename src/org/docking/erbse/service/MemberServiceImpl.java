@@ -2,6 +2,7 @@ package org.docking.erbse.service;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.JsonParseData;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.MemberVO;
 
@@ -16,7 +17,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}
@@ -40,12 +41,14 @@ public class MemberServiceImpl implements MemberService {
 		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
 		MemberVO mvo = memService.search("member_search", memberId);
 
-		String jRes = null;
-		JsonParser.getInstance();
+		String[] objName = new String[]{"memberVO"};
+
 		/*
-		 * Json Å¸ÀÔ Ä³½ºÆÃ ÇÊ¿ä
+		 * DocumentVO Json
 		 */
-		return jRes;
+		String jMvo = JsonParser.getInstance().jParseObj(JsonParseData.MEM_VO_FIELD, new String[]{mvo.getMemberId(),mvo.getPw(),mvo.getMemberName(),String.valueOf(mvo.getType())});
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jMvo});
 	}
 
 	@Override
@@ -56,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Integer res = 0;
 		/*
-		 * res °ª Ã³¸® ÇÊ¿ä
+		 * res ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Ê¿ï¿½
 		 */
 		return res;
 	}

@@ -1,36 +1,36 @@
 package org.docking.erbse.test;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberVO;
 
-
-public class DAOTest<T extends Serializable> 
+public class DAOTest
 {	
-	public static void addMember(MemberVO memberVO)
+	public static void main(String[] args) 
 	{
 		GenericService<MemberVO>	service = new GenericServiceImpl<MemberVO>();
-		service.add("member_add", memberVO);
-	}
-	
-	public static void addDocument(DocumentVO documentVO)
-	{
-		GenericService<DocumentVO>	service = new GenericServiceImpl<DocumentVO>();
-		service.add("document_add", documentVO);
-	}
-	
-	public static <T extends Serializable> void main(String[] args) 
-	{
-		MemberVO	memberVO = new MemberVO();
 		
-		memberVO.setMemberId("testId");
-		memberVO.setMemberName("modify");
+		MemberVO	memberVO = new MemberVO();
+		MemberVO	vo = new MemberVO();
+		
+		memberVO.setMemberId("testdgdsdIddd");
+		memberVO.setMemberName("1111");
 		memberVO.setPw("testPw");
 		memberVO.setType(1);
 		
-		addMember(memberVO);
+		vo.setMemberId("testsfdgIddd");
+		vo.setMemberName("1111");
+		vo.setPw("testPw");
+		vo.setType(1);
+		
+		List<MemberVO>	list = new ArrayList<MemberVO>();
+		
+		list.add(memberVO);
+		list.add(vo);
+		
+		System.out.println(service.modify("member_modify", list));
 	}
 }

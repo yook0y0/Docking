@@ -11,7 +11,8 @@ import org.docking.erbse.service.MemberServiceImpl;
 import org.docking.erbse.vo.MemberVO;
 
 
-public class MemberController {
+public class MemberController 
+{
 	private HttpServletRequest req;
 	private HttpServletResponse res;
 	private MemberService ms;
@@ -46,6 +47,7 @@ public class MemberController {
 		Integer code = ms.memberAdd(mvo);
 
 		req.getSession().setAttribute("loginMember", mvo);
+		
 		PrintWriter pWriter = res.getWriter();
 		pWriter.write(code);
 		pWriter.flush();
@@ -84,7 +86,8 @@ public class MemberController {
 		pw.flush();
 	}
 	
-	public void memberDelete() throws IOException {
+	public void memberDelete() throws IOException 
+	{
 		String memberId = req.getParameter("memberId");
 
 		Integer code = ms.memberDelete(memberId);

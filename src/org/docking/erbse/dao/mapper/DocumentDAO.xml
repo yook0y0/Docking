@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.docking.dao.dao.DocumentDAO">
+	<insert id="document_add" parameterType="kr.co.docking.vo.DocumentVO">
+		insert into document_tb (document_documentId, document_writer, document_title, document_creationDate)
+		values (#{documentId}, #{writer}, #{title}, #{creationDate})
+	</insert>
+	
+	<update id="document_modify" parameterType="kr.co.docking.vo.DocumentVO">
+		update document_tb
+		set document_documentId=#{documentId}, document_writer=#{writer}, document_title=#{title}, document_creationDate=#{creationDate}
+		where document_documentId=#{documentId}
+	</update>
+	
+	<select id="document_search" parameterType="kr.co.docking.vo.DocumentVO" resultType="kr.co.docking.vo.DocumentVO">
+		select document_documentId documentId, document_writer writer, document_title title, document_creationDate creationDate
+		from document_tb 
+		where document_documentId=#{documentId}
+	</select>
+
+	<select id="document_searchAll_key" parameterType="kr.co.docking.vo.DocumentVO" resultType="kr.co.docking.vo.DocumentVO">
+		select document_documentId documentId, document_writer writer, document_title title, document_creationDate creationDate
+		from document_tb 
+		where document_writer=#{writer}
+	</select>
+	
+	<select id="document_searchAll" resultType="kr.co.docking.vo.DocumentVO">
+		select document_documentId documentId, document_writer writer, document_title title, document_creationDate creationDate
+		from document_tb 
+	</select>
+	
+	<delete id="document_delete" parameterType="kr.co.docking.vo.DocumentVO">
+        delete from document_tb where document_documentId=#{documentId}
+    </delete>
+    
+    <delete id="document_deleteAll">
+        delete from document_tb
+    </delete>
+</mapper>

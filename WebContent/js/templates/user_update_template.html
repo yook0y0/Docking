@@ -9,36 +9,35 @@
 		<div class="row mt">
 			<div class="col-lg-8 col-lg-offset-2">
 				<form role="form">
-
 					<div class="form-group">
-						ID : <input type="email" class="form-control" id="modify_memberId"
-							name="memberId" value="${sessionScope.logInMember.id }" readonly>
+						ID : <input type="email" class="form-control" id="memberId"
+							name="memberId" value="${sessionScope.logInMember.memberId }" readonly>
 						<br>
 					</div>
 
 					<div class="form-group">
-						PW : <input type="text" class="form-control" id="modify_memberPw"
+						PW : <input type="text" class="form-control" id="memberPw"
 							name="memberPw" value="${sessionScope.logInMember.pw }">
 						<br>
 					</div>
 
 					<div class="form-group">
 						NICKNAME : <input type="text" class="form-control"
-							id="modify_memberNickName" name="memberNickName"
-							value="${sessionScope.logInMember.nickName }"> <br>
+							id="memberName" name="memberNickName"
+							value="${sessionScope.logInMember.memberName }"> <br>
 					</div>
 
 					<div class="form-group">
 						<input type="radio" name="memberType" value="0"
-							${sessionScope.logInMember.memberType=='0'?'checked':''}>
+							${sessionScope.logInMember.type=='0'?'checked':''}>
 						User &nbsp; &nbsp; <input type="radio" name="memberType" value="1"
-							${sessionScope.logInMember.memberType=='1'?'checked':''}>
+							${sessionScope.logInMember.type=='1'?'checked':''}>
 						Developer &nbsp; &nbsp; <br>
 					</div>
 
 					<br>
 
-					<button type="button" class="btn btn-success" id="modify_button">Modify</button>
+					<button type="button" class="btn btn-success" id="modify_button" onclick="memberModify()">Modify</button>
 				</form>
 			</div>
 		</div>

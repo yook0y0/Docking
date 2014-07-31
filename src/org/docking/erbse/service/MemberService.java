@@ -6,7 +6,8 @@ public interface MemberService {
 
 	public Integer memberAdd(MemberVO member);
 	public Integer memberModify(MemberVO member);
-	public String memberSearch(String memberId);
+	public MemberVO memberSearch(String memberId);
+	public String memberSearch(MemberVO member);
 	public Integer memberDelete(String memberId);
 	public Integer memberLogin(String memberId,String pw);
 	public Integer memberAddChk(MemberVO member);

@@ -23,11 +23,11 @@
 				<li><a onclick='getCont("board_list");'>REVIEW</a></li>
 
 				<c:choose>
-					<c:when test="${sessionScope.logInMember.nickName != null}">
-						<c:if test="${sessionScope.logInMember.memberType == 1 }">
+					<c:when test="${sessionScope.logInMember.memberName != null}">
+						<c:if test="${sessionScope.logInMember.type == 1 }">
 							<li><a onclick='getCont("editor");'>FOR DEVELOPER</a></li>
 						</c:if>
-						<li><a onclick='getCont("user");'>MY INFO</a>
+						<li><a onclick='getContJs("user","user");'>MY INFO</a>
 						<li><a href="./memberLogout">LOGOUT</a>
 					</c:when>
 					<c:otherwise>

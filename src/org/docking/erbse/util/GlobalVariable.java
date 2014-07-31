@@ -17,13 +17,16 @@ public class GlobalVariable {
 	/*
 	 * return message
 	 */
-	public static String MEMBER_SUCCESS = "성공";
-	public static String MEMBER_FAIL = "실패";
+	public static String MEMBER_SUCCESS = "�깃났";
+	public static String MEMBER_FAIL = "�ㅽ뙣";
 	
 	/*
 	 * 
 	 */
 	public static String EDITOR_START_PAGE = "start.jsp";
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 261182529ec7ed4a761bb68d78633c56da1eeb5a
 	public static String SERVER_ADDRESS = "http://localhost:8089/Docking";
 }

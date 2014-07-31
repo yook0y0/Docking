@@ -85,10 +85,15 @@ public class MemberController
 
 	public void memberSearch() throws IOException 
 	{
+<<<<<<< HEAD
 		String  memberId = req.getParameter("memberId");
 
 		String jRes = ms.memberSearch(memberId);
 
+=======
+		String jRes = ms.memberSearch((MemberVO)req.getSession().getAttribute("logInMember"));
+		
+>>>>>>> 261182529ec7ed4a761bb68d78633c56da1eeb5a
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
 		pw.flush();
@@ -110,6 +115,7 @@ public class MemberController
 		pw.println(msg);
 		pw.flush();
 	}
+<<<<<<< HEAD
 
 	public void memberLogin()	throws IOException
 	{
@@ -119,8 +125,52 @@ public class MemberController
 		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
 		else{msg = GlobalVariable.MEMBER_FAIL;};
 
+=======
+	
+	public void memberAddChk() throws IOException 
+	{
+		String memberId = req.getParameter("memberId");
+		String pw = req.getParameter("pw");
+		String memberName = req.getParameter("memberName");
+		Integer type = Integer.valueOf(req.getParameter("type"));
+
+		MemberVO   mvo = new MemberVO();
+		mvo.setMemberId(memberId);
+		mvo.setPw(pw);
+		mvo.setMemberName(memberName);
+		mvo.setType(type);
+
+		Integer code = ms.memberAddChk(mvo);
+
+		if(code == 1)
+		{
+			req.getSession().setAttribute("loginMember", mvo);
+		}	
+
+		try 
+		{
+			req.getRequestDispatcher("start.jsp").forward(req, res);
+		} 
+		catch (ServletException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void memberLogin()	throws IOException
+	{
+		String	memberId = req.getParameter("memberId");
+		
+		Integer	code = 	ms.memberLogin(memberId,req.getParameter("pw"));
+		
+		if(code == 1)
+		{
+			req.getSession().setAttribute("logInMember", ms.memberSearch(memberId));
+		}
+		
+>>>>>>> 261182529ec7ed4a761bb68d78633c56da1eeb5a
 		PrintWriter	pw = res.getWriter();
-		pw.print(msg);		// -1 아이디 없음, 0 비밀번호틀림, 1 성공
+		pw.print(code.toString());		
 		pw.flush();
 	}
 
@@ -128,9 +178,7 @@ public class MemberController
 	{
 		req.getSession().removeAttribute("logInMember");
 
-		PrintWriter	pw = res.getWriter();
-		pw.print("logout");
-		pw.flush();
+		res.sendRedirect("./start.jsp");
 	}
 
 	public void memberAddChk() throws IOException 

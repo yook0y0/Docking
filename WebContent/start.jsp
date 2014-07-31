@@ -20,8 +20,8 @@
 					<p>Real-time working environment</p>
 					
 					<c:choose>
-						<c:when test="${sessionScope.logInMember.nickName == null}">
-							<a onclick='getCont("login");'><button type="submit"
+						<c:when test="${sessionScope.logInMember.memberName == null}">
+							<a onclick='getContJs("login","user");'><button type="submit"
 							class="btn btn-warning btn-lg">Start !</button></a>
 						</c:when>
 						

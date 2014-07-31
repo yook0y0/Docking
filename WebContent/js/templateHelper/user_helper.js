@@ -21,36 +21,42 @@ function memberAdd()
 
 function memberModify() 
 {
-	memberId = "test_id";
-	pw = "test_pw_modify";
-	memberName = "test_name_modify";
-	type = "1";
+	var memberId = $("#memberId").val();
+	var pw = $("#memberPw").val();
+	var memberName = $("#memberName").val();
+	var type = document.querySelector('input[name="memberType"]:checked').value;
 
 	$.post("./memberModify",
-			{ 
+	{ 
 		memberId: memberId,
 		pw: pw,
 		memberName: memberName,
 		type: type
-			},
-			function(data)
-			{
-				console.log(data);
-			});
+	},
+	
+	function(data)
+	{
+		alert(data);
+		
+		$( "#changeable_inside" ).load( "js/templates/user_template");
+	});
 };
 
 function memberSearch() 
 {
-	memberId = "test_id";
-
+	$( "#changeable_inside" ).load( "js/templates/user_update_template.html");
+	$.getScript('js/templateHelper/user_helper.js');
+	
 	$.post("./memberSearch",
-			{ 
+	{ 
 		memberId: memberId,
-			},
-			function(data)
-			{
-				jData = JSON.parse(data);
-			});
+	},
+	function(data)
+	{
+		jData = JSON.parse(data);
+		
+		alert(jData);
+	});
 };
 
 function memberDelete() 
@@ -82,19 +88,18 @@ function memberLogin()
 	function(data)
 	{
 		console.log("data : " + data);
-		if(data == -1)
+		if(data == "-1")
 		{
 			alert("ID IS NOT EXIST!");
 		}
 		
-		else if(data == 0)
+		else if(data == "0")
 		{
 			alert("CHECK YOUR PASSWORD AGAIN!");
 		}
 		
 		else
 		{
-			console.log("@@");
 			window.location = "./start.jsp";
 		}
 	});

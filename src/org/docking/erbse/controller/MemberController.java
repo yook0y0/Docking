@@ -3,6 +3,7 @@ package org.docking.erbse.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,19 +41,17 @@ public class MemberController
 		Integer type = Integer.valueOf(req.getParameter("type"));
 
 		MemberVO   mvo = new MemberVO();
+
 		mvo.setMemberId(memberId);
 		mvo.setPw(pw);
 		mvo.setMemberName(memberName);
 		mvo.setType(type);
-		
+
 		Integer code = ms.memberAdd(mvo);
-		
 		String msg = null;
 		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
 		else{msg = GlobalVariable.MEMBER_FAIL;};
 
-		req.getSession().setAttribute("loginMember", mvo);
-		
 		PrintWriter pWriter = res.getWriter();
 		pWriter.write(msg);
 		pWriter.flush();
@@ -86,9 +85,7 @@ public class MemberController
 
 	public void memberSearch() throws IOException 
 	{
-		String  memberId = req.getParameter("memberId");
-
-		String jRes = ms.memberSearch(memberId);
+		String jRes = ms.memberSearch((MemberVO)req.getSession().getAttribute("logInMember"));
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
@@ -112,16 +109,49 @@ public class MemberController
 		pw.flush();
 	}
 	
+	public void memberAddChk() throws IOException 
+	{
+		String memberId = req.getParameter("memberId");
+		String pw = req.getParameter("pw");
+		String memberName = req.getParameter("memberName");
+		Integer type = Integer.valueOf(req.getParameter("type"));
+
+		MemberVO   mvo = new MemberVO();
+		mvo.setMemberId(memberId);
+		mvo.setPw(pw);
+		mvo.setMemberName(memberName);
+		mvo.setType(type);
+
+		Integer code = ms.memberAddChk(mvo);
+
+		if(code == 1)
+		{
+			req.getSession().setAttribute("loginMember", mvo);
+		}	
+
+		try 
+		{
+			req.getRequestDispatcher("start.jsp").forward(req, res);
+		} 
+		catch (ServletException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void memberLogin()	throws IOException
 	{
-		Integer	code = 	ms.memberLogin(req.getParameter("memberId"),req.getParameter("pw"));
+		String	memberId = req.getParameter("memberId");
 		
-		String msg = null;
-		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
-		else{msg = GlobalVariable.MEMBER_FAIL;};
+		Integer	code = 	ms.memberLogin(memberId,req.getParameter("pw"));
+		
+		if(code == 1)
+		{
+			req.getSession().setAttribute("logInMember", ms.memberSearch(memberId));
+		}
 		
 		PrintWriter	pw = res.getWriter();
-		pw.print(msg);		// -1 아이디 없음, 0 비밀번호틀림, 1 성공
+		pw.print(code.toString());		
 		pw.flush();
 	}
 	
@@ -129,8 +159,6 @@ public class MemberController
 	{
 		req.getSession().removeAttribute("logInMember");
 
-		PrintWriter	pw = res.getWriter();
-		pw.print("logout");
-		pw.flush();
+		res.sendRedirect("./start.jsp");
 	}
 }

@@ -1,9 +1,10 @@
 package org.docking.erbse.email;
 
 public interface EmailSendable {
-	void setContent(String content);
-	void setFrom(String from);
-	void setSubject(String subject);
-	void setTo(String to);
-	void sendEmail();
+	public void setContent(String content);
+	public void setContentType(String contentType);
+	public void setFrom(String from);
+	public void setSubject(String subject);
+	public void setTo(String to);
+	public void sendEmail();
 }

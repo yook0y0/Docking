@@ -8,6 +8,7 @@ public class EmailSender implements EmailSendable{
 	/*String cc;*/     // 참조
 	String subject;// 제목
 	String content;// 내용
+	String contentType;
 	/**
 	  * @param args
 	  */
@@ -23,7 +24,7 @@ public class EmailSender implements EmailSendable{
 			  EmailUtil mt = new EmailUtil();
 			  // 메일보내기
 			  //mt.sendEmail(from, to, cc, subject, content);
-			  mt.sendEmail(from, to, subject, content);
+			  mt.sendEmail(from, to, subject, content, contentType);
 			  System.out.println("메일 전송에 성공하였습니다.	");
 		  }catch(MessagingException me) {
 			  System.out.println("메일 전송에 실패하였습니다.	");
@@ -35,6 +36,9 @@ public class EmailSender implements EmailSendable{
 			  e.printStackTrace();
 		  }
 	  }
+	}
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 	public void setContent(String content) {
 		this.content = content;

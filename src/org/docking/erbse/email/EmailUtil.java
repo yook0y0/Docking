@@ -11,7 +11,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailUtil {
-	public void sendEmail(String from, String to, String subject, String content) throws Exception {
+	public void sendEmail(String from, String to, String subject, String content, String contentType) throws Exception {
 			  // Properties 설정
 			  // 프로퍼티 값 인스턴스 생성과 기본세션(SMTP 서버 호스트 지정)
 			  Properties props = new Properties();
@@ -51,8 +51,9 @@ public class EmailUtil {
 			  
 			  // Setting the Subject and Content Type
 			  msg.setSubject(subject); // 제목 설정
-			  msg.setText(content);  // 내용 설정
-			  msg.setSentDate(new Date());// 보내는 날짜 설정
+			 /* msg.setText(content);  // 내용 설정
+*/			  msg.setSentDate(new Date());// 보내는 날짜 설정
+			  msg.setContent(content, contentType);
 			  
 			  Transport.send(msg);  // 메일 보내기
 	}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.MemberService;
 import org.docking.erbse.service.MemberServiceImpl;
+import org.docking.erbse.util.Message;
 import org.docking.erbse.vo.MemberVO;
 
 
@@ -44,10 +45,14 @@ public class MemberController {
 		mvo.setType(type);
 		
 		Integer code = ms.memberAdd(mvo);
+		
+		String msg = null;
+		if(code == 1){msg = Message.MEMBER_SUCCESS;}
+		else{msg = Message.MEMBER_FAIL;};
 
 		req.getSession().setAttribute("loginMember", mvo);
 		PrintWriter pWriter = res.getWriter();
-		pWriter.write(code);
+		pWriter.write(msg);
 		pWriter.flush();
 	}
 
@@ -66,10 +71,14 @@ public class MemberController {
 		mvo.setType(type);
 		
 		Integer code = ms.memberModify(mvo);
+		
+		String msg = null;
+		if(code == 1){msg = Message.MEMBER_SUCCESS;}
+		else{msg = Message.MEMBER_FAIL;};
 
 		req.getSession().setAttribute("logInMember", mvo);
 		PrintWriter pWriter = res.getWriter();
-		pWriter.write(code);
+		pWriter.write(msg);
 		pWriter.flush();
 	}
 
@@ -89,10 +98,14 @@ public class MemberController {
 
 		Integer code = ms.memberDelete(memberId);
 
+		String msg = null;
+		if(code == 1){msg = Message.MEMBER_SUCCESS;}
+		else{msg = Message.MEMBER_FAIL;};
+		
 		req.getSession().removeAttribute("logInMember");
 
 		PrintWriter pw = res.getWriter();
-		pw.println(code);
+		pw.println(msg);
 		pw.flush();
 	}
 }

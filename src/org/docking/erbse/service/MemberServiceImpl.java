@@ -28,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
 		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
 		memService.modify("member_modify", member);
 
+		System.out.println("member : " + member.toString());
 		Integer res = 0;
 		/*
 		 * res �� ó�� �ʿ�

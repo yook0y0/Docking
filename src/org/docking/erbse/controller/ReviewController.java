@@ -21,8 +21,8 @@ public class ReviewController
 	private ReviewService rs;
 
 	public ReviewController(){
-		this.req = req;
-		this.res = res;
+		this.req = null;
+		this.res = null;
 		this.rs = new ReviewServiceImpl();
 	}
 

@@ -5,19 +5,19 @@ import java.util.List;
 
 public interface GenericDAO<T extends Serializable> 
 {
-	abstract public void add(List<T> list)	throws RuntimeException;
-	abstract public void add(T t)	throws RuntimeException;
+	abstract public Integer add(List<T> list);
+	abstract public Integer add(T t);
 	
-	abstract public void modify(T t)	throws RuntimeException;
-	abstract public void modify(List<T> list)	throws RuntimeException;
+	abstract public Integer modify(T t);
+	abstract public Integer modify(List<T> list);
 	
-	abstract public T search(Object id)	throws RuntimeException;
-	abstract public List<T> searchAll()	throws RuntimeException;
-	abstract public List<T>	searchAll(Object id)	throws RuntimeException;
+	abstract public T search(Object id);
+	abstract public List<T> searchAll();
+	abstract public List<T>	searchAll(Object id);
 	
-	abstract public void delete(Object id)	throws RuntimeException;
-	abstract public void deleteAll(List<T> list)	throws RuntimeException;
-	abstract public void deleteAll()	throws RuntimeException;
+	abstract public Integer delete(Object id);
+	abstract public Integer deleteAll(List<T> list);
+	abstract public Integer deleteAll();
 	
 	abstract public void setMapper(String mapper);
 }

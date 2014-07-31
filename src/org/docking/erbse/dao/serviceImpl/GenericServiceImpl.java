@@ -18,31 +18,31 @@ public class GenericServiceImpl<T extends Serializable>	implements GenericServic
 	}
 
 	@Override
-	public void add(String mapper, List<T> list) throws RuntimeException 
+	public Integer add(String mapper, List<T> list) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.add(list);
+		return genericDAO.add(list);
 	}
 
 	@Override
-	public void add(String mapper, T t) throws RuntimeException 
+	public Integer add(String mapper, T t) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.add(t);
+		return genericDAO.add(t);
 	}
 
 	@Override
-	public void modify(String mapper, T t) throws RuntimeException 
+	public Integer modify(String mapper, T t) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.modify(t);
+		return genericDAO.modify(t);
 	}
 
 	@Override
-	public void modify(String mapper, List<T> list) throws RuntimeException 
+	public Integer modify(String mapper, List<T> list) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.modify(list);
+		return genericDAO.modify(list);
 	}
 
 	@Override
@@ -67,23 +67,23 @@ public class GenericServiceImpl<T extends Serializable>	implements GenericServic
 	}
 
 	@Override
-	public void delete(String mapper, Object id) throws RuntimeException 
+	public Integer delete(String mapper, Object id) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.delete(id);
+		return genericDAO.delete(id);
 	}
 
 	@Override
-	public void deleteAll(String mapper, List<T> list) throws RuntimeException 
+	public Integer deleteAll(String mapper, List<T> list) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.deleteAll(list);
+		return genericDAO.deleteAll(list);
 	}
 
 	@Override
-	public void deleteAll(String mapper) throws RuntimeException 
+	public Integer deleteAll(String mapper) throws RuntimeException 
 	{
 		genericDAO.setMapper(mapper);
-		genericDAO.deleteAll();
+		return genericDAO.deleteAll();
 	}	
 }

@@ -8,7 +8,6 @@ import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.JsonParseData;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorReviewBBSVO;
-import org.docking.erbse.vo.EditorVO;
 
 
 public class ReviewServiceImpl implements ReviewService {

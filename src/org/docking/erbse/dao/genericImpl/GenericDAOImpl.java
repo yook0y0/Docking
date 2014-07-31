@@ -15,6 +15,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 {
 	private SqlSession	sqlSession;
 	private String		mapper;
+	private	Integer		returnVal = 1;
 	
 	public void setMapper(String mapper) 
 	{
@@ -49,54 +50,95 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 	}
 	
 	@Override
-	public void add(List<T> list) throws RuntimeException 
+	public Integer add(List<T> list)
 	{
 		connect();
 		
 		for(T t : list)
 		{
-			sqlSession.selectList(mapper, t);
+			try
+			{
+				sqlSession.insert(mapper, t);
+				sqlSession.commit();
+			}
+			catch(RuntimeException e)
+			{
+				returnVal = 0;
+			}
 		}
 		
 		disconnect();
+		
+		return returnVal;
 	}
 
 	@Override
-	public void add(T t) throws RuntimeException 
+	public Integer add(T t)
 	{
 		connect();
 		
-		sqlSession.selectList(mapper, t);
+		try
+		{
+			sqlSession.insert(mapper, t);
+			sqlSession.commit();
+		}
+		catch(RuntimeException e)
+		{
+			returnVal = 0;
+		}
 		
 		disconnect();
+		
+		return returnVal;
 	}
 
 	@Override
-	public void modify(T t) throws RuntimeException 
+	public Integer modify(T t)
 	{
 		connect();
 		
-		sqlSession.selectList(mapper, t);
+		try
+		{
+			sqlSession.update(mapper, t);
+			sqlSession.commit();
+		}
+		catch(RuntimeException e)
+		{
+			returnVal = 0;
+		}
+		
 		
 		disconnect();
+		
+		return returnVal;
 	}
 
 	@Override
-	public void modify(List<T> list) throws RuntimeException 
+	public Integer modify(List<T> list) 
 	{
 		connect();
 		
 		for(T t : list)
 		{
-			sqlSession.selectList(mapper, t);
+			try
+			{
+				sqlSession.update(mapper, t);
+				sqlSession.commit();
+			}
+			catch(RuntimeException e)
+			{
+				returnVal = 0;
+			}
 		}
 		
 		disconnect();
+		
+		return returnVal;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T search(Object id) throws RuntimeException 
+	public T search(Object id)
 	{
 		connect();
 		
@@ -109,7 +151,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> searchAll() throws RuntimeException 
+	public List<T> searchAll() 
 	{
 		connect();
 		
@@ -122,7 +164,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> searchAll(Object id) throws RuntimeException 
+	public List<T> searchAll(Object id) 
 	{
 		connect();
 		
@@ -134,35 +176,65 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 	}
 
 	@Override
-	public void delete(Object id) throws RuntimeException 
+	public Integer delete(Object id)
 	{
 		connect();
 		
-		sqlSession.selectList(mapper, id);
+		try
+		{
+			sqlSession.delete(mapper, id);
+			sqlSession.commit();
+		}
+		catch(RuntimeException e)
+		{
+			returnVal = 0;
+		}
 		
 		disconnect();
+		
+		return returnVal;
 	}
 
 	@Override
-	public void deleteAll(List<T> list) throws RuntimeException 
+	public Integer deleteAll(List<T> list)
 	{
 		connect();
 		
 		for(T t : list)
 		{
-			sqlSession.selectList(mapper, t);
+			try
+			{
+				sqlSession.delete(mapper, t);
+				sqlSession.commit();
+			}
+			catch(RuntimeException e)
+			{
+				returnVal = 0;
+			}
 		}
 		
 		disconnect();
+		
+		return returnVal;	
 	}
 
 	@Override
-	public void deleteAll() throws RuntimeException 
+	public Integer deleteAll()
 	{
 		connect();
 		
-		sqlSession.selectList(mapper);
+		try
+		{
+			sqlSession.delete(mapper);
+			sqlSession.commit();
+		}
+		catch(RuntimeException e)
+		{
+			returnVal = 0;
+		}
 		
 		disconnect();
+		
+		return returnVal;
 	}
 }

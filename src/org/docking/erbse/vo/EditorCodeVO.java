@@ -9,12 +9,7 @@ public class EditorCodeVO	implements Serializable
 	private String	editorId;
 	private String	code;
 	private String	path;
-	
-	public EditorCodeVO(){
-		this.editorId = null;
-		this.code = null;
-		this.path = null;
-	}
+
 	
 	public String getEditorId() {
 		return editorId;

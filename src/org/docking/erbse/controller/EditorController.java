@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.EditorService;
-import org.docking.erbse.service.EditorServiceImpl;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorVO;
 import org.docking.erbse.vo.MemberVO;
@@ -24,7 +24,7 @@ public class EditorController {
 	public EditorController(){
 		this.req = null;
 		this.res = null;
-		this.es = new EditorServiceImpl();
+		this.es = (EditorService)Injector.getInstance().getObject(EditorService.class);
 	}
 	
 	public void setReq(HttpServletRequest req) {

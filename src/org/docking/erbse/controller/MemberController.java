@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.MemberService;
-import org.docking.erbse.service.MemberServiceImpl;
-import org.docking.erbse.util.Message;
+import org.docking.erbse.util.GlobalVariable;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.MemberVO;
 
 
@@ -21,7 +21,7 @@ public class MemberController
 	public MemberController(){
 		this.req = null;
 		this.res = null;
-		this.ms = new MemberServiceImpl();
+		this.ms = (MemberService)Injector.getInstance().getObject(MemberService.class);
 	}
 	
 	public void setReq(HttpServletRequest req) {
@@ -48,8 +48,8 @@ public class MemberController
 		Integer code = ms.memberAdd(mvo);
 		
 		String msg = null;
-		if(code == 1){msg = Message.MEMBER_SUCCESS;}
-		else{msg = Message.MEMBER_FAIL;};
+		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
+		else{msg = GlobalVariable.MEMBER_FAIL;};
 
 		req.getSession().setAttribute("loginMember", mvo);
 		
@@ -75,8 +75,8 @@ public class MemberController
 		Integer code = ms.memberModify(mvo);
 		
 		String msg = null;
-		if(code == 1){msg = Message.MEMBER_SUCCESS;}
-		else{msg = Message.MEMBER_FAIL;};
+		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
+		else{msg = GlobalVariable.MEMBER_FAIL;};
 
 		req.getSession().setAttribute("logInMember", mvo);
 		PrintWriter pWriter = res.getWriter();
@@ -102,13 +102,35 @@ public class MemberController
 		Integer code = ms.memberDelete(memberId);
 
 		String msg = null;
-		if(code == 1){msg = Message.MEMBER_SUCCESS;}
-		else{msg = Message.MEMBER_FAIL;};
+		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
+		else{msg = GlobalVariable.MEMBER_FAIL;};
 		
 		req.getSession().removeAttribute("logInMember");
 
 		PrintWriter pw = res.getWriter();
 		pw.println(msg);
+		pw.flush();
+	}
+	
+	public void memberLogin()	throws IOException
+	{
+		Integer	code = 	ms.memberLogin(req.getParameter("memberId"),req.getParameter("pw"));
+		
+		String msg = null;
+		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
+		else{msg = GlobalVariable.MEMBER_FAIL;};
+		
+		PrintWriter	pw = res.getWriter();
+		pw.print(msg);		// -1 아이디 없음, 0 비밀번호틀림, 1 성공
+		pw.flush();
+	}
+	
+	public void memberLogout()	throws IOException
+	{
+		req.getSession().removeAttribute("logInMember");
+
+		PrintWriter	pw = res.getWriter();
+		pw.print("logout");
 		pw.flush();
 	}
 }

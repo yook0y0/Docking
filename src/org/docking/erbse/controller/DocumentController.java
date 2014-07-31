@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.DocumentService;
-import org.docking.erbse.service.DocumentServiceImpl;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberContentVO;
@@ -23,7 +23,7 @@ public class DocumentController
 	public DocumentController(){
 		this.req = null;
 		this.res = null;
-		this.ds = new DocumentServiceImpl();
+		this.ds = (DocumentService)Injector.getInstance().getObject(DocumentService.class);
 	}
 	
 	public void setReq(HttpServletRequest req) {

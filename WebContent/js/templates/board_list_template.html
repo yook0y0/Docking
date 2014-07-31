@@ -1,0 +1,36 @@
+<div id="boardPage">
+	<center>
+		<h2>
+			<a href="./getAllEditor2">REVIEW REGISTER</a>
+		</h2>
+	</center>
+	<c:forEach items="${entireEditorReview}" var="con" varStatus="status">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-lg-offset-2">
+					----------------------------------------------------------------------------------------------------
+					<p>
+						<bd>date : ${con.writtenDate}</bd>
+					</p>
+					<p>
+						writer : ${con.reviewId} <br>
+					</p>
+
+					<p>editor : ${con.editor }</p>
+					<h4>score : ${con.score}</h4>
+					<p>review : ${con.review}</p>
+
+					<c:if test="${sessionScope.logInMember.id == con.writer}">
+						<a
+							href="./editorReview_modify?reviewId=${con.reviewId}&editor=${con.editor}&writer=${con.writer}&review=${con.review}&score=${con.score}">MODIFY</a>
+						<br>
+						<a href="./editorReview_delete?reviewId=${con.reviewId}">DELETE</a>
+					</c:if>
+				</div>
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</c:forEach>
+</div>

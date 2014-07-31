@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.docking.erbse.controller.DockingController;
 import org.docking.erbse.controller.DocumentController;
 import org.docking.erbse.controller.EditorController;
 import org.docking.erbse.controller.MemberController;
@@ -17,13 +18,15 @@ import org.docking.erbse.util.Injector;
 
 @WebServlet(name="/FrontController", urlPatterns={
 		
-		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete",
+		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout",
 		
 		"/editorAdd", "/editorModify", "/editorSearch", "/editorDelete","/ownEditorList","/editorCodeAdd","/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList",
 
 		"/documentAdd", "/documentModify", "/documentDelete", "/documentSearch", "/ownDocumentList", "/joinDocumentList", "/contentAdd", "/contentModify", "/contentDelete", "/contentSearch", "/contentsList", "/memberInvite", "/memberExpel", "/memberPositionUpdate",
 		
 		"/reviewAdd", "/reviewModify", "/reviewSearch", "/reviewDelete", "/reviewList", "/reviewListByEditor", "/reviewListByWriter",
+
+		"/editorTestExecute", "/editorExecute", "/getEditorCode"
 })
 public class FrontController extends HttpServlet 
 {
@@ -47,7 +50,7 @@ public class FrontController extends HttpServlet
 		int		lastIndex = uri.lastIndexOf("/");
 		String	action = uri.substring(lastIndex + 1);
 
-
+		System.out.println("action : " + action);
 		/*
 		 * MemberController
 		 */
@@ -78,6 +81,20 @@ public class FrontController extends HttpServlet
 			mc.setReq(req);
 			mc.setRes(res);
 			mc.memberDelete();
+		}
+		else if(action.equals("memberLogin"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberLogin();
+		}
+		else if(action.equals("memberLogout"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberLogout();
 		}
 		
 		/*
@@ -307,6 +324,31 @@ public class FrontController extends HttpServlet
 			rc.setReq(req);
 			rc.setRes(res);
 			rc.reviewListByWriter();
+		}
+		
+		/*
+		 * DockingController
+		 */
+		else if(action.equals("editorTestExecute"))
+		{
+			DockingController dc = (DockingController)Injector.getInstance().getObject(DockingController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.editorTestExecute();
+		}
+		else if(action.equals("editorExecute"))
+		{
+			DockingController dc = (DockingController)Injector.getInstance().getObject(DockingController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.editorExecute();
+		}
+		else if(action.equals("getEditorCode"))
+		{
+			DockingController dc = (DockingController)Injector.getInstance().getObject(DockingController.class);
+			dc.setReq(req);
+			dc.setRes(res);
+			dc.getEditorCode();
 		}
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.util.JsonParseData;
+import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 
@@ -16,12 +16,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public Integer reviewAdd(EditorReviewBBSVO editorReview) {
 		// TODO Auto-generated method stub
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
-		reviewService.add("editorReivew_add", editorReview);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = reviewService.add("editorReivew_add", editorReview);
+		
 		return res;
 	}
 
@@ -29,12 +25,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public Integer reviewModify(EditorReviewBBSVO editorReview) {
 		// TODO Auto-generated method stub
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
-		reviewService.modify("editorReview_modify", editorReview);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = reviewService.modify("editorReview_modify", editorReview);
+		
 		return res;
 	}
 
@@ -42,12 +34,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public Integer reviewDelete(String reviewId) {
 		// TODO Auto-generated method stub
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
-		reviewService.delete("editorReview_delete", reviewId);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = reviewService.delete("editorReview_delete", reviewId);
+		
 		return res;
 	}
 
@@ -62,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
 		/*
 		 * DocumentVO Json
 		 */
-		String jErvo = JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()});
+		String jErvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvo});
 
@@ -82,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
 		 * DocumentVO List Json
 		 */
 		for(EditorReviewBBSVO ervo : ervoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
 		}
 		String[] ervoArr = new String[ervoList.size()];
 		ervoArr = tmpList.toArray(ervoArr);
@@ -105,7 +93,7 @@ public class ReviewServiceImpl implements ReviewService {
 		 * DocumentVO List Json
 		 */
 		for(EditorReviewBBSVO ervo : ervoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
 		}
 		String[] ervoArr = new String[ervoList.size()];
 		ervoArr = tmpList.toArray(ervoArr);

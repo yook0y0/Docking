@@ -11,7 +11,7 @@ import org.docking.erbse.analysis.filter.FileUnzipFilter;
 import org.docking.erbse.analysis.register.FilePathRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.util.JsonParseData;
+import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorVO;
@@ -23,6 +23,8 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorAdd(String path, EditorVO editor) {
 		// TODO Auto-generated method stub
 
+		Integer res = 0;
+		
 		DockingAnalyzer ds = new FileUnzipFilter(new FilePathRegister(path));
 		try {
 			ds.analyze();
@@ -36,7 +38,7 @@ public class EditorServiceImpl implements EditorService {
 		byte[][] data = dAttr.getData();
 
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
-		editService.add("editor_add", editor);
+		res += editService.add("editor_add", editor);
 
 		EditorCodeVO ecvo = new EditorCodeVO();
 		List<EditorCodeVO> editorCodeList = new ArrayList<EditorCodeVO>();
@@ -48,7 +50,7 @@ public class EditorServiceImpl implements EditorService {
 			editorCodeList.add(ecvo);
 		}
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		editCodeService.add("editorCode_add", editorCodeList);
+		res += editCodeService.add("editorCode_add", editorCodeList);
 
 		ds = null;
 		ds = new FileDeleteFilter(new FilePathRegister(path));
@@ -58,11 +60,7 @@ public class EditorServiceImpl implements EditorService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		
 		return res;
 	}
 
@@ -70,28 +68,22 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorModify(EditorVO editor) {
 		// TODO Auto-generated method stub
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
-		genericService.modify("editor_modify", editor);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = genericService.modify("editor_modify", editor);
+		
 		return res;
 	}
 
 	@Override
 	public Integer editorDelete(String editorId) {
 		// TODO Auto-generated method stub
+		Integer res = 0;
+		
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
-		editService.delete("editor_delete", editorId);
+		res = editService.delete("editor_delete", editorId);
 
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		editCodeService.delete("editorCode_deleteByEditorId", editorId);
+		res = editCodeService.delete("editorCode_deleteByEditorId", editorId);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -106,7 +98,7 @@ public class EditorServiceImpl implements EditorService {
 		/*
 		 * DocumentVO Json
 		 */
-		String jEvo = JsonParser.getInstance().jParseObj(JsonParseData.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())});
+		String jEvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
 	}
@@ -125,7 +117,7 @@ public class EditorServiceImpl implements EditorService {
 		 * DocumentVO List Json
 		 */
 		for(EditorVO evo : evoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
 		}
 		String[] evoArr = new String[evoList.size()];
 		evoArr = tmpList.toArray(evoArr);
@@ -138,12 +130,8 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorCodeAdd(EditorCodeVO editorCode) {
 		// TODO Auto-generated method stub
 		GenericService<EditorCodeVO>	editService = new GenericServiceImpl<EditorCodeVO>();
-		editService.add("editorCode_add", editorCode);
+		Integer res = editService.add("editorCode_add", editorCode);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -151,12 +139,8 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorCodeModify(EditorCodeVO editorCode) {
 		// TODO Auto-generated method stub
 		GenericService<EditorCodeVO>	genericService = new GenericServiceImpl<EditorCodeVO>();
-		genericService.modify("editorCode_modify", editorCode);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = genericService.modify("editorCode_modify", editorCode);
+		
 		return res;
 	}
 
@@ -171,7 +155,7 @@ public class EditorServiceImpl implements EditorService {
 		/*
 		 * DocumentVO Json
 		 */
-		String jEcvo = JsonParser.getInstance().jParseObj(JsonParseData.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()});
+		String jEcvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEcvo});
 	}
@@ -180,12 +164,8 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorCodeDelete(String path) {
 		// TODO Auto-generated method stub
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		editCodeService.delete("editorCode_delete", path);
+		Integer res = editCodeService.delete("editorCode_delete", path);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -203,7 +183,7 @@ public class EditorServiceImpl implements EditorService {
 		 * DocumentVO List Json
 		 */
 		for(EditorCodeVO ecvo : ecvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()}));
 		}
 		String[] ecvoArr = new String[ecvoList.size()];
 		ecvoArr = tmpList.toArray(ecvoArr);

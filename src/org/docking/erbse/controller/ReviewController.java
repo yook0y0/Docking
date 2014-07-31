@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.ReviewService;
-import org.docking.erbse.service.ReviewServiceImpl;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 
 
@@ -23,7 +23,7 @@ public class ReviewController
 	public ReviewController(){
 		this.req = null;
 		this.res = null;
-		this.rs = new ReviewServiceImpl();
+		this.rs = (ReviewService)Injector.getInstance().getObject(ReviewService.class);
 	}
 
 	public void setReq(HttpServletRequest req) 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.util.JsonParseData;
+import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
@@ -18,12 +18,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer documentAdd(DocumentVO document) {
 		// TODO Auto-generated method stub
 		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
-		genericService.add("document_add", document);
+		Integer res = genericService.add("document_add", document);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -31,12 +27,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer documentModify(DocumentVO document) {
 		// TODO Auto-generated method stub
 		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
-		genericService.modify("document_modify", document);
+		Integer res = genericService.modify("document_modify", document);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;	
 	}
 	
@@ -58,14 +50,14 @@ public class DocumentServiceImpl implements DocumentService {
 		/*
 		 * DocumentVO Json
 		 */
-		String jDvo = JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
+		String jDvo = JsonParser.getInstance().jParseObj(GlobalVariable.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
 		List<String> tmpList = new ArrayList<String>();		
 		
 		/*
 		 * ContentVO List Json
 		 */
 		for(ContentVO tcvo : cvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.CON_VO_FIELD, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
 		}
 		String[] cvoArr = new String[cvoList.size()];
 		cvoArr = tmpList.toArray(cvoArr);
@@ -76,7 +68,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 */
 		tmpList.clear();
 		for(MemberContentVO tmcvo : mcvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.MEMCON_VO_FIELD, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.MEMCON_VO_FIELD, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
 		}
 		String[] mcvoArr = new String[mcvoList.size()];
 		mcvoArr = tmpList.toArray(mcvoArr);
@@ -89,12 +81,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer documentDelete(String documentId) {
 		// TODO Auto-generated method stub
 		GenericService<DocumentVO>	genericService = new GenericServiceImpl<DocumentVO>();
-		genericService.delete("document_delete", documentId);
+		Integer res = 		genericService.delete("document_delete", documentId);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -113,7 +101,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 * DocumentVO List Json
 		 */
 		for(DocumentVO tdvo : dvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{tdvo.getDocumentId(),tdvo.getWriter(),tdvo.getTitle(),tdvo.getCreationDate()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.DOC_VO_FIELD, new String[]{tdvo.getDocumentId(),tdvo.getWriter(),tdvo.getTitle(),tdvo.getCreationDate()}));
 		}
 		String[] dvoArr = new String[dvoList.size()];
 		dvoArr = tmpList.toArray(dvoArr);
@@ -145,7 +133,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 * DocumentVO List Json
 		 */
 		for(MemberContentVO mcvo : mcvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.MEMCON_VO_FIELD, new String[]{mcvo.getDocumentId(),mcvo.getMemberId(),String.valueOf(mcvo.getMemberPosition())}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.MEMCON_VO_FIELD, new String[]{mcvo.getDocumentId(),mcvo.getMemberId(),String.valueOf(mcvo.getMemberPosition())}));
 		}
 		String[] mcvoArr = new String[dvoList.size()];
 		mcvoArr = tmpList.toArray(mcvoArr);
@@ -155,7 +143,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 * DocumentVO List Json
 		 */
 		for(DocumentVO dvo : dvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()}));
 		}
 		String[] dvoArr = new String[dvoList.size()];
 		dvoArr = tmpList.toArray(dvoArr);
@@ -168,12 +156,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer contentAdd(ContentVO content) {
 		// TODO Auto-generated method stub
 		GenericService<ContentVO> conService = new GenericServiceImpl<ContentVO>();
-		conService.add("content_add", content);
+		Integer res = conService.add("content_add", content);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -181,12 +165,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer contentModify(ContentVO content) {
 		// TODO Auto-generated method stub
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
-		conService.modify("content_modify", content);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = 		conService.modify("content_modify", content);
 		return res;	
 	}
 
@@ -201,7 +181,7 @@ public class DocumentServiceImpl implements DocumentService {
 		/*
 		 * DocumentVO Json
 		 */
-		String jCvo = JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()});
+		String jCvo = JsonParser.getInstance().jParseObj(GlobalVariable.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jCvo});
 	}
@@ -210,12 +190,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer contentDelete(String contentId) {
 		// TODO Auto-generated method stub
 		GenericService<ContentVO>	genericService = new GenericServiceImpl<ContentVO>();
-		genericService.delete("content_delete", contentId);
+		Integer res = 		genericService.delete("content_delete", contentId);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -232,7 +208,7 @@ public class DocumentServiceImpl implements DocumentService {
 		 * DocumentVO List Json
 		 */
 		for(ContentVO cvo : cvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(JsonParseData.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()}));
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.CON_VO_FIELD, new String[]{cvo.getDocumentId(),cvo.getContentId(),cvo.getBody(),cvo.getEditorId()}));
 		}
 		String[] cvoArr = new String[cvoList.size()];
 		cvoArr = tmpList.toArray(cvoArr);
@@ -245,12 +221,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer memberInvite(MemberContentVO memberContent) {
 		// TODO Auto-generated method stub
 		GenericService<MemberContentVO>	genericService = new GenericServiceImpl<MemberContentVO>();
-		genericService.add("memberContent_add", memberContent);
-
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
+		Integer res = genericService.add("memberContent_add", memberContent);
+		
 		return res;
 	}
 
@@ -258,12 +230,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer memberExpel(MemberContentVO memberContent) {
 		// TODO Auto-generated method stub
 		GenericService<MemberContentVO>	genericService = new GenericServiceImpl<MemberContentVO>();
-		genericService.delete("memberContent_delete", memberContent);
+		Integer res = genericService.delete("memberContent_delete", memberContent);
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
 
@@ -271,13 +239,8 @@ public class DocumentServiceImpl implements DocumentService {
 	public Integer memberPositionUpdate(MemberContentVO memberContent) {
 		// TODO Auto-generated method stub
 		GenericService<MemberContentVO>	genericService = new GenericServiceImpl<MemberContentVO>();
-		genericService.modify("memberContent_modify", memberContent);	
+		Integer res = genericService.modify("memberContent_modify", memberContent);	
 
-		Integer res = 0;
-		/*
-		 * res �� ó�� �ʿ�
-		 */
 		return res;
 	}
-
 }

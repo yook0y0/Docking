@@ -23,7 +23,7 @@
 	<select id="temp_searchAll_key" parameterType="org.docking.erbse.vo.TempVO" resultType="org.docking.erbse.vo.TempVO">
 		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
 		from temp_tb 
-		where temp_tempId=#{tempId}
+		where temp_contentId=#{contentId}
 	</select>
 	
 	<select id="temp_searchAll" resultType="org.docking.erbse.vo.TempVO">

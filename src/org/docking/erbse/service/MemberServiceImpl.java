@@ -2,6 +2,8 @@ package org.docking.erbse.service;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.email.EmailSendable;
+import org.docking.erbse.email.EmailSender;
 import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.MemberVO;
@@ -12,10 +14,25 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Integer memberAdd(MemberVO member) {
 		// TODO Auto-generated method stub
-		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
-		Integer res = memService.add("member_add", member);
+		String memberId = member.getMemberId();
+		String pw = member.getPw();
+		String memberName = member.getMemberName();
+		String type = String.valueOf(member.getType());
 		
-		return res;
+		String address = GlobalVariable.SERVER_ADDRESS + "/memberAddChk";
+		
+		String str = "승인을 누르면 가입됩니다.<br>";
+		String msg = "<html><head><title></title></head><body>"+ str +"<form name='form' method='post' action='"+ address +"'><input type='hidden' name='memberId' value='"+ memberId +"'><input type='hidden' name='pw' value='"+ pw +"'><input type='hidden' name='memberName' value='"+ memberName +"'><input type='hidden' name='type' value='"+ type +"'><input type='submit' value='승인'/></form></body></html>";
+		
+		EmailSendable emailSender = new EmailSender();
+		emailSender.setTo(memberId);
+		emailSender.setFrom("Docking");
+		emailSender.setSubject("Docking 가입 승인 메일입니다.");
+		emailSender.setContent(msg);
+		emailSender.setContentType("text/html; charset=EUC-KR");
+		emailSender.sendEmail();
+		
+		return 1;
 	}
 
 	@Override
@@ -68,5 +85,14 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return 1;
+	}
+
+	@Override
+	public Integer memberAddChk(MemberVO member) {
+		// TODO Auto-generated method stub
+		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
+		Integer res = memService.add("member_add", member);
+		
+		return res;
 	}
 }

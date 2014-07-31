@@ -9,4 +9,5 @@ public interface MemberService {
 	public String memberSearch(String memberId);
 	public Integer memberDelete(String memberId);
 	public Integer memberLogin(String memberId,String pw);
+	public Integer memberAddChk(MemberVO member);
 }

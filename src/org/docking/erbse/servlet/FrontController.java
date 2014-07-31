@@ -18,8 +18,8 @@ import org.docking.erbse.util.Injector;
 
 @WebServlet(name="/FrontController", urlPatterns={
 		
-		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout",
-		
+		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk",
+
 		"/editorAdd", "/editorModify", "/editorSearch", "/editorDelete","/ownEditorList","/editorCodeAdd","/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList",
 
 		"/documentAdd", "/documentModify", "/documentDelete", "/documentSearch", "/ownDocumentList", "/joinDocumentList", "/contentAdd", "/contentModify", "/contentDelete", "/contentSearch", "/contentsList", "/memberInvite", "/memberExpel", "/memberPositionUpdate",
@@ -95,6 +95,13 @@ public class FrontController extends HttpServlet
 			mc.setReq(req);
 			mc.setRes(res);
 			mc.memberLogout();
+		}
+		else if(action.equals("memberAddChk"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.memberAddChk();
 		}
 		
 		/*

@@ -24,9 +24,5 @@ public class GlobalVariable {
 	 * 
 	 */
 	public static String EDITOR_START_PAGE = "start.jsp";
-<<<<<<< HEAD
-	
-=======
->>>>>>> 261182529ec7ed4a761bb68d78633c56da1eeb5a
 	public static String SERVER_ADDRESS = "http://localhost:8089/Docking";
 }

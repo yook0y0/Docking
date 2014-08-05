@@ -35,10 +35,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Integer memberModify(MemberVO member) {
-		// TODO Auto-generated method stub
+	public Integer memberModify(MemberVO member) 
+	{
 		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
-		Integer res = 		memService.modify("member_modify", member);
+		Integer res = memService.modify("member_modify", member);
 		
 		return res;
 	}

@@ -17,8 +17,8 @@ public class GlobalVariable {
 	/*
 	 * return message
 	 */
-	public static String MEMBER_SUCCESS = "�깃났";
-	public static String MEMBER_FAIL = "�ㅽ뙣";
+	public static String MEMBER_SUCCESS = "SUCCESS!";
+	public static String MEMBER_FAIL = "FAIL!";
 	
 	/*
 	 * 

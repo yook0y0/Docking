@@ -94,7 +94,7 @@ public class MemberController
 	
 	public void memberDelete() throws IOException 
 	{
-		String memberId = req.getParameter("memberId");
+		String memberId = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
 
 		Integer code = ms.memberDelete(memberId);
 

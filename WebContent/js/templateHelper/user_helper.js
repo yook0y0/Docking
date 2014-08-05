@@ -22,7 +22,7 @@ function memberAdd()
 function memberModify() 
 {
 	var memberId = $("#memberId").val();
-	var pw = $("#memberPw").val();
+	var pw = $("#pw").val();
 	var memberName = $("#memberName").val();
 	var type = document.querySelector('input[name="memberType"]:checked').value;
 
@@ -38,39 +38,74 @@ function memberModify()
 	{
 		alert(data);
 		
-		$( "#changeable_inside" ).load( "js/templates/user_template");
+		//getContJs("user","user");
+		window.location = "./start.jsp";
 	});
 };
 
 function memberSearch() 
 {
-	$( "#changeable_inside" ).load( "js/templates/user_update_template.html");
-	$.getScript('js/templateHelper/user_helper.js');
+	getContJs("user_update","user");
 	
 	$.post("./memberSearch",
 	{ 
-		memberId: memberId,
+		
 	},
 	function(data)
 	{
 		jData = JSON.parse(data);
+		var result = $.parseJSON(jData.memberVO);
 		
-		alert(jData);
+		var	memberIdDiv = "";
+		var memberPwDiv = "";
+		var memberNameDiv = "";
+		var memberTypeDiv = "";
+		
+		memberIdDiv += 'ID : <input type="email" class="form-control" id="memberId" name="memberId" value="' + result['memberId'] + '" readonly> <br>';
+		memberPwDiv += 'PW : <input type="text" class="form-control" id="pw" name="memberPw" value="' + result['pw'] + '"> <br>';
+		memberNameDiv += 'NICKNAME : <input type="text" class="form-control" id="memberName" name="memberNickName" value="' + result['memberName'] + '"> <br>';
+		
+		if(result['type'] == "0")
+		{
+			memberTypeDiv += '<input type="radio" name="memberType" value="0" checked> User'; 
+			memberTypeDiv += '&nbsp; &nbsp';
+			memberTypeDiv += '<input type="radio" name="memberType" value="1"> Developer &nbsp; &nbsp; <br>';
+		}
+		else
+		{
+			memberTypeDiv += '<input type="radio" name="memberType" value="0"> User'; 
+			memberTypeDiv += '&nbsp; &nbsp';
+			memberTypeDiv += '<input type="radio" name="memberType" value="1" checked> Developer &nbsp; &nbsp; <br>';
+		}
+		
+		$("#modify_memberId_div").append(memberIdDiv);
+		$("#modify_pw_div").append(memberPwDiv);
+		$("#modify_memberName_div").append(memberNameDiv);
+		$("#modify_memberType_div").append(memberTypeDiv);
 	});
 };
 
 function memberDelete() 
 {
-	memberId = "test_id";
-
-	$.post("./memberDelete",
-			{ 
-		memberId: memberId,
-			},
-			function(data)
-			{
-				console.log(data);
-			});
+	if (confirm("DO YOU WANT TO QUIT DOCKING?") == true)
+	{   
+		$.post("./memberDelete",
+		{ 
+			
+		},
+		
+		function(data)
+		{
+			alert(data);
+			
+			window.location = "./start.jsp";
+		});
+	}
+	
+	else
+	{   
+	    return;
+	}	
 };
 
 function memberLogin() 

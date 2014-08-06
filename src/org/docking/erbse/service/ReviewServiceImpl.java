@@ -16,7 +16,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public Integer reviewAdd(EditorReviewBBSVO editorReview) {
 		// TODO Auto-generated method stub
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
-		Integer res = reviewService.add("editorReivew_add", editorReview);
+		Integer res = reviewService.add("editorReview_add", editorReview);
 		
 		return res;
 	}
@@ -47,9 +47,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 		String[] objName = new String[]{"editorReviewBBSVO"};
 
-		/*
-		 * DocumentVO Json
-		 */
 		String jErvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvo});
@@ -57,21 +54,20 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public String reviewList() {
-		// TODO Auto-generated method stub
+	public String reviewList() 
+	{
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
 		List<EditorReviewBBSVO> ervoList = reviewService.searchAll("editorReview_searchAll");
 		
 		List<String> tmpList = new ArrayList<String>();
 
 		String[] objName = new String[]{"editorReviewBBSVO"};
-
-		/*
-		 * DocumentVO List Json
-		 */
-		for(EditorReviewBBSVO ervo : ervoList){
+		
+		for(EditorReviewBBSVO ervo : ervoList)
+		{
 			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITREVIEW_VO_FIELD, new String[]{ervo.getReviewId(),ervo.getEditorId(),ervo.getMemberId(),ervo.getBody(),String.valueOf(ervo.getScore()),ervo.getWrittenDate()}));
 		}
+		
 		String[] ervoArr = new String[ervoList.size()];
 		ervoArr = tmpList.toArray(ervoArr);
 		String jErvoList = JsonParser.getInstance().jParseArr(ervoArr);

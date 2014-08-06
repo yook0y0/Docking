@@ -20,7 +20,7 @@
 				<li><a href="start.jsp">HOME</a></li>
 				<li><a onclick='getCont("document");'>DOCUMENT</a></li>
 
-				<li><a onclick='getCont("board_list");'>REVIEW</a></li>
+				<li><a onclick='getContJs("board_list","board");'>REVIEW</a></li>
 
 				<c:choose>
 					<c:when test="${sessionScope.logInMember.memberName != null}">

@@ -102,6 +102,27 @@ public class EditorServiceImpl implements EditorService {
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
 	}
+	
+	public String editorSearchAll()
+	{
+		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
+		List<EditorVO> eList = genericService.searchAll("editor_searchAll");
+		
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"editorVO"};
+		
+		for(EditorVO evo : eList)
+		{
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+		}
+		
+		String[] evoArr = new String[eList.size()];
+		evoArr = tmpList.toArray(evoArr);
+		String jErvoList = JsonParser.getInstance().jParseArr(evoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvoList});
+	}
 
 	@Override
 	public String ownEditorList(String director) {

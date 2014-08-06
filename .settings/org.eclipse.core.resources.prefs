@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
 encoding//src/org/docking/erbse/controller/MemberController.java=UTF-8
+encoding//src/org/docking/erbse/service/MemberServiceImpl.java=UTF-8
+encoding//src/org/docking/erbse/socket/SocketServer.java=UTF-8
+encoding//src/org/docking/erbse/test/EmailTest.java=UTF-8
 encoding//src/org/docking/erbse/util/GlobalVariable.java=UTF-8

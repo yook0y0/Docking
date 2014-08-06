@@ -55,7 +55,7 @@ function memberSearch()
 	{
 		jData = JSON.parse(data);
 		var result = $.parseJSON(jData.memberVO);
-		
+
 		var	memberIdDiv = "";
 		var memberPwDiv = "";
 		var memberNameDiv = "";

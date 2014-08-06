@@ -1,0 +1,38 @@
+<div class="container pt">
+	<div class="row mt">
+		<div class="col-lg-6 col-lg-offset-3 centered">
+			<h3>EDITOR UPLOAD</h3>
+			<hr>
+			<p>Input Editor Information</p>
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-8 col-lg-offset-2">
+
+			<form id="editorAddForm" enctype="multipart/form-data">
+
+				<div class="form-group">
+					<input type="name" name="editorId" class="form-control" id="editorId"
+						placeholder="editor Name"> <br>
+				</div>
+
+				<div class="form-group">
+					<input type="name" name="description" class="form-control"
+						id="description" placeholder="description"> <br>
+				</div>
+
+				<div class="form-group">
+					<input type="file" name="editorZip" id="editorZip" class="form-control"> <br>
+				</div>
+
+				Type <br> <select name="editorType">
+					<option value="1">Text</option>
+					<option value="2">Image</option>
+				</select> <br> <br>
+			<button type="button" id="upload">UPLOAD</button>
+			</form>
+			<div id="state"></div>
+		</div>
+	</div>
+	<!-- /row -->
+</div>

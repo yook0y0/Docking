@@ -5,7 +5,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%@ include file="import.html"%>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="js/view/singlePageApplication.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
@@ -30,7 +29,6 @@
 							class="btn btn-warning btn-lg">Start !</button></a>
 						</c:otherwise>
 					</c:choose>
-						
 				</div>
 			</div>
 		</div>

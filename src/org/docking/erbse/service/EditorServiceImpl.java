@@ -40,18 +40,21 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		res += editService.add("editor_add", editor);
 
-		EditorCodeVO ecvo = new EditorCodeVO();
+		EditorCodeVO ecvo = null;
 		List<EditorCodeVO> editorCodeList = new ArrayList<EditorCodeVO>();
 
 		for(int i=0;i<data.length;i++){
+			ecvo = new EditorCodeVO();
 			ecvo.setEditorId(editor.getEditorId());
-			ecvo.setCode(String.valueOf(data[i]));
-			ecvo.setPath(editor.getEditorId() + "/" + String.valueOf(type[i]));
+			ecvo.setCode(new String(data[i]));
+			ecvo.setPath(editor.getEditorId() + "/" + new String(type[i]));
 			editorCodeList.add(ecvo);
 		}
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		res += editCodeService.add("editorCode_add", editorCodeList);
+		res = editCodeService.add("editorCode_add", editorCodeList);
 
+		System.out.println("res : " + res);
+		
 		ds = null;
 		ds = new FileDeleteFilter(new FilePathRegister(path));
 		try {

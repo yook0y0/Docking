@@ -1,57 +1,49 @@
 <style>
 table {
-	border-collapse: separate;
-	border-spacing: 0 5px;
+   border-collapse: separate;
+   border-spacing: 0 5px;
 }
 
 thead th {
-	background-color: #24A6BD;
-	color: white;
+   background-color: #24A6BD;
+   color: white;
 }
 
 tbody td {
-	background-color: #EEEEEE;
+   background-color: #EEEEEE;
 }
 
 tr td:first-child,tr th:first-child {
-	border-top-left-radius: 6px;
-	border-bottom-left-radius: 6px;
+   border-top-left-radius: 6px;
+   border-bottom-left-radius: 6px;
 }
 
 tr td:last-child,tr th:last-child {
-	border-top-right-radius: 6px;
-	border-bottom-right-radius: 6px;
+   border-top-right-radius: 6px;
+   border-bottom-right-radius: 6px;
 }
 </style>
 <div class="row mt">
-	<div class="col-lg-6 col-lg-offset-3 centered">
-		<h3>Manage Your Document!</h3>
-		<hr>
-		<p>Modify Your Document</p>
-	</div>
+   <div class="col-lg-6 col-lg-offset-3 centered">
+      <h3>Manage Your Document!</h3>
+      <hr>
+      <p>Modify Your Document</p>
+   </div>
 </div>
 <div class="row mt">
-	<div class="col-lg-6 col-lg-offset-3">
-		<table class="table">
-			<thead class="">
-				<tr>
-					<th>EDITOR</th>
-					<th>TITLE</th>
-					<th>DATE</th>
-					<th>MANAGE</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${documentList}" var="con" varStatus="status">
-					<tr>
-						<td>${con.type }</td>
-						<td>${con.title}</td>
-						<td>${con.creationDate}</td>
-						<td><a
-							href="./document_updateView?id=${con.id}&writer=${con.writer}&title=${con.title}&content=${con.content}&type=${con.type}&creationDate=${con.creationDate}">Modify</a>
-							/ <a href="./document_delete?id=${con.id}">Delete</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
+   <div class="col-lg-6 col-lg-offset-3">
+      <table class="table">
+         <thead class="">
+            <tr>
+               <th>EDITOR</th>
+               <th>TITLE</th>
+               <th>DATE</th>
+               <th>MANAGE</th>
+            </tr>
+         </thead>
+         <tbody id="documentListTbody">
+
+         </tbody>
+      </table>
+   </div>
+</div>

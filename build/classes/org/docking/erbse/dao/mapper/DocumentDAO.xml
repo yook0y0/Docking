@@ -5,7 +5,7 @@
 <mapper namespace="org.docking.erbse.dao.dao.DocumentDAO">
 	<insert id="document_add" parameterType="org.docking.erbse.vo.DocumentVO">
 		insert into document_tb (document_documentId, document_writer, document_title, document_creationDate)
-		values (#{documentId}, #{writer}, #{title}, #{creationDate})
+		values (document_seq.NEXTVAL, #{writer}, #{title}, #{creationDate})
 	</insert>
 	
 	<update id="document_modify" parameterType="org.docking.erbse.vo.DocumentVO">

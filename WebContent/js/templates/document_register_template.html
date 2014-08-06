@@ -1,0 +1,27 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<div class="container pt">
+	<div class="row mt">
+		<div class="col-lg-6 col-lg-offset-3 centered">
+			<h3>DOCUMENT REGISTER</h3>
+			<hr>
+			<p>Input Document Title</p>
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-8 col-lg-offset-2">
+
+			<form id="documentAddForm" enctype="multipart/form-data">
+
+				<div class="form-group">
+					<input type="name" name="title" class="form-control" id="title"
+						placeholder="document title"> <br>
+				</div>
+				
+			<button type="button" id="register" onclick="documentAdd()">REGISTER</button>
+			</form>
+			<div id="state"></div>
+		</div>
+	</div>
+	<!-- /row -->
+</div>

@@ -16,7 +16,7 @@ import org.docking.erbse.controller.ReviewController;
 import org.docking.erbse.util.Injector;
 
 
-@WebServlet(name="/FrontController", urlPatterns={
+@WebServlet(name="/FrontController", urlPatterns={"/test",
 		
 		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk",
 
@@ -356,6 +356,9 @@ public class FrontController extends HttpServlet
 			dc.setReq(req);
 			dc.setRes(res);
 			dc.getEditorCode();
+		}
+		else{
+			System.out.println("@@");
 		}
 	}
 }

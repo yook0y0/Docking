@@ -1,0 +1,48 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<div class="container pt">
+	<div class="row mt">
+		<div class="col-lg-6 col-lg-offset-3 centered">
+			<h3>Register Docking!</h3>
+			<hr>
+			<p>Input Your Information</p>
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-6 col-lg-offset-3">
+			<div class="well">
+				<h5>EMAIL</h5>
+				<div class="input-group text-center">
+					<input type="text" class="form-control input-lg" id="memberId"
+						placeholder="Enter your email address"> <span
+						class="input-group-btn">
+						<button class="btn btn-lg btn-primary" type="button"
+							onclick="duplicationCheck()">CHECK</button>
+					</span>
+				</div>
+				<br>
+				<div class="form-group">
+					<h5>PASSWORD</h5>
+					<input type="text" class="form-control input-lg" id="memberPw"
+						name="memberPw" placeholder="Password"> <br>
+				</div>
+
+				<div class="form-group">
+					<h5>NICKNAME</h5>
+					<input type="text" class="form-control input-lg" id="memberName"
+						name="memberName" placeholder="NickName"> <br>
+				</div>
+
+				<div class="form-group">
+					<h5>USER TYPE</h5>
+					<br> <input type="radio" name="memberType" value="0" checked>
+					User &nbsp; &nbsp; <input type="radio" name="memberType" value="1">
+					Developer &nbsp; &nbsp; <br>
+				</div>
+			</div>
+			<br>
+			<button type="button" onclick="memberAdd()">Register</button>
+		</div>
+	</div>
+	<!-- /row -->
+</div>

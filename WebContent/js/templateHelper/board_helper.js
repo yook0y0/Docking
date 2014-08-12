@@ -1,5 +1,7 @@
-$(document).ready(function() 
+function getReviewList()
 {
+	getContJs("list_review","board");
+	
 	$.post("./reviewList",
 	{ 
 
@@ -16,34 +18,37 @@ $(document).ready(function()
 		{
 			review = $.parseJSON(result[i]);
 			
-			reviewList += '<li class="event">';
-			reviewList += '<input type="radio" id="' + review['reviewId'] + '" name="tl-group" value="' + review['reviewId'] + '"/>';
-			reviewList += '<label></label>';
-			reviewList += '<div class="thumb user-6"><span>' + review['memberId'] + review['writtenDate'] + '</span></div>';
-			reviewList += '<div class="content-perspective">';
-			reviewList += '<div class="content">';
-			reviewList += '<div class="content-inner">';
-			reviewList += '<h3>' + review['editorId'] + ':' + review['score'] + '</h3>';
-			reviewList += '<p>' + review['body'] + '</p>';
+			reviewList += '<div class="weather-2 pn">';
+			reviewList += '<div class="weather-2-header">';
+			reviewList += '<div class="row">';
+			reviewList += '<div class="col-sm-6 col-xs-6">';
+			reviewList += '<p>' + review['reviewId'] + '</p>';
+			reviewList += '</div>';
+			reviewList += '<div class="col-sm-6 col-xs-6 goright">';
+			reviewList += '<p class="small">' + review['writtenDate'] + '</p>';
+			reviewList += '</div></div></div>';
+			reviewList += '<div class="row data"> <br>';
+			reviewList += '<div class="col-sm-6 col-xs-6 goleft">' + review['body'] + '</div>';
+			reviewList += '<div class="col-sm-6 col-xs-6 goright"> <br>';
+			reviewList += '<h4><b>' + review['editorId'] + '</b></h4>';
+			reviewList += '<h4><b> Score : ' + review['score'] + '</b></h4>';
 			
-			if(1)
+			if(review['logInMember'] == review['memberId'])
 			{
-				reviewList += '<p><a onclick="reviewSearch()">MODIFY</a></p>';
-				reviewList += '&nbsp&nbsp&nbsp';	
-				reviewList += '<p><a onclick="reviewDelete()">DELETE</a></p>';	
+				reviewList += '<button class="btn btn-primary btn-xs" onclick="reviewSearch(\'' + review['reviewId'] + '\')">';
+				reviewList += '<i class="fa fa-pencil"></i></button>';
+				reviewList += '<button class="btn btn-danger btn-xs" onclick="reviewDelete(\'' + review['reviewId'] + '\')">';	
+				reviewList += '<i class="fa fa-trash-o "></i></button>';
 			}
+
+			reviewList += '</div></div></div> <br>';		
 			
-			reviewList += '</div>';
-			reviewList += '</div>';
-			reviewList += '</div>';
-			reviewList += '</li>';
-			
-			$("#reviewList_ul").append(reviewList);
+			$("#reviewList_div").append(reviewList);
 			
 			reviewList = "";
 		}
 	});
-});
+};
 
 function showValue(newValue)
 {
@@ -52,7 +57,7 @@ function showValue(newValue)
 
 function reviewEditorSearch()
 {
-	getContJs("board_regist","board");
+	getContJs("add_board","board");
 
 	$.post("./editorSearchAll",
 	{ 
@@ -114,16 +119,14 @@ function reviewAdd()
 	{
 		alert("SUCCESS!");
 			
-		getContJs("board_list","board");
+		getReviewList();
 	});
 };
 
-function reviewSearch() 
+function reviewSearch(reviewId) 
 {
-	getContJs("board_update","board");
-	
-	var reviewId = $('input:radio[name="tl-group"]:checked').val();
-	
+	getContJs("modify_board","board");
+
 	$.post("./reviewSearch",
 	{ 
 		reviewId: reviewId
@@ -174,23 +177,21 @@ function reviewModify()
 	
 	function(data)
 	{
-		alert(data);
+		alert("SUCCESS!");
 		
-		getContJs("board_list","board");
+		getReviewList();
 	});
 };
 
 function modifyCancle()
 {
-	getContJs("board_list","board");
+	getReviewList();
 };
 
-function reviewDelete()
+function reviewDelete(reviewId)
 {
 	if (confirm("DO YOU WANT TO DELETE REVEIW?") == true)
 	{   
-		var reviewId = $('input:radio[name="tl-group"]:checked').val();
-
 		$.post("./reviewDelete",
 		{ 
 			reviewId : reviewId
@@ -200,7 +201,7 @@ function reviewDelete()
 		{
 			alert("DELETE SUCCESS!");
 			
-			getContJs("board_list","board");
+			getReviewList();
 		});
 	}
 	

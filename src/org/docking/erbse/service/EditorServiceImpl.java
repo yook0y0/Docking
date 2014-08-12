@@ -6,20 +6,24 @@ import java.util.List;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.FileDeleteFilter;
+import org.docking.erbse.analysis.filter.FileUnzipFilter;
+import org.docking.erbse.analysis.register.FilePathRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorCodeVO;
+import org.docking.erbse.vo.EditorExecuteInfoVO;
+import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
 
 
-public class EditorServiceImpl implements EditorService {
-
+public class EditorServiceImpl implements EditorService 
+{
 	@Override
-	public Integer editorAdd(String path, EditorVO editor) {
-		// TODO Auto-generated method stub
-/*
+	public Integer editorAdd(String path, EditorVO editor, EditorExecuteInfoVO editorExecuteInfo) 
+	{
 		Integer res = 0;
 		
 		DockingAnalyzer ds = new FileUnzipFilter(new FilePathRegister(path));
@@ -40,18 +44,21 @@ public class EditorServiceImpl implements EditorService {
 		EditorCodeVO ecvo = null;
 		List<EditorCodeVO> editorCodeList = new ArrayList<EditorCodeVO>();
 
-		for(int i=0;i<data.length;i++){
+		for(int i=0;i<data.length;i++)
+		{
 			ecvo = new EditorCodeVO();
 			ecvo.setEditorId(editor.getEditorId());
 			ecvo.setCode(new String(data[i]));
 			ecvo.setPath(editor.getEditorId() + "/" + new String(type[i]));
 			editorCodeList.add(ecvo);
 		}
-		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		res = editCodeService.add("editorCode_add", editorCodeList);
-
-		System.out.println("res : " + res);
 		
+		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
+		res += editCodeService.add("editorCode_add", editorCodeList);
+		
+		GenericService<EditorExecuteInfoVO>	editorExecuteInfoService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		res += editorExecuteInfoService.add("editorExecute_add", editorExecuteInfo);
+
 		ds = null;
 		ds = new FileDeleteFilter(new FilePathRegister(path));
 		try {
@@ -62,8 +69,6 @@ public class EditorServiceImpl implements EditorService {
 		}
 		
 		return res;
-*/	
-		return null;	
 	}
 
 	@Override
@@ -127,26 +132,48 @@ public class EditorServiceImpl implements EditorService {
 	}
 
 	@Override
-	public String ownEditorList(String director) {
-		// TODO Auto-generated method stub
+	public String ownEditorList(String director) 
+	{
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		List<EditorVO> evoList = editService.searchAll("editor_searchAll_key", director);
+		
+		List<EditorReviewBBSVO>	tempErvoList = null;
 
 		List<String> tmpList = new ArrayList<String>();
 
 		String[] objName = new String[]{"EditorVO"};
+		Double	totalScore;
 
-		/*
-		 * DocumentVO List Json
-		 */
-		for(EditorVO evo : evoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+		for(EditorVO evo : evoList)
+		{
+			totalScore = 0.0;
+			tempErvoList = reviewListForTotalScore(evo.getEditorId());
+			
+			for(EditorReviewBBSVO ervo : tempErvoList)
+			{
+				totalScore += ervo.getScore();
+			}
+			
+			if(!(tempErvoList.size() == 0))
+			{
+				totalScore /= tempErvoList.size();
+			}
+			
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType()),String.valueOf(totalScore),String.valueOf(tempErvoList.size())}));
 		}
+		
 		String[] evoArr = new String[evoList.size()];
 		evoArr = tmpList.toArray(evoArr);
 		String jEvoList = JsonParser.getInstance().jParseArr(evoArr);
-
+		
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvoList});
+	}
+	
+	private List<EditorReviewBBSVO> reviewListForTotalScore(String editorId)
+	{
+		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
+		
+		return reviewService.searchAll("editorReview_searchAll_key", editorId);
 	}
 
 	@Override
@@ -193,8 +220,8 @@ public class EditorServiceImpl implements EditorService {
 	}
 
 	@Override
-	public String codeList(String editorId) {
-		// TODO Auto-generated method stub
+	public String codeList(String editorId) 
+	{
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", editorId);
 
@@ -202,9 +229,6 @@ public class EditorServiceImpl implements EditorService {
 
 		String[] objName = new String[]{"EditorCodeVOList"};
 
-		/*
-		 * DocumentVO List Json
-		 */
 		for(EditorCodeVO ecvo : ecvoList){
 			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()}));
 		}

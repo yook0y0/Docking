@@ -1,0 +1,54 @@
+<section id="main-content">
+	<section class="wrapper">
+		<h3>
+			<i class="fa fa-angle-right"></i> Review Register!
+		</h3>
+
+		<div class="row mt">
+			<div class="col-lg-6 col-lg-offset-3">
+					<div class="well">
+						<div class="form-group">
+							<h5>EDITOR</h5>
+							<select class="selectpicker" name="doc_editor">
+								<optgroup label="Text Editor" id="textEditor">
+
+								</optgroup>
+
+								<optgroup label="MindMap" id="mindMap">
+
+								</optgroup>
+
+								<optgroup label="Questionnaire" id="questionnaire">
+
+								</optgroup>
+
+								<optgroup label="Else" id="elseEditor">
+
+								</optgroup>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<h5>SCORE</h5>
+							<span id="range">0</span> <input type="range" min="0" max="10"
+								class="form-control input-lg" id="score" name="score"
+								onchange="showValue(this.value)" value="0" placeholder="score" />
+						</div>
+						<div class="form-group">
+							<h5>REVIEW</h5>
+							<input type="text" class="form-control input-lg" id="review"
+								name="review" placeholder="review"> <br>
+						</div>
+						<br>
+
+					</div>
+
+
+					<br>
+
+					<button type="button" class="btn btn-success" id="register_button"
+						onclick="reviewAdd()">Register</button>
+			</div>
+		</div>
+	</section>
+</section>

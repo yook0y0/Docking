@@ -5,26 +5,32 @@ import java.util.List;
 
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.vo.EditorCodeVO;
+import org.docking.erbse.vo.MemberVO;
 
 public class DAOTest
 {	
 	public static void main(String[] args) 
 	{
-		GenericService<EditorCodeVO>	service = new GenericServiceImpl<EditorCodeVO>();
+		GenericService<MemberVO>	service = new GenericServiceImpl<MemberVO>();
 		
-		EditorCodeVO	ecvo = new EditorCodeVO();
-		List<EditorCodeVO> ecvoList = new ArrayList<EditorCodeVO>();
+		MemberVO	memberVO = new MemberVO();
+		MemberVO	vo = new MemberVO();
 		
-		for(int i=0;i<10;i++){
-		ecvo.setCode(String.valueOf(i));
-		ecvo.setEditorId(String.valueOf(i));
-		ecvo.setPath(String.valueOf(i));
-		ecvoList.add(ecvo);
-		}
+		memberVO.setMemberId("testdgdsdIddd");
+		memberVO.setMemberName("1111");
+		memberVO.setPw("testPw");
+		memberVO.setType(1);
 		
-		System.out.println(ecvoList);
+		vo.setMemberId("testsfdgIddd");
+		vo.setMemberName("1111");
+		vo.setPw("testPw");
+		vo.setType(1);
 		
-		//System.out.println(service.add("editorCode_add", ecvoList));
+		List<MemberVO>	list = new ArrayList<MemberVO>();
+		
+		list.add(memberVO);
+		list.add(vo);
+		
+		System.out.println(service.modify("member_modify", list));
 	}
 }

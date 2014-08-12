@@ -22,7 +22,7 @@ public class EmailTest {
 		String msg = "<html><head><title></title></head><body><form name='form' method='post' action='http://localhost:8089/Docking/memberAddChk'><input type='hidden' name='memberId' value='1'><input type='hidden' name='pw' value='2'><input type='hidden' name='memberName' value='3'><input type='hidden' name='type' value='4'><input type='submit' value='�뺤씤'/></form></body></html>";
 		EmailSendable emailSender = new EmailSender();
 
-		emailSender.setTo("kimjin7167@naver.com");
+		emailSender.setTo("lih8989@naver.com");
 		emailSender.setFrom("??");
 		emailSender.setSubject("�쒕ぉ");
 		emailSender.setContent(msg);

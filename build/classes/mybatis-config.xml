@@ -9,8 +9,8 @@
 			<dataSource type="UNPOOLED">
 				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
 				<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:XE"/>
-				<property name="username" value="lih"/>
-				<property name="password" value="spok4x"/>
+				<property name="username" value="kfcpizza"/>
+				<property name="password" value="7426"/>
 			</dataSource>
 		</environment>
 	</environments>
@@ -24,6 +24,7 @@
 		<mapper resource="org/docking/erbse/dao/mapper/MemberContentDAO.xml"/>
 		<mapper resource="org/docking/erbse/dao/mapper/MemberDAO.xml"/>
 		<mapper resource="org/docking/erbse/dao/mapper/TempDAO.xml"/>
+		<mapper resource="org/docking/erbse/dao/mapper/EditorExecuteInfoDAO.xml"/>
 	</mappers>
 	
 </configuration>

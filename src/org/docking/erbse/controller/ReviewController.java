@@ -103,7 +103,7 @@ public class ReviewController
 
 	public void reviewList() throws IOException 
 	{
-		String jRes = rs.reviewList();
+		String jRes = rs.reviewList(((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
@@ -123,7 +123,7 @@ public class ReviewController
 
 	public void reviewListByWriter() throws IOException 
 	{
-		String   memberId = req.getParameter("memberId");
+		String memberId = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
 
 		String jRes = rs.reviewListByWriter(memberId);
 		

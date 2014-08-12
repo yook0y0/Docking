@@ -145,27 +145,22 @@ public class MemberController
 		
 		Integer	code = 	ms.memberLogin(memberId,req.getParameter("pw"));
 		
-		String data = null;
 		if(code == 1)
 		{
 			req.getSession().setAttribute("logInMember", ms.memberSearch(memberId));
-			data = memberId;
-		}
-		else{
-			data = null;
 		}
 		
 		PrintWriter	pw = res.getWriter();
-		pw.print(data);		
+		pw.print(code.toString());		
 		pw.flush();
 	}
 	
 	public void memberLogout()	throws IOException
 	{
 		req.getSession().removeAttribute("logInMember");
-		
+
 		PrintWriter	pw = res.getWriter();
-		pw.print("1");		
+		pw.print("");		
 		pw.flush();
 	}
 }

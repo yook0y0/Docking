@@ -5,43 +5,10 @@
 
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="Dashboard">
-<meta name="keyword"
-	content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-
-<title>DOCKING - Real-time working environment</title>
-
-<script src="js/view/singlePageApplication.js"></script>
-<script src="js/templateHelper/member_helper.js"></script>
-
-<!-- Bootstrap core CSS -->
-<link href="assets/css/bootstrap.css" rel="stylesheet">
-<!--external css-->
-<link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-<link rel="stylesheet" type="text/css"
-	href="assets/css/zabuto_calendar.css">
-<link rel="stylesheet" type="text/css"
-	href="assets/js/gritter/css/jquery.gritter.css" />
-<link rel="stylesheet" type="text/css" href="assets/lineicons/style.css">
-
-<!-- Custom styles for this template -->
-<link href="assets/css/style.css" rel="stylesheet">
-<link href="assets/css/style-responsive.css" rel="stylesheet">
-
-<script src="assets/js/chart-master/Chart.js"></script>
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<%@ include file="import.html"%>
+	<title>DOCKING - Real-time working environment</title>
 </head>
-
 <body>
-
 	<section id="container">
 		<!-- **********************************************************************************************************************************************************
       TOP BAR CONTENT & NOTIFICATIONS
@@ -53,7 +20,11 @@
 					data-original-title="Toggle Navigation"></div>
 			</div>
 			<!--logo start-->
-			<a href="./main.jsp" class="logo"><b>DOCKING</b></a>
+				<a href="./main.jsp" class="logo"><b>DOCKING</b></a>
+
+
+<!--  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////   -->	
+
 			<!--logo end-->
 			<div class="nav notify-row" id="top_menu">
 				<!--  notification start -->
@@ -163,6 +134,10 @@
 				</ul>
 				<!--  notification end -->
 			</div>
+			
+			
+			
+<!--  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////   -->		
 			<div class="top-menu">
 				<ul class="nav pull-right top-menu" id="login_ul">
 					<c:choose>
@@ -187,7 +162,7 @@
 									<ul class="dropdown-menu" role="menu">
 										<li>MY INFO</li>
 										<li class="divider"></li>
-										<li><a onclick='getContJs("modify_member","member")'>UPDATE</a></li>
+										<li><a onclick="memberSearch()">UPDATE</a></li>
 										<li><a onclick="memberLogout()">LOGOUT</a></li>
 									</ul>
 								</div>
@@ -214,21 +189,20 @@
 						onclick='getContJs("list_document","document");'> <i
 							class="fa fa-book"></i> <span>DOCUMENT</span>
 					</a>
-					<li c lass="sub-menu"><a onclick='getCont("list_review");'>
+					<li c lass="sub-menu"><a onclick='getReviewList()'>
 							<i class="fa fa-th"></i> <span>REVIEW</span>
 					</a>
-					<li class="sub-menu"><a onclick='getCont("list_editor")'>
+					
+					<c:if test="${sessionScope.logInMember.type == 1 }">
+						<li class="sub-menu"><a onclick='getOwnEditorList()'>
 							<i class="fa fa-desktop"></i> <span>FOR DEVELOPER</span>
-					</a>
+						</a>
+					</c:if>
+					
 				</ul>
 				<!-- sidebar menu end-->
 			</div>
 		</aside>
-		<!--sidebar end-->
-		<!-- **********************************************************************************************************************************************************
-      MAIN CONTENT
-      *********************************************************************************************************************************************************** -->
-
 		<!--main content end-->
 
 	</section>
@@ -256,7 +230,8 @@
 	<script src="assets/js/zabuto_calendar.js"></script>
 
 	<script type="application/javascript">
-        $(document).ready(function () {
+        $(document).ready(function () 
+       	{
   			$('select.styled').customSelect();
             $("#date-popover").popover({html: true, trigger: "manual"});
             $("#date-popover").hide();

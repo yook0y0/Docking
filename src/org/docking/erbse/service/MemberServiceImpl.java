@@ -93,6 +93,7 @@ public class MemberServiceImpl implements MemberService {
       {
          return 0;
       }
+      
       return 1;
    }
 }

@@ -1,11 +1,12 @@
 package org.docking.erbse.service;
 
 import org.docking.erbse.vo.EditorCodeVO;
+import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorVO;
 
 public interface EditorService {
 
-	public Integer editorAdd(String path, EditorVO editor);
+	public Integer editorAdd(String path, EditorVO editor, EditorExecuteInfoVO editorExecuteInfo);
 	public Integer editorModify(EditorVO editor);
 	public String editorSearch(String editorId);
 	public String editorSearchAll();

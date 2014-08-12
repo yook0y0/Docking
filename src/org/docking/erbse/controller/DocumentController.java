@@ -2,20 +2,15 @@ package org.docking.erbse.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.DocumentService;
-import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberContentVO;
-import org.docking.erbse.vo.MemberVO;
 
 
 public class DocumentController 
@@ -39,23 +34,16 @@ public class DocumentController
 	}
 	
 	public void documentAdd() throws IOException {
-		
-		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
 		DocumentVO dvo = new DocumentVO();
-		MemberVO mvo = (MemberVO)req.getSession().getAttribute("logInMember");
-		
-		dvo.setWriter(mvo.getMemberId());
+		dvo.setDocumentId(req.getParameter("documentId"));
+		dvo.setWriter(req.getParameter("writer"));
 		dvo.setTitle(req.getParameter("title"));
-		dvo.setCreationDate(mSimpleDateFormat.format(new Date()));
+		dvo.setCreationDate(req.getParameter("creationDate"));
 		
 		Integer code = ds.documentAdd(dvo);
 		
-		String msg = null;
-		if(code == 1){msg = GlobalVariable.MEMBER_SUCCESS;}
-		else{msg = GlobalVariable.MEMBER_FAIL;};
-		
 		PrintWriter pw = res.getWriter();
-		pw.write(msg);
+		pw.write(code);
 		pw.flush();
 	}
 	

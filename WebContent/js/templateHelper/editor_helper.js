@@ -1,3 +1,32 @@
+function editorAdd()
+{
+	$("#editorAddForm").submit(function (event) 
+	{
+	    event.preventDefault();
+	    var formData = new FormData($(this)[0]);
+
+	    $.ajax({
+	        url: './editorAdd',
+	        type: 'POST',
+	        data: formData,
+	        async: false,
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        success: function () 
+	        {
+	        	getOwnEditorList();
+	        },
+	        error: function()
+	        {
+	            alert("error in ajax form submission");
+	        }
+	    });
+
+	    return false;
+	});
+};
+
 function getOwnEditorList() 
 {
 	getContJs("list_editor","editor");
@@ -13,7 +42,6 @@ function getOwnEditorList()
 		var result = $.parseJSON(jData.EditorVO);
 		var editor;
 		var editorList = "";
-		var editorType = "";
 
 		for(var i = 0 ; i < result.length ; i++)
 		{
@@ -26,31 +54,32 @@ function getOwnEditorList()
 			
 			if(editor['editorType'] == "0")
 			{
-				editorType = "TextEditor";
+				editorList += '<td><span class="label label-warning label-mini">TextEditor</span></td>';
 			}
 			
 			else if(editor['editorType'] == "1")
 			{
-				editorType = "MindMap";
+				editorList += '<td><span class="label label-primary label-mini">MindMap</span></td>';
 			}
 			
 			else if(editor['editorType'] == "2")
 			{
-				editorType = "Questionnaire";
+				editorList += '<td><span class="label label-success label-mini">Questionnaire</span></td>';
 			}
 			
 			else
 			{
-				editorType = "Else";
+				editorList += '<td><span class="label label-default label-mini">Else</span></td>';
+
 			}
 			
-			editorList += '<td><span class="label label-warning label-mini">' + editorType + '</span></td>';
+			
 			editorList += '<td>';
 			editorList += '<button class="btn btn-success btn-xs">';
 			editorList += '<i class="fa fa-check"></i></button>';
-			editorList += '<button class="btn btn-primary btn-xs">';
+			editorList += '<button class="btn btn-primary btn-xs" onclick="editorSearch(\'' + editor['editorId'] + '\')">';
 			editorList += '<i class="fa fa-pencil"></i></button>';
-			editorList += '<button class="btn btn-danger btn-xs">';
+			editorList += '<button class="btn btn-danger btn-xs" onclick="editorDelete(\'' + editor['editorId'] + '\')">';
 			editorList += '<i class="fa fa-trash-o "></i></button></td></tr>';
 
 			$("#own_editorList").append(editorList);
@@ -60,120 +89,153 @@ function getOwnEditorList()
 	});
 };
 
-$("#editorAddForm").submit(function (event) 
+function closeShareMode()
 {
-    event.preventDefault();
-    var formData = new FormData($(this)[0]);
-
-    $.ajax({
-        url: './editorAdd',
-        type: 'POST',
-        data: formData,
-        async: false,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function () 
-        {
-        	getContJs("editor","editor");
-        },
-        error: function()
-        {
-            alert("error in ajax form submission");
-        }
-    });
-
-    return false;
-});
-
-$(function() {
-	$('#local_radio').click(function () {
-        $('#shareMode_div').hide('fast');
-   });
-	
-	$('#share_radio').click(function () {
-        $('#shareMode_div').show('fast');
-   });
- });
-
-
-
-function editorModify() 
-{
-	var editorId = $("#editorId").val();
-	var description = $("#description").val();
-	var editorType = $("#editorType").val();
-	var editorZip = $("#editorZip").val();
-
-	$.post("./editorModify",
-			{ 
-				editorId: editorId,
-				description: description,
-				editorType: editorType,
-				editorZip: editorZip
-			},
-
-			function(data)
-			{
-				alert(data);
-
-				window.location = "./start.jsp";
-			});
+	$('#shareMode_div').hide('fast');
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function reviewListByWriter() 
+function openShareMode()
 {
-	getContJs("editor_review","editor");
+	$('#shareMode_div').show('fast');
+};
 
-	$.post("./reviewListByWriter",
+function selectTextEditor()
+{
+	$("#editorType").val("0");
+};
+
+function selectMindMap()
+{
+	$("#editorType").val("1");
+};
+
+function selectQuestionnaire()
+{
+	$("#editorType").val("2");
+};
+
+function selectElse()
+{
+	$("#editorType").val("3");
+};
+
+function registerCancle()
+{
+	getOwnEditorList();
+};
+
+function editorSearch(editorId)
+{
+	getContJs("modify_editor","editor");
+	
+	$.post("./editorSearch",
 	{ 
-		
+		editorId: editorId
 	},
 
 	function(data)
 	{
 		jData = JSON.parse(data);
-		var result = $.parseJSON(jData.developerReviewList);
-		var total;
-		var totalList = "";
+		var result = $.parseJSON(jData.modifyEditorVO);
 		
-		for(var i = 0 ; i < result.length ; i++)
+		var editorIdDiv = "";
+		var descriptionDiv = "";
+		var startPageDiv = "";
+		var setMethodDiv = "";
+		var getMethodDiv = "";
+		var useRangeDiv = "";
+		var editorTypeDiv = "";
+		var buttonDiv = "";
+		
+		editorIdDiv += '<input type="name" name="editorId" class="form-control" id="editorId" placeholder="editor Name" value ="' + result['editorId'] + '"> <br>';
+		descriptionDiv += '<input type="name" name="description" class="form-control" id="description" placeholder="description" value ="' + result['description'] + '"> <br>';
+		startPageDiv += '<input type="name" name="startPage" class="form-control" id="startPage" placeholder="startPage" value ="' + result['startPage'] + '"> <br>';
+		setMethodDiv += '<input type="name" name="setMethod" class="form-control" id="setMethod" placeholder="setMethod" value ="' + result['setMethod'] + '"> <br>';
+		getMethodDiv += '<input type="name" name="getMethod" class="form-control" id="getMethod" placeholder="getMethod" value ="' + result['getMethod'] + '"> <br>';
+		editorTypeDiv += '<input type="hidden" id="editorType" name="editorType" value ="' + result['editorType'] + '">';
+		
+		if(result['useRange'] == "0")
 		{
-			total = $.parseJSON(result[i]);
-			
-			totalList += '<div class="record">';
-			totalList += '<div class="bar" style="width:' + total['totalScore'] + '%;">';
-			totalList += '<span><a onclick="reviewListByEditor(\'' + total['editorId'] + '\')">' + total['editorId'] + '</a></span></div><div class="p">';
-			totalList += '<span>Score : ' + total['totalScore'] + '</span></div></div>';
-			
-			
-			
-			if(result['editorType'] == "0")
-			{
-				$("#textEditor_div").append(totalList);
-			}
-			
-			else if(result['editorType'] == "1")
-			{
-				$("#mindMap_div").append(totalList);
-			}
-			
-			else if(result['editorType'] == "2")
-			{
-				$("#question_div").append(totalList);
-			}
-			
-			else
-			{
-				$("#else_div").append(totalList);
-			}
-			
-			totalList = "";
+			useRangeDiv += '<input type="radio" id="local_radio" name="useRange" value="0" checked onclick="closeShareMode()"> Limit';
+			useRangeDiv += '<input type="radio" id="share_radio" name="useRange" value="1" onclick="openShareMode()"> Permission &nbsp; &nbsp; <br>';
+
+			$('#shareMode_div').hide('fast');
 		}
+		else
+		{
+			useRangeDiv += '<input type="radio" id="local_radio" name="useRange" value="0" onclick="closeShareMode()"> Limit';
+			useRangeDiv += '<input type="radio" id="share_radio" name="useRange" value="1" checked onclick="openShareMode()"> Permission &nbsp; &nbsp; <br>';
+
+			$('#shareMode_div').show('fast');
+		}
+		
+		buttonDiv += '<br><br><button type="button" class="btn btn-theme" onclick="editorModify()">MODIFY</button>';
+		buttonDiv += '<button type="button" class="btn btn-theme" onclick="registerCancle()">CANCEL</button>';
+		
+		$("#modify_editorId_div").append(editorIdDiv);
+		$("#modify_description_div").append(descriptionDiv);
+		$("#modify_startPage_div").append(startPageDiv);
+		$("#modify_shareMode_div").append(useRangeDiv);
+		$("#modify_setMethod_div").append(setMethodDiv);
+		$("#modify_getMethod_div").append(getMethodDiv);
+		$("#modify_editorType_div").append(editorTypeDiv);
+		$("#modify_editor_button").append(buttonDiv);
 	});
 };
 
+function editorModify() 
+{
+	var editorId = $("#editorId").val();
+	var description = $("#description").val();
+	var startPage = $("#startPage").val();
+	var setMethod = $("#setMethod").val();
+	var getMethod = $("#getMethod").val();
+	var useRange = document.querySelector('input[name="useRange"]:checked').value;
+	var editorType = $("#editorType").val();
+
+	$.post("./editorModify",
+	{ 
+		editorId: editorId,
+		description: description,
+		startPage : startPage,
+		setMethod : setMethod,
+		getMethod : getMethod,
+		useRange : useRange,
+		editorType : editorType
+	},
+
+	function(data)
+	{
+		alert("MODIFY SUCCESS");
+
+		getOwnEditorList();
+	});
+};
+
+function editorDelete(editorId) 
+{
+	if (confirm("DO YOU WANT TO DELETE EDITOR?") == true)
+	{   
+		$.post("./editorDelete",
+		{ 
+			editorId: editorId
+		},
+
+		function(data)
+		{
+			alert("DELETE SUCCESS");
+
+			getOwnEditorList();
+		});
+	}
+
+	else
+	{   
+		return;
+	}	
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function reviewListByEditor(editorId) 
 {
 	getContJs("list_review","editor");
@@ -214,61 +276,6 @@ function reviewListByEditor(editorId)
 			$("#reviewList_div").append(reviewList);
 			
 			reviewList = "";
-		}
-	});
-};
-
-function getEditorList() 
-{
-	getContJs("editor_own","editor");
-
-	$.post("./ownEditorList",
-	{ 
-
-	},
-
-	function(data)
-	{
-		jData = JSON.parse(data);
-		var result = $.parseJSON(jData.EditorVO);
-		var editor;
-		var editorList = "";
-		var editorType = "";
-
-		for(var i = 0 ; i < result.length ; i++)
-		{
-			editor = $.parseJSON(result[i]);
-			
-			editorList += '<li class="own_editorList_li">';
-			editorList += '<a onclick="editorCodeList(\'' + editor['editorId'] + '\')">';
-			editorList += '<h2 class="own_editorList_h2">' + editor['editorId'] + '</h2>';
-			
-			if(editor['editorType'] == "0")
-			{
-				editorType = "TextEditor";
-			}
-			
-			else if(editor['editorType'] == "1")
-			{
-				editorType = "MindMap";
-			}
-			
-			else if(editor['editorType'] == "2")
-			{
-				editorType = "Questionnaire";
-			}
-			
-			else
-			{
-				editorType = "Else";
-			}
-			
-			editorList += '<p class="own_editorList_p">' + editorType + '</p>';
-			editorList += '</a></li>';
-
-			$("#own_editorList").append(editorList);
-			
-			editorList = "";
 		}
 	});
 };

@@ -7,7 +7,7 @@ import org.docking.erbse.vo.EditorVO;
 public interface EditorService {
 
 	public Integer editorAdd(String path, EditorVO editor, EditorExecuteInfoVO editorExecuteInfo);
-	public Integer editorModify(EditorVO editor);
+	public Integer editorModify(EditorVO editor, EditorExecuteInfoVO editorExecuteInfo);
 	public String editorSearch(String editorId);
 	public String editorSearchAll();
 	public Integer editorDelete(String editorId);

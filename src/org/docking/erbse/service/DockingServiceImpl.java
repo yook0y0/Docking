@@ -8,8 +8,6 @@ import java.util.List;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.StringReplaceFilter;
-import org.docking.erbse.analysis.register.StringRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.GlobalVariable;
@@ -18,8 +16,27 @@ import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.TempVO;
 
-public class DockingServiceImpl implements DockingService {
+public class DockingServiceImpl implements DockingService 
+{
+
 	@Override
+	public String editorTestExecute(String editorId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String editorExecute(ContentVO content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getEditorCode(String editorId, String path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/*@Override
 	public String editorTestExecute(String editorId) {
 		// TODO Auto-generated method stub
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
@@ -124,5 +141,5 @@ public class DockingServiceImpl implements DockingService {
 
 		String[] objName = {"code"};
 		return JsonParser.getInstance().jParseObj(objName,new String[]{code});
-	}
+	}*/
 }

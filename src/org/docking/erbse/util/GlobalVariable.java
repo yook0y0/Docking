@@ -12,6 +12,7 @@ public class GlobalVariable {
 	public static String[] EDITCODE_VO_FIELD = new String[]{"editorId","code","path"};
 	public static String[] EDITREVIEW_VO_FIELD = new String[]{"reviewId","editorId","memberId","body","score","writtenDate","logInMember"};
 	public static String[] EDIT_VO_FIELD = new String[]{"editorId","director","description","editorType","totalScore","reviewCount"};
+	public static String[] F_EDIT_VO_MODIFY = new String[]{"editorId","description","startPage","setMethod","getMethod","useRange","editorType"};
 	public static String[] TEMP_VO_FIELD = new String[]{"tempId","contentId","memberId","contentsBody","date"};
 	public static String[] DEVELOPER_VIEW = new String[]{"editorId","editorType","totalScore","reviewCount"};
 

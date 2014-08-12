@@ -1,17 +1,15 @@
 package org.docking.erbse.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
-import org.docking.erbse.analysis.attribute.Attr;
-import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.FileDeleteFilter;
-import org.docking.erbse.analysis.filter.FileUnzipFilter;
-import org.docking.erbse.analysis.register.FilePathRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.file.FileManager;
 import org.docking.erbse.util.GlobalVariable;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
@@ -19,93 +17,110 @@ import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
 
 
-public class EditorServiceImpl implements EditorService 
-{
+public class EditorServiceImpl implements EditorService {
+
 	@Override
-	public Integer editorAdd(String path, EditorVO editor, EditorExecuteInfoVO editorExecuteInfo) 
-	{
+	public Integer editorAdd(String path, EditorVO editor, EditorExecuteInfoVO editorExecuteInfo) {
+		// TODO Auto-generated method stub
+
 		Integer res = 0;
-		
-		DockingAnalyzer ds = new FileUnzipFilter(new FilePathRegister(path));
-		try {
-			ds.analyze();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		DataAttribute dAttr = (DataAttribute) ds.getAttrSet().get(Attr.ATTRSET_FILE_DATA);
-
-		byte[][] type = dAttr.getType();
-		byte[][] data = dAttr.getData();
+		FileManager fm = (FileManager)Injector.getInstance().getObject(FileManager.class);
+		//int unzipRes = fm.unZip(path);
 
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		res += editService.add("editor_add", editor);
 
-		EditorCodeVO ecvo = null;
-		List<EditorCodeVO> editorCodeList = new ArrayList<EditorCodeVO>();
+		//EditorCodeVO ecvo = null;
+		List<EditorCodeVO> ecvoList = new ArrayList<EditorCodeVO>();
 
-		for(int i=0;i<data.length;i++)
-		{
-			ecvo = new EditorCodeVO();
-			ecvo.setEditorId(editor.getEditorId());
-			ecvo.setCode(new String(data[i]));
-			ecvo.setPath(editor.getEditorId() + "/" + new String(type[i]));
-			editorCodeList.add(ecvo);
+		File[] files = null;
+		try {
+			files = fm.fileStructureChk(fm.fileNameChk(path));
+			for(int i=0;i<files.length;i++){
+				this.fileChk(files[i], editor.getEditorId(), ecvoList);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		res += editCodeService.add("editorCode_add", editorCodeList);
+		res = editCodeService.add("editorCode_add", ecvoList);
 		
 		GenericService<EditorExecuteInfoVO>	editorExecuteInfoService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		res += editorExecuteInfoService.add("editorExecute_add", editorExecuteInfo);
 
-		ds = null;
-		ds = new FileDeleteFilter(new FilePathRegister(path));
-		try {
-			ds.analyze();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		fm.delete(path);
+
+		return res;
+	}
+
+	private void fileChk(File file, String editorId, List<EditorCodeVO> ecvoList) throws IOException{
+		FileManager fm = (FileManager) Injector.getInstance().getObject(FileManager.class);
+		EditorCodeVO ecvo = null;
+
+		if(file.isDirectory()){
+			File[] files = fm.fileStructureChk(file);
+			for(int i=0;i<files.length;i++){
+				fileChk(files[i],editorId,ecvoList);
+			}
 		}
+		else{
+			ecvo = new EditorCodeVO();
+			ecvo.setEditorId(editorId);
+			ecvo.setCode(new String(fm.read(file)));
+			ecvo.setPath(editorId + "/" + file.getName());
+			ecvoList.add(ecvo);
+		}
+	}
+
+	@Override
+	public Integer editorModify(EditorVO editor , EditorExecuteInfoVO editorExecuteInfo) 
+	{
+		GenericService<EditorVO>	eService = new GenericServiceImpl<EditorVO>();
+		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		
+		int	res = 0;
+		
+		res += eService.add("editor_modify", editor);
+		res += eeService.add("editorExecute_modify", editorExecuteInfo);
 		
 		return res;
 	}
 
 	@Override
-	public Integer editorModify(EditorVO editor) {
-		// TODO Auto-generated method stub
-		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
-		Integer res = genericService.modify("editor_modify", editor);
-		
-		return res;
-	}
-
-	@Override
-	public Integer editorDelete(String editorId) {
-		// TODO Auto-generated method stub
+	public Integer editorDelete(String editorId) 
+	{
 		Integer res = 0;
 		
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
-		res = editService.delete("editor_delete", editorId);
+		res += editService.delete("editor_delete", editorId);
 
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		res = editCodeService.delete("editorCode_deleteByEditorId", editorId);
+		res += editCodeService.delete("editorCode_deleteByEditorId", editorId);
+		
+		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		res += eeService.delete("editorExecute_delete", editorId);
 
 		return res;
 	}
 
 	@Override
-	public String editorSearch(String editorId) {
-		// TODO Auto-generated method stub
+	public String editorSearch(String editorId) 
+	{
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
 		EditorVO evo = genericService.search("editor_search", editorId);
+		
+		GenericService<EditorExecuteInfoVO>	eGenericService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		EditorExecuteInfoVO	eevo = eGenericService.search("editorExecute_search", editorId);
 
-		String[] objName = new String[]{"editorVO"};
+		String[] objName = new String[]{"modifyEditorVO"};
 
 		/*
 		 * DocumentVO Json
 		 */
-		String jEvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())});
+		String jEvo = JsonParser.getInstance().jParseObj(GlobalVariable.F_EDIT_VO_MODIFY, new String[]{evo.getEditorId(),evo.getDescription(),eevo.getStartPage(),eevo.getSetMethod(),eevo.getGetMethod(),String.valueOf(eevo.getUseRange()),String.valueOf(evo.getEditorType())});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
 	}

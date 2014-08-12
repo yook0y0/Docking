@@ -83,21 +83,32 @@ public class EditorController {
 		pw.flush();
 	}
 	
-	public void editorModify() throws IOException {
+	public void editorModify() throws IOException 
+	{
 		EditorVO evo = new EditorVO();
 		evo.setEditorId(req.getParameter("editorId"));
-		evo.setDirector(req.getParameter("director"));
+		evo.setDirector(((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		evo.setDescription(req.getParameter("description"));
 		evo.setEditorType(Integer.valueOf(req.getParameter("editorType")));
 		
-		Integer code = es.editorModify(evo);
+		EditorExecuteInfoVO	eevo = new EditorExecuteInfoVO();
+		eevo.setEditorId(req.getParameter("editorId"));
+		eevo.setGetMethod(req.getParameter("getMethod"));
+		eevo.setSetMethod(req.getParameter("setMethod"));
+		eevo.setStartPage(req.getParameter("startPage"));
+		eevo.setUseRange(Integer.valueOf(req.getParameter("useRange")));
+		
+		String	preEditorId = req.getParameter("pre_editorId");
+		
+		Integer code = es.editorModify(evo,eevo,preEditorId);
 
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
 		pw.flush();
 	}
 	
-	public void editorDelete() throws IOException {
+	public void editorDelete() throws IOException 
+	{
 		String editorId = req.getParameter("editorId");
 		
 		Integer code = es.editorDelete(editorId);
@@ -107,7 +118,8 @@ public class EditorController {
 		pw.flush();
 	}
 	
-	public void editorSearch() throws IOException {
+	public void editorSearch() throws IOException 
+	{
 		String editorId = req.getParameter("editorId");
 
 		String jRes = es.editorSearch(editorId);

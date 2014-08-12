@@ -14,6 +14,14 @@ function getReviewList()
 		var review;
 		var reviewList = "";
 		
+		var reviewTitle = "";
+		
+		reviewTitle += '<a class="btn btn-success btn-sm pull-left"';
+		reviewTitle += 'onclick=\'reviewEditorSearch()\'> WRITE</a>&nbsp;&nbsp;';
+		reviewTitle += '<a class="btn btn-success btn-sm pull-left" onclick=""> SEARCH</a>';
+		
+		$("#review_title").append(reviewTitle);
+		
 		for(var i = 0 ; i < result.length ; i++)
 		{
 			review = $.parseJSON(result[i]);
@@ -46,7 +54,7 @@ function getReviewList()
 			$("#reviewList_div").append(reviewList);
 			
 			reviewList = "";
-		}
+		};
 	});
 };
 

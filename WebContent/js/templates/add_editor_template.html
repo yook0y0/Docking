@@ -1,48 +1,74 @@
 <section id="main-content">
 	<section class="wrapper">
-		<!-- BASIC FORM ELELEMNTS -->
+		<h3>
+			<i class="fa fa-angle-right"></i> Register Your Editor
+		</h3>
+
 		<div class="row mt">
-			<div class="col-lg-6 col-lg-offset-3">
-				<h3>
-					<i class="fa fa-angle-right"></i> EDITOR
-				</h3>
-				<div class="well">
-					<h5>EDITOR NAME</h5>
-					<div class="input-group text-center">
-						<input type="text" class="form-control input-lg" id="memberId"
-							placeholder="Enter your editor name"> <span
-							class="input-group-btn">
-							<button class="btn btn-lg btn-primary" type="button"
-								onclick="duplicationCheck()">CHECK</button>
-						</span>
-					</div>
-					<br>
+			<div class="col-lg-8 col-lg-offset-2">
+				<form id="editorAddForm" action="javascript:;"
+					enctype="multipart/form-data" method="post" accept-charset="utf-8">
+
 					<div class="form-group">
-						<h5>DESCRIPTION</h5>
-						<input type="text" class="form-control input-lg" id="memberPw"
-							name="memberPw" placeholder="Description"> <br>
+						<input type="name" name="editorId" class="form-control"
+							id="editorId" placeholder="editor Name"> <br>
 					</div>
 
 					<div class="form-group">
-						<h5>FILE</h5>
-						<input type="file" class="form-control input-lg" id="memberName"
-							name="memberName" placeholder="File"> <br>
+						<input type="name" name="description" class="form-control"
+							id="description" placeholder="description"> <br>
+					</div>
+
+					<div class="form-group">
+						<input type="name" name="startPage" class="form-control"
+							id="startPage" placeholder="startPage" value="start.html">
+						<br>
+					</div>
+
+					<div class="form-group">
+						<h5>Share Mode</h5>
+						<input type="radio" id="local_radio" name="useRange" value="0"
+							checked onclick="closeShareMode()"> Limit 
+							&nbsp; &nbsp; 
+							<input type="radio" id="share_radio" name="useRange" value="1" onclick="openShareMode()"> Permission
+						&nbsp; &nbsp; <br>
+					</div>
+
+					<div id="shareMode_div" style="display: none">
+						<div class="form-group">
+							<input type="name" name="setMethod" class="form-control"
+								id="setMethod" placeholder="setMethod" value="setMethod">
+							<br>
+						</div>
+
+						<div class="form-group">
+							<input type="name" name="getMethod" class="form-control"
+								id="getMethod" placeholder="getMethod" value="getMethod">
+							<br>
+						</div>
 					</div>
 
 					<div class="form-group">
 						<h5>EDITOR TYPE</h5>
-						<button type="button" class="btn btn-danger">TEXT</button>
-						<button type="button" class="btn btn-success">IMAGE</button>
-						<button type="button" class="btn btn-info">MOVIE</button>
-						<button type="button" class="btn btn-warning">ETC</button>
+						<button type="button" class="btn btn-danger" onclick="selectTextEditor()">TextEditor</button>
+						<button type="button" class="btn btn-success" onclick="selectMindMap()">MindMap</button>
+						<button type="button" class="btn btn-info" onclick="selectQuestionnaire()">Questionnaire</button>
+						<button type="button" class="btn btn-warning" onclick="selectElse()">Else</button>
+						
+						<input type="hidden" id="editorType" name="editorType" value=""/>
 					</div>
-				</div>
-				<br>
-					<button type="button" class="btn btn-theme">REGISTER</button>
-					<button type="button" class="btn btn-theme">CANCEL</button>
+					
+					<br> <br>
+
+					<div class="form-group">
+						<input type="file" name="editorZip" id="editorZip"
+							class="form-control"> <br>
+					</div>
+
+					<button type="submit" class="btn btn-theme" onclick="editorAdd()">REGISTER</button>
+					<button type="button" class="btn btn-theme" onclick="registerCancle()">CANCEL</button>
+				</form>
 			</div>
 		</div>
-		<!-- /row -->
-
 	</section>
 </section>

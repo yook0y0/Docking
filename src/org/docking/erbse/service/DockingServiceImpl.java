@@ -8,8 +8,6 @@ import java.util.List;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.StringReplaceFilter;
-import org.docking.erbse.analysis.register.StringRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.GlobalVariable;
@@ -38,7 +36,7 @@ public class DockingServiceImpl implements DockingService {
 	@Override
 	public String editorExecute(ContentVO content) {
 		// TODO Auto-generated method stub
-		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
+		/*GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", content.getEditorId());
 
 		String startCode = null;
@@ -81,12 +79,14 @@ public class DockingServiceImpl implements DockingService {
 
 		String[] objName = {"code","content"};
 		return JsonParser.getInstance().jParseObj(objName,new String[]{code,tvo.getContentsBody()});	
+*/	
+		return null;
 	}
 
 	@Override
 	public String getEditorCode(String editorId, String path) {
 		// TODO Auto-generated method stub
-		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
+		/*GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", editorId);
 
 		String oriCode = null;
@@ -124,5 +124,7 @@ public class DockingServiceImpl implements DockingService {
 
 		String[] objName = {"code"};
 		return JsonParser.getInstance().jParseObj(objName,new String[]{code});
+*/	
+		return null;
 	}
 }

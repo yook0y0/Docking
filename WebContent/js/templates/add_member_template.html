@@ -1,0 +1,50 @@
+<section id="main-content">
+	<section class="wrapper">
+		<h3>
+			<i class="fa fa-angle-right"></i> MEMBERSHIP
+		</h3>
+
+		<!-- BASIC FORM ELELEMNTS -->
+		<div class="row mt">
+				<div class="col-lg-6 col-lg-offset-3">
+					<div class="well">
+						<h5>EMAIL</h5>
+						<div class="input-group text-center">
+							<input type="text" class="form-control input-lg" id="memberId"
+								placeholder="Enter your email address"> <span
+								class="input-group-btn">
+								<button class="btn btn-lg btn-primary" type="button"
+									onclick="duplicationCheck()">CHECK</button>
+							</span>
+						</div>
+						<br>
+						<div class="form-group">
+							<h5>PASSWORD</h5>
+							<input type="password" class="form-control input-lg" id="memberPw"
+								name="memberPw" placeholder="Password"> <br>
+						</div>
+
+						<div class="form-group">
+							<h5>NICKNAME</h5>
+							<input type="text" class="form-control input-lg" id="memberName"
+								name="memberName" placeholder="NickName"> <br>
+						</div>
+
+						<div class="form-group">
+							<h5>DEVELOPER</h5>
+							<div class="switch switch-square"
+								data-on-label="<i class=' fa fa-check'></i>"
+								data-off-label="<i class='fa fa-times'></i>">
+								<input type="checkbox" id="memberType" />
+							</div>
+						</div>
+					</div>
+					<br>
+					<button type="button" class="btn btn-theme" onclick="memberAdd()">REGISTER</button>
+					<button type="button" class="btn btn-theme"
+						onclick='getCont("main")'>CANCEL</button>
+				</div>
+		</div>
+		<!-- /row -->
+	</section>
+</section>

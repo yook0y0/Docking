@@ -26,12 +26,7 @@ public abstract class AttributeSource implements DockingAnalyzer{
 		
 		Attribute attr = (Attribute)obj;
 		
-		try {
-			this.addAttr(type, attr);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.addAttr(type, attr);
 		
 		return attr;
 	}
@@ -44,33 +39,37 @@ public abstract class AttributeSource implements DockingAnalyzer{
 		this.attrSet = attrSet;
 	}
 
-	public void addAttr(Integer type, Attribute attr) throws Exception {
+	public void addAttr(Integer type, Attribute attr) {
 		this.attrSet.put(type, attr);
 	}
 
-	public Attribute getAttr(Integer type) throws Exception {
+	public Attribute getAttr(Integer type) {
 
 		Attribute attr = attrSet.get(type);
 		if(attr == null) {
-			throw new Exception();
+			return null;
 		}
 		return attr;
 	}
 
-	public void removeAttr(Integer type) throws Exception {
-
+	public Attribute removeAttr(Integer type) {
+		Attribute attr = attrSet.get(type);
 		if(attrSet.remove(type) == null) {
-			throw new Exception();
+			return null;
 		}
+		return attr;
 	}
 
-	public void modifyAttr(Integer type, Attribute attr) throws Exception {
+	public Attribute modifyAttr(Integer type, Attribute attr) {
 
 		Attribute tmp = attrSet.get(type);
 
 		if(tmp == null) {
-			throw new Exception();
+			return null;
 		}
-		tmp = attr;
+
+		attrSet.remove(type);
+		attrSet.put(type, tmp);
+		return tmp;
 	}
 }

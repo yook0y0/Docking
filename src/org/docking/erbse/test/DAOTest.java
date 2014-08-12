@@ -6,7 +6,6 @@ import java.util.List;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.vo.EditorCodeVO;
-import org.docking.erbse.vo.MemberVO;
 
 public class DAOTest
 {	

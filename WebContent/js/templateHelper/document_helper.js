@@ -1,7 +1,9 @@
 function documentAdd() 
 {
 	var title = $("title").val();
+	var type = document.querySelector('input[name="documentType"]:checked').value;;
 
+	var type = '1';
 	$.post("./documentAdd", 
 			{ 
 		title: title,
@@ -50,7 +52,7 @@ function documentManage(){
 
 	getCont(url);
 	$.post("./ownDocumentList", 
-			{ },
+/*			{ },*/
 
 			function(data) 
 			{   

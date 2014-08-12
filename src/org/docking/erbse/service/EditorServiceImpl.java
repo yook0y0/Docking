@@ -6,9 +6,6 @@ import java.util.List;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.FileDeleteFilter;
-import org.docking.erbse.analysis.filter.FileUnzipFilter;
-import org.docking.erbse.analysis.register.FilePathRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.GlobalVariable;
@@ -22,7 +19,7 @@ public class EditorServiceImpl implements EditorService {
 	@Override
 	public Integer editorAdd(String path, EditorVO editor) {
 		// TODO Auto-generated method stub
-
+/*
 		Integer res = 0;
 		
 		DockingAnalyzer ds = new FileUnzipFilter(new FilePathRegister(path));
@@ -65,6 +62,8 @@ public class EditorServiceImpl implements EditorService {
 		}
 		
 		return res;
+*/	
+		return null;	
 	}
 
 	@Override
@@ -104,6 +103,27 @@ public class EditorServiceImpl implements EditorService {
 		String jEvo = JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
+	}
+	
+	public String editorSearchAll()
+	{
+		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
+		List<EditorVO> eList = genericService.searchAll("editor_searchAll");
+		
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"editorVO"};
+		
+		for(EditorVO evo : eList)
+		{
+			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+		}
+		
+		String[] evoArr = new String[eList.size()];
+		evoArr = tmpList.toArray(evoArr);
+		String jErvoList = JsonParser.getInstance().jParseArr(evoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jErvoList});
 	}
 
 	@Override

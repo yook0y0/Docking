@@ -64,7 +64,6 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 			catch(RuntimeException e)
 			{
 				returnVal = 0;
-				
 				e.printStackTrace();
 			}
 		}
@@ -87,6 +86,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 		catch(RuntimeException e)
 		{
 			returnVal = 0;
+			e.printStackTrace();
 		}
 		
 		disconnect();
@@ -107,6 +107,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 		catch(RuntimeException e)
 		{
 			returnVal = 0;
+			e.printStackTrace();
 		}
 		
 		
@@ -130,6 +131,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 			catch(RuntimeException e)
 			{
 				returnVal = 0;
+				e.printStackTrace();
 			}
 		}
 		
@@ -190,6 +192,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 		catch(RuntimeException e)
 		{
 			returnVal = 0;
+			e.printStackTrace();
 		}
 		
 		disconnect();
@@ -212,6 +215,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 			catch(RuntimeException e)
 			{
 				returnVal = 0;
+				e.printStackTrace();
 			}
 		}
 		
@@ -233,6 +237,7 @@ public class GenericDAOImpl<T extends Serializable>	implements GenericDAO<T>
 		catch(RuntimeException e)
 		{
 			returnVal = 0;
+			e.printStackTrace();
 		}
 		
 		disconnect();

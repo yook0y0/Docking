@@ -1,26 +1,37 @@
-<div id="loginPage">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 col-md-4 col-md-offset-4">
-					<h1 class="text-center login-title">Sign in to continue to
-						Docking</h1>
-					<div class="account-wall">
-						<img class="profile-img"
-							src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-							alt="">
-						<form class="form-signin">
+<div id="login-page">
+	<div class="container">
+		<div class="form-login">
+			<h2 class="form-login-heading">Login in now</h2>
+			<div class="login-wrap">
+				<input type="text" class="form-control" placeholder="User ID"
+					id="memberId" autofocus> <br> <input type="password"
+					class="form-control" placeholder="Password" id="memberPw">
+				<label class="checkbox"> <span class="pull-right"> <a
+						data-toggle="modal" href="http://www.naver.com"> Forgot
+							Password?</a>
 
-							<input type="text" id="memberId" class="form-control"
-								placeholder="Email" required autofocus> <input
-								type="password" id="memberPw" class="form-control"
-								placeholder="Password" required>
-							<button class="btn btn-lg btn-primary btn-block"
-								id="login_button" type="button" onclick="memberLogin()">Sign in</button>
-								
-						</form>
-					</div>
-					<a onclick='getContJs("user_register","user");' class="text-center new-account"> Create an account </a>
+				</span>
+				</label>
+				<button class="btn btn-theme btn-block" onclick="memberLogin()">
+					<i class="fa fa-lock"></i> LOGIN
+				</button>
+				<hr>
+
+				<!-- <div class="login-social-link centered">
+					<p>or you can sign in via your social network</p>
+					<button class="btn btn-facebook" type="submit">
+						<i class="fa fa-facebook"></i> Facebook
+					</button>
+					<button class="btn btn-twitter" type="submit">
+						<i class="fa fa-twitter"></i> Twitter
+					</button>
+				</div> -->
+				<div class="registration">
+					Don't have an account yet?<br/> <a class=""
+						onclick='getContJs("add_member","member")'> Create an account
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>

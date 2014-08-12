@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.docking.erbse.service.ReviewService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.EditorReviewBBSVO;
+import org.docking.erbse.vo.MemberVO;
 
 
 public class ReviewController
@@ -39,15 +40,19 @@ public class ReviewController
 	public void reviewAdd() throws IOException 
 	{
 		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-
+		
+		String 	memberId = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
+		String	editorId = req.getParameter("editorId");
+		String	body = req.getParameter("body");
+		
 		EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
-		ervo.setReviewId(req.getParameter("reviewId"));
-		ervo.setEditorId(req.getParameter("editorId"));
-		ervo.setMemberId(req.getParameter("memberId"));
-		ervo.setBody(req.getParameter("body"));
+		ervo.setReviewId(memberId + editorId + body);
+		ervo.setEditorId(editorId);
+		ervo.setMemberId(memberId);
+		ervo.setBody(body);
 		ervo.setScore(Integer.valueOf(req.getParameter("score")));
 		ervo.setWrittenDate(mSimpleDateFormat.format(new Date()));
-
+		
 		Integer code = rs.reviewAdd(ervo);
 
 		PrintWriter pw = res.getWriter();

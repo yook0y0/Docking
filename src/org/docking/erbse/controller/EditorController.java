@@ -107,6 +107,15 @@ public class EditorController {
 		pw.flush();
 	}
 
+	public void editorSearchAll() throws IOException 
+	{
+		String jRes = es.editorSearchAll();
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
+	
 	public void ownEditorList() throws IOException {
 		String director = req.getParameter("director");
 

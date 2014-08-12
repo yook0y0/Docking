@@ -98,9 +98,7 @@ public class EditorController {
 		eevo.setStartPage(req.getParameter("startPage"));
 		eevo.setUseRange(Integer.valueOf(req.getParameter("useRange")));
 		
-		String	preEditorId = req.getParameter("pre_editorId");
-		
-		Integer code = es.editorModify(evo,eevo,preEditorId);
+		Integer code = es.editorModify(evo,eevo);
 
 		PrintWriter pw = res.getWriter();
 		pw.write(code);

@@ -12,10 +12,6 @@ public class DataSearchFilter extends Filter {
 
 	private byte[] token;
 
-	public DataSearchFilter(DockingAnalyzer stream) {
-		this(stream,new byte[]{});
-	}
-
 	public DataSearchFilter(DockingAnalyzer stream, byte[] token){
 		super(stream);
 		this.token = token;
@@ -30,7 +26,7 @@ public class DataSearchFilter extends Filter {
 	}
 
 	@Override
-	public void analyze() throws Exception {
+	public void analyze(){
 		DataAttribute dAttr = null;
 		dAttr = (DataAttribute)this.getAttrSet().get(Attr.DATA_ATTR);
 

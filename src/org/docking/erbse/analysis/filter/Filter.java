@@ -11,12 +11,7 @@ public abstract class Filter extends AttributeSource{
 	public Filter(DockingAnalyzer stream) {
 		this.stream = stream;
 		super.setAttrSet(this.stream.getAttrSet());
-		try {
-			stream.analyze();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		stream.analyze();
 	}
 
 	public DockingAnalyzer getStream() {

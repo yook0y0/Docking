@@ -8,7 +8,7 @@ public class IndexAttribute extends BaseAttribute {
 	private int[][] endWidth;
 	
 	public IndexAttribute(){
-		super(Attr.ORIGINAL_DATA);
+		super(Attr.INDEX_ATTR);
 		this.startWidth = null;
 		this.endWidth = null;
 	}

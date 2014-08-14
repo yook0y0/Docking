@@ -10,4 +10,5 @@ public class Attr {
 	public static int ATTRSET_FILE_DATA = 4;
 	public static int DATA_ATTR = 5;
 	public static int INDEX_ATTR = 6;
+	public static int TOKEN_ATTR = 7;
 }

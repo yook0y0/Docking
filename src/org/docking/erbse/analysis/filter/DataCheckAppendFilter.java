@@ -11,27 +11,37 @@ import org.docking.erbse.analysis.attribute.IndexAttribute;
 public class DataCheckAppendFilter extends Filter {
 
 	private byte[][] srcData;
+	private byte[][] appendData;
 	private byte[][] chkData;
 
-	public DataCheckAppendFilter(DockingAnalyzer stream,byte[][] srcData, byte[][] chkData) {
+	public DataCheckAppendFilter(DockingAnalyzer stream,byte[][] srcData, byte[][] appendData, byte[][] chkData) {
 		super(stream);
 		this.srcData = srcData;
+		this.appendData = appendData;
 		this.chkData = chkData;
 	}
 
 	public byte[][] getSrcData() {
-		return srcData;
+		return this.srcData;
 	}
 
 	public void setSrcData(byte[][] srcData) {
 		this.srcData = srcData;
 	}
 
-	public byte[][] getChkData() {
-		return chkData;
+	public byte[][] getappendData() {
+		return this.appendData;
 	}
 
-	public void setChkData(byte[][] chkData) {
+	public void setappendData(byte[][] appendData) {
+		this.appendData = appendData;
+	}
+
+	public byte[][] getChkData(){
+		return this.chkData;
+	}
+
+	public void setChkData(){
 		this.chkData = chkData;
 	}
 
@@ -91,7 +101,6 @@ public class DataCheckAppendFilter extends Filter {
 		byte[] bArr = null;
 
 		for(int i=0,index=0;i<dataArr.length;i++,index++){
-			System.out.println("index : " + index);
 			for(int j=0;j<this.srcData.length;j++){
 				if(dataArr[i] == this.srcData[j][0]){
 					for(int k=1;k<this.srcData[j].length;k++){
@@ -103,20 +112,18 @@ public class DataCheckAppendFilter extends Filter {
 						}
 					}
 					if(chk == this.srcData[j].length-1){
-						if(dataArr[i+chk] != this.chkData[j][0]){
-							bArr = new byte[dataArr.length+this.chkData[j].length];
+						if(dataArr[i+chk+1] != this.appendData[j][0] && dataArr[i+chk+1] != this.chkData[j][0]){
+							bArr = new byte[dataArr.length+this.appendData[j].length];
 							System.arraycopy(dataArr, 0, bArr, 0, i+this.srcData[j].length);
-							System.arraycopy(this.chkData[j], 0, bArr, i+this.srcData[j].length, this.chkData[j].length);
-							System.arraycopy(dataArr, i+this.srcData[j].length, bArr, i+this.chkData[j].length+this.srcData[j].length, dataArr.length-(i+this.srcData[j].length));
+							System.arraycopy(this.appendData[j], 0, bArr, i+this.srcData[j].length, this.appendData[j].length);
+							System.arraycopy(dataArr, i+this.srcData[j].length, bArr, i+this.appendData[j].length+this.srcData[j].length, dataArr.length-(i+this.srcData[j].length));
+							startWidth.add(index);
+							endWidth.add(index+this.srcData[j].length-1);
+							dataArr = bArr;
 						}
-						
-						startWidth.add(index);
-						endWidth.add(index+this.srcData[j].length-1);
-
-						dataArr = bArr;
-					}
-					chk = 0;
+					}						
 				}
+				chk = 0;
 			}
 		}
 

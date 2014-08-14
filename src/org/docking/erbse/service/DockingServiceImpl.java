@@ -1,20 +1,6 @@
 package org.docking.erbse.service;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.List;
-
-import org.docking.erbse.analysis.DockingAnalyzer;
-import org.docking.erbse.analysis.attribute.Attr;
-import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.dao.service.GenericService;
-import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.util.GlobalVariable;
-import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
-import org.docking.erbse.vo.EditorCodeVO;
-import org.docking.erbse.vo.TempVO;
 
 public class DockingServiceImpl implements DockingService 
 {

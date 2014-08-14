@@ -2,6 +2,9 @@ package org.docking.erbse.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +14,7 @@ import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberContentVO;
+import org.docking.erbse.vo.MemberVO;
 
 
 public class DocumentController 
@@ -33,26 +37,42 @@ public class DocumentController
 		this.res = res;
 	}
 	
-	public void documentAdd() throws IOException {
-		DocumentVO dvo = new DocumentVO();
-		dvo.setDocumentId(req.getParameter("documentId"));
-		dvo.setWriter(req.getParameter("writer"));
-		dvo.setTitle(req.getParameter("title"));
-		dvo.setCreationDate(req.getParameter("creationDate"));
+	public void documentAdd() throws IOException 
+	{
+		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		String	creationDate = mSimpleDateFormat.format(new Date());
+		String	writer = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
+		String	documentId = writer + "/" + creationDate;
 		
-		Integer code = ds.documentAdd(dvo);
+		DocumentVO dvo = new DocumentVO();
+		dvo.setDocumentId(documentId);
+		dvo.setWriter(writer);
+		dvo.setTitle(req.getParameter("title"));
+		dvo.setCreationDate(creationDate);
+		
+		MemberContentVO	memberContentVO = new MemberContentVO();
+		memberContentVO.setDocumentId(documentId);
+		memberContentVO.setMemberId(writer);
+		memberContentVO.setMemberPosition(2);
+		
+		Integer code = ds.documentAdd(dvo,memberContentVO);
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
 		pw.flush();
 	}
 	
-	public void documentModify() throws IOException {
+	public void documentModify() throws IOException 
+	{
+		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		String	creationDate = mSimpleDateFormat.format(new Date());
+		String	writer = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
+		
 		DocumentVO dvo = new DocumentVO();
 		dvo.setDocumentId(req.getParameter("documentId"));
-		dvo.setWriter(req.getParameter("writer"));
+		dvo.setWriter(writer);
 		dvo.setTitle(req.getParameter("title"));
-		dvo.setCreationDate(req.getParameter("creationDate"));
+		dvo.setCreationDate(creationDate);
 
 		Integer code = ds.documentModify(dvo);
 		
@@ -61,8 +81,9 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void documentDelete() throws IOException {
-		String documentId = req.getParameter("docuemntId");
+	public void documentDelete() throws IOException 
+	{
+		String documentId = req.getParameter("documentId");
 		
 		Integer code = ds.documentDelete(documentId);
 		
@@ -71,7 +92,8 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void documentSearch() throws IOException {
+	public void documentSearch() throws IOException 
+	{
 		String documentId = req.getParameter("documentId");
 		
 		String jRes = ds.documentSearch(documentId);
@@ -81,20 +103,22 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void ownDocumentList() throws IOException {
-		String writer = req.getParameter("writer");
+	public void ownDocumentList() throws IOException 
+	{
+		String documentId = req.getParameter("documentId");
 
-		String jRes = ds.ownDocumentList(writer);
+		String jRes = ds.ownDocumentList(documentId);
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
 		pw.flush();
 	}
 	
-	public void joinDocumentList() throws IOException {
-		String memberId = req.getParameter("memberId");
+	public void joinDocumentList() throws IOException 
+	{
+		String memberId = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
 
-		String jRes = ds.joinDocumentList(memberId);
+		String jRes = ds.joinDocumentList(memberId,((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
@@ -103,12 +127,16 @@ public class DocumentController
 	
 
 	
-	public void contentAdd() throws IOException {
+	public void contentAdd() throws IOException 
+	{
+		String	documentId = req.getParameter("documentId");
+		String	editorId = req.getParameter("editorId");
+
 		ContentVO cvo = new ContentVO();
-		cvo.setDocumentId(req.getParameter("documentId"));
-		cvo.setContentId(req.getParameter("contentId"));
+		cvo.setDocumentId(documentId);
+		cvo.setContentId(documentId + "/" + editorId);
 		cvo.setBody(req.getParameter("body"));
-		cvo.setEditorId(req.getParameter("editorId"));
+		cvo.setEditorId(editorId);
 		
 		Integer code = ds.contentAdd(cvo);
 
@@ -117,7 +145,8 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void contentModify() throws IOException {
+	public void contentModify() throws IOException 
+	{
 		ContentVO cvo = new ContentVO();
 		cvo.setDocumentId(req.getParameter("documentId"));
 		cvo.setContentId(req.getParameter("contentId"));
@@ -141,7 +170,8 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void contentSearch() throws IOException {
+	public void contentSearch() throws IOException 
+	{
 		String contentId = req.getParameter("contentId");
 
 		String jRes = ds.contentSearch(contentId);
@@ -151,10 +181,11 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void contentsList() throws IOException {
+	public void contentsList() throws IOException 
+	{
 		String documentId = req.getParameter("documentId");
 		
-		String jRes = ds.contentsList(documentId);
+		String jRes = ds.contentsList(documentId,((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);

@@ -48,7 +48,7 @@ function getOwnEditorList()
 			editor = $.parseJSON(result[i]);
 			
 			editorList += '<tr>';
-			editorList += '<td><a onclick="editorCodeList(\'' + editor['editorId'] + '\')">' + editor['editorId'] + '</a></td>';
+			editorList += '<td><a onclick="getCodeList(\'' + editor['editorId'] + '\')">' + editor['editorId'] + '</a></td>';
 			editorList += '<td class="hidden-phone">' + editor['description'] + '</td>';
 			editorList += '<td><a onclick="reviewListByEditor(\'' + editor['editorId'] + '\')">Score : ' + editor['totalScore'] + '</a></td>';
 			
@@ -280,35 +280,35 @@ function reviewListByEditor(editorId)
 	});
 };
 
-function editorCodeList(editorId)
-{
-	getContJs("editor_manage","editor");
 
+
+
+function getCodeList(editorId)
+{
+	alert(editorId);
+	
+	getContJsCss("edit_code","edit_code");
+	
 	$.post("./codeList",
 	{ 
 		editorId : editorId
 	},
-
+	
 	function(data)
 	{
-		jData = JSON.parse(data);
+		/*jData = JSON.parse(data);
 		var result = $.parseJSON(jData.editorReviewBBSVO);
-		var editor;
-		var editorList = "";
+		
+		var review;
+		var reviewList = "";
+		
+		var reviewTitle = "";
 		
 		for(var i = 0 ; i < result.length ; i++)
 		{
-			editor = $.parseJSON(result[i]);
-			
-			editorList += '<li>';
-			editorList += '<a onclick="editorCodeList(' + editor['editorId'] + ')">';
-			editorList += '<h2>' + editor['editorId'] + '</h2>';
-			editorList += '<p>' + editor['description'] + '</p>';
-			editorList += '</a></li>';
+			review = $.parseJSON(result[i]);
 
-			$("#own_editorList").append(editorList);
-			
-			editorList = "";
-		}
+		};*/
 	});
-}
+};
+

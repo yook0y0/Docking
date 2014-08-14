@@ -11,6 +11,7 @@ public class EditorExecuteInfoVO	implements Serializable
 	private	String	setMethod;
 	private String	getMethod;
 	private Integer	useRange;
+	
 	public String getEditorId() {
 		return editorId;
 	}

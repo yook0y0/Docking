@@ -30,7 +30,7 @@ function getReviewList()
 			reviewList += '<div class="weather-2-header">';
 			reviewList += '<div class="row">';
 			reviewList += '<div class="col-sm-6 col-xs-6">';
-			reviewList += '<p>' + review['reviewId'] + '</p>';
+			reviewList += '<p>' + review['memberId'] + '</p>';
 			reviewList += '</div>';
 			reviewList += '<div class="col-sm-6 col-xs-6 goright">';
 			reviewList += '<p class="small">' + review['writtenDate'] + '</p>';

@@ -46,7 +46,6 @@ public class ReviewController
 		String	body = req.getParameter("body");
 		
 		EditorReviewBBSVO   ervo = new EditorReviewBBSVO();
-		ervo.setReviewId(memberId + editorId + body);
 		ervo.setEditorId(editorId);
 		ervo.setMemberId(memberId);
 		ervo.setBody(body);

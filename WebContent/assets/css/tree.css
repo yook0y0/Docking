@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+ul#tree_menu, ul#tree_menu * {margin:0; padding:0; list-style:none; border:none; overflow:hidden; text-decoration:none; color:#555;}
+ul#tree_menu a:hover {text-decoration:underline;}
+ul#tree_menu ul {padding:0 0 0 0px; zoom:1;}
+ul#tree_menu li {position:relative; background:url(../img/tree_bg.gif) no-repeat 7px top; padding:0 0 0 20px; font-size:13px; line-height:18px; zoom:1;}
+ul#tree_menu li.end {background-image:url(../img/tree_bg2.gif);}
+ul#tree_menu li a.control {position:absolute; left:0px; top:1px; display:block; width:9px; height:9px; padding:3px;}
+
+.CodeMirror {border: 1px solid black;}
+#content 
+{
+	position: absolute;
+	top: 150px;
+	left: 200px;
+	padding: 10px 2% 10px 2%;
+	margin: 0px;
+	border: 0px;
+	voice-family:inherit;
+	width: 20%;
+}
+html>body #content 
+{
+	width: 20%; /* ie5win fudge ends */
+}
+
+#content2 
+{
+	position: absolute;
+	top: 130px;
+	left: 500px; /* Opera5.02 will show a 
+	space at right when there is no scroll bar */
+	padding: 10px 10% 10px 10%;
+	margin: 0px;
+	border: 0px;
+	background: #666;
+	width: 50%; /* ie5win fudge begins */
+	voice-family:inherit;
+	width: 70%;
+}
+html>body #content2 
+{
+	width: 80%; /* ie5win fudge ends */
+}

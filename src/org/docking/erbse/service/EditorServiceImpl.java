@@ -26,7 +26,7 @@ public class EditorServiceImpl implements EditorService {
 		Integer res = 0;
 
 		FileManager fm = (FileManager)Injector.getInstance().getObject(FileManager.class);
-		//int unzipRes = fm.unZip(path);
+		int unzipRes = fm.unZip(path);
 
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		res += editService.add("editor_add", editor);
@@ -37,6 +37,9 @@ public class EditorServiceImpl implements EditorService {
 		File[] files = null;
 		try {
 			files = fm.fileStructureChk(fm.fileNameChk(path));
+			
+			System.out.println(path);
+			
 			for(int i=0;i<files.length;i++){
 				this.fileChk(files[i], editor.getEditorId(), ecvoList);
 			}
@@ -130,13 +133,19 @@ public class EditorServiceImpl implements EditorService {
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
 		List<EditorVO> eList = genericService.searchAll("editor_searchAll");
 		
+		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		List<EditorExecuteInfoVO>	eeList = eeService.searchAll("editorExecute_searchAll");
+		
 		List<String> tmpList = new ArrayList<String>();
 
 		String[] objName = new String[]{"editorVO"};
 		
-		for(EditorVO evo : eList)
+		for(int i = 0 ; i < eList.size() ; i++)
 		{
-			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType())}));
+			if(eeList.get(i).getUseRange() == 1)
+			{
+				tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{eList.get(i).getEditorId(),eList.get(i).getDirector(),eList.get(i).getDescription(),String.valueOf(eList.get(i).getEditorType())}));
+			}
 		}
 		
 		String[] evoArr = new String[eList.size()];

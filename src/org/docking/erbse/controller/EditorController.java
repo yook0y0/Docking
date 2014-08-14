@@ -193,7 +193,8 @@ public class EditorController {
 		pw.flush();
 	}
 	
-	public void codeList() throws IOException{
+	public void codeList() throws IOException
+	{
 		String editorId = req.getParameter("editorId");
 
 		String jRes = es.codeList(editorId);

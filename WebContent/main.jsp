@@ -186,7 +186,7 @@
 							class="fa fa-home"></i> <span>HOME</span>
 					</a>
 					<li class="sub-menu"><a
-						onclick='getContJs("list_document","document");'> <i
+						onclick='getJoinedDocumentList()'> <i
 							class="fa fa-book"></i> <span>DOCUMENT</span>
 					</a>
 					<li c lass="sub-menu"><a onclick='getReviewList()'>
@@ -196,7 +196,6 @@
 					<c:if test="${sessionScope.logInMember.type == 1 }">
 						<li class="sub-menu"><a onclick='getOwnEditorList()'>
 							<i class="fa fa-desktop"></i> <span>FOR DEVELOPER</span>
-						</a>
 					</c:if>
 					
 				</ul>

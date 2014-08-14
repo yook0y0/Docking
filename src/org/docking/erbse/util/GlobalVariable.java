@@ -5,8 +5,10 @@ public class GlobalVariable {
 	/*
 	 * VO Field name
 	 */
-	public static String[] DOC_VO_FIELD = new String[]{"documentId","writer","title","creationDate"};
-	public static String[] CON_VO_FIELD = new String[]{"documentId","contentId","body","editorId"};
+	public static String[] DOC_VO_FIELD = new String[]{"documentId","writer","title","creationDate","logInMember"};
+	public static String[] M_DOC_VO_FIELD = new String[]{"documentId","writer","title","creationDate"};
+	public static String[] CON_VO_FIELD = new String[]{"documentId","contentId","body","editorId","title","writer","logInMember"};
+	public static String[] M_CON_VO = new String[]{"documentId","contentId","body","editorId"};
 	public static String[] MEM_VO_FIELD = new String[]{"memberId","pw","memberName","type"};
 	public static String[] MEMCON_VO_FIELD = new String[]{"documentId","memberId","memberPosition"};
 	public static String[] EDITCODE_VO_FIELD = new String[]{"editorId","code","path"};

@@ -57,32 +57,26 @@ $('ul#tree_menu li a').click(function() {
 });
 
 var editor;
-
 $(document).ready(function() {
-	editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-		mode: "scheme",
-		lineNumbers: true
+editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+	  mode: "scheme",
+	  lineNumbers: true
 	});
-	
 	var pending;
 	editor.on("change", function() {
-		clearTimeout(pending);
-		pending = setTimeout(update, 400);
+	  clearTimeout(pending);
+	  pending = setTimeout(update, 400);
 	});
-	
 	function looksLikeScheme(code) {
-		return !/^\s*\(\s*function\b/.test(code) && /^\s*[;\(]/.test(code);
+	  return !/^\s*\(\s*function\b/.test(code) && /^\s*[;\(]/.test(code);
+	}
+	function update() {
+	  editor.setOption("mode", looksLikeScheme(editor.getValue()) ? "scheme" : "javascript");
 	}
 	
-	function update() {
-		editor.setOption("mode", looksLikeScheme(editor.getValue()) ? "scheme" : "javascript");
-	}
-
 });
-
 function updateCode(data) {
 	editor.setValue(data.code);
-}	
+  }	
 
-//});
 

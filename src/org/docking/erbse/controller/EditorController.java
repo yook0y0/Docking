@@ -203,4 +203,16 @@ public class EditorController {
 		pw.write(jRes);
 		pw.flush();
 	}
+	
+	public void childCodeList()	throws IOException
+	{
+		String	childId = req.getParameter("childId");
+		String	editorId = req.getParameter("editorId");
+		
+		String jRes = es.childCodeList(childId,editorId);
+		
+		PrintWriter pw = res.getWriter();
+		pw.write(jRes);
+		pw.flush();
+	}
 }

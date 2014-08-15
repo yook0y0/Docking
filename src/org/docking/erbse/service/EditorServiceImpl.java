@@ -16,6 +16,8 @@ import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
 
+import java.util.regex.*;
+
 
 public class EditorServiceImpl implements EditorService {
 
@@ -37,11 +39,9 @@ public class EditorServiceImpl implements EditorService {
 		File[] files = null;
 		try {
 			files = fm.fileStructureChk(fm.fileNameChk(path));
-			
-			System.out.println(path);
-			
+
 			for(int i=0;i<files.length;i++){
-				this.fileChk(files[i], editor.getEditorId(), ecvoList);
+				this.fileChk(path,files[i], editor.getEditorId(), ecvoList);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -50,7 +50,7 @@ public class EditorServiceImpl implements EditorService {
 
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		res = editCodeService.add("editorCode_add", ecvoList);
-		
+
 		GenericService<EditorExecuteInfoVO>	editorExecuteInfoService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		res += editorExecuteInfoService.add("editorExecute_add", editorExecuteInfo);
 
@@ -59,21 +59,28 @@ public class EditorServiceImpl implements EditorService {
 		return res;
 	}
 
-	private void fileChk(File file, String editorId, List<EditorCodeVO> ecvoList) throws IOException{
+	private void fileChk(String path, File file, String editorId, List<EditorCodeVO> ecvoList) throws IOException{
 		FileManager fm = (FileManager) Injector.getInstance().getObject(FileManager.class);
 		EditorCodeVO ecvo = null;
+
+		String filePath = file.getPath();
+
+		filePath = filePath.replace("C:\\play-2.1.0\\play-2.1.0\\yobi\\project\\dead\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Docking\\tmp\\testZip.\\","");
 
 		if(file.isDirectory()){
 			File[] files = fm.fileStructureChk(file);
 			for(int i=0;i<files.length;i++){
-				fileChk(files[i],editorId,ecvoList);
+				fileChk(path,files[i],editorId,ecvoList);
 			}
 		}
 		else{
 			ecvo = new EditorCodeVO();
 			ecvo.setEditorId(editorId);
 			ecvo.setCode(new String(fm.read(file)));
-			ecvo.setPath(editorId + "/" + file.getName());
+			ecvo.setPath(editorId + "\\" + filePath);
+
+			System.out.println(ecvo.getPath());
+
 			ecvoList.add(ecvo);
 		}
 	}
@@ -83,12 +90,12 @@ public class EditorServiceImpl implements EditorService {
 	{
 		GenericService<EditorVO>	eService = new GenericServiceImpl<EditorVO>();
 		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
-		
+
 		int	res = 0;
-		
+
 		res += eService.add("editor_modify", editor);
 		res += eeService.add("editorExecute_modify", editorExecuteInfo);
-		
+
 		return res;
 	}
 
@@ -96,13 +103,13 @@ public class EditorServiceImpl implements EditorService {
 	public Integer editorDelete(String editorId) 
 	{
 		Integer res = 0;
-		
+
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		res += editService.delete("editor_delete", editorId);
 
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		res += editCodeService.delete("editorCode_deleteByEditorId", editorId);
-		
+
 		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		res += eeService.delete("editorExecute_delete", editorId);
 
@@ -114,7 +121,7 @@ public class EditorServiceImpl implements EditorService {
 	{
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
 		EditorVO evo = genericService.search("editor_search", editorId);
-		
+
 		GenericService<EditorExecuteInfoVO>	eGenericService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		EditorExecuteInfoVO	eevo = eGenericService.search("editorExecute_search", editorId);
 
@@ -127,19 +134,19 @@ public class EditorServiceImpl implements EditorService {
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
 	}
-	
+
 	public String editorSearchAll()
 	{
 		GenericService<EditorVO>	genericService = new GenericServiceImpl<EditorVO>();
 		List<EditorVO> eList = genericService.searchAll("editor_searchAll");
-		
+
 		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		List<EditorExecuteInfoVO>	eeList = eeService.searchAll("editorExecute_searchAll");
-		
+
 		List<String> tmpList = new ArrayList<String>();
 
 		String[] objName = new String[]{"editorVO"};
-		
+
 		for(int i = 0 ; i < eList.size() ; i++)
 		{
 			if(eeList.get(i).getUseRange() == 1)
@@ -147,7 +154,7 @@ public class EditorServiceImpl implements EditorService {
 				tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{eList.get(i).getEditorId(),eList.get(i).getDirector(),eList.get(i).getDescription(),String.valueOf(eList.get(i).getEditorType())}));
 			}
 		}
-		
+
 		String[] evoArr = new String[eList.size()];
 		evoArr = tmpList.toArray(evoArr);
 		String jErvoList = JsonParser.getInstance().jParseArr(evoArr);
@@ -160,7 +167,7 @@ public class EditorServiceImpl implements EditorService {
 	{
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		List<EditorVO> evoList = editService.searchAll("editor_searchAll_key", director);
-		
+
 		List<EditorReviewBBSVO>	tempErvoList = null;
 
 		List<String> tmpList = new ArrayList<String>();
@@ -172,31 +179,31 @@ public class EditorServiceImpl implements EditorService {
 		{
 			totalScore = 0.0;
 			tempErvoList = reviewListForTotalScore(evo.getEditorId());
-			
+
 			for(EditorReviewBBSVO ervo : tempErvoList)
 			{
 				totalScore += ervo.getScore();
 			}
-			
+
 			if(!(tempErvoList.size() == 0))
 			{
 				totalScore /= tempErvoList.size();
 			}
-			
+
 			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDIT_VO_FIELD, new String[]{evo.getEditorId(),evo.getDirector(),evo.getDescription(),String.valueOf(evo.getEditorType()),String.valueOf(totalScore),String.valueOf(tempErvoList.size())}));
 		}
-		
+
 		String[] evoArr = new String[evoList.size()];
 		evoArr = tmpList.toArray(evoArr);
 		String jEvoList = JsonParser.getInstance().jParseArr(evoArr);
-		
+
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvoList});
 	}
-	
+
 	private List<EditorReviewBBSVO> reviewListForTotalScore(String editorId)
 	{
 		GenericService<EditorReviewBBSVO>	reviewService = new GenericServiceImpl<EditorReviewBBSVO>();
-		
+
 		return reviewService.searchAll("editorReview_searchAll_key", editorId);
 	}
 
@@ -214,7 +221,7 @@ public class EditorServiceImpl implements EditorService {
 		// TODO Auto-generated method stub
 		GenericService<EditorCodeVO>	genericService = new GenericServiceImpl<EditorCodeVO>();
 		Integer res = genericService.modify("editorCode_modify", editorCode);
-		
+
 		return res;
 	}
 
@@ -256,6 +263,63 @@ public class EditorServiceImpl implements EditorService {
 		for(EditorCodeVO ecvo : ecvoList){
 			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.EDITCODE_VO_FIELD, new String[]{ecvo.getEditorId(),ecvo.getCode(),ecvo.getPath()}));
 		}
+		String[] ecvoArr = new String[ecvoList.size()];
+		ecvoArr = tmpList.toArray(ecvoArr);
+		String jEcvoList = JsonParser.getInstance().jParseArr(ecvoArr);
+
+		return JsonParser.getInstance().jParseObj(objName,new String[]{jEcvoList});
+	}
+
+	public String childCodeList(String childId, String editorId)
+	{
+		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
+		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", editorId);
+
+		int	index = 0;
+
+		List<String> tmpList = new ArrayList<String>();
+
+		String[] objName = new String[]{"childCode"};
+
+		for(EditorCodeVO str : ecvoList)
+		{
+			index = str.getPath().indexOf(childId);
+
+			if(index != -1)
+			{
+				String	sub = str.getPath().substring(0,str.getPath().indexOf(childId));
+				
+				Pattern p = Pattern.compile("\\\\");
+				Matcher m = p.matcher(sub);
+				
+				int count = 0;
+				//int	count2 = 0;
+				
+				for( int i = 0; m.find(i); i = m.end())
+				{
+					count++;
+				}
+				
+				/*Pattern p2 = Pattern.compile(".");
+				Matcher m2 = p2.matcher(sub);
+				
+				for(int i = 0 ; m2.find(i) ; i = m2.end())
+				{
+					count2++;
+				}*/
+				
+				System.out.println(count);
+				//System.out.println(count2);
+				
+				if(count < 2)
+				{
+					tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.CHILD_CODE, new String[]{(str.getPath()).substring(index)}));
+					
+					System.out.println((str.getPath()).substring(index));
+				}
+			}
+		}
+
 		String[] ecvoArr = new String[ecvoList.size()];
 		ecvoArr = tmpList.toArray(ecvoArr);
 		String jEcvoList = JsonParser.getInstance().jParseArr(ecvoArr);

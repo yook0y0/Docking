@@ -240,8 +240,9 @@
             });
         });
 	</script>
-	<div id="changeable_inside">
-		<%@ include file="js/templates/main_template.html"%>
+	
+	<div id="contents_inside">
+		
 	</div>
 </body>
 </html>

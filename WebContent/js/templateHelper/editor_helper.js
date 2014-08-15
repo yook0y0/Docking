@@ -281,12 +281,8 @@ function reviewListByEditor(editorId)
 };
 
 
-
-
-function getCodeList(editorId)
+/*function getCodeList(editorId)
 {
-	alert(editorId);
-	
 	getContJsCss("edit_code","edit_code");
 	
 	$.post("./codeList",
@@ -296,19 +292,48 @@ function getCodeList(editorId)
 	
 	function(data)
 	{
-		/*jData = JSON.parse(data);
-		var result = $.parseJSON(jData.editorReviewBBSVO);
+		jData = JSON.parse(data);
+		var result = $.parseJSON(jData.EditorCodeVOList);
 		
-		var review;
-		var reviewList = "";
-		
-		var reviewTitle = "";
-		
+		var	editorCode;
+
+		var masterList = "";
+		var secondList = "";
+		var thirdList = "";
+
 		for(var i = 0 ; i < result.length ; i++)
 		{
-			review = $.parseJSON(result[i]);
+			editorCode = $.parseJSON(result[i]);
 
-		};*/
+			if(i == 0)
+			{
+				$("#codeList_title").append('<i class="fa fa-angle-right"></i>' + editorCode['editorId']);
+			}
+			
+			var trashId = editorCode['path'].split("\\");
+
+			for(var j = 1 ; j < trashId.length ; j++)
+			{
+				if(j == 1)
+				{
+					masterList += '<li id="' + trashId[1] + i + '"><a href="#"><img src="assets/img/file.png" />' + trashId[1] + '</a></li>';
+					
+					$("#tree_menu").append(masterList);
+
+					continue;
+				}
+				
+				secondList += '<ul id="' + trashId[j] + j + '"></ul>';
+				
+				$("#" + trashId[j-1] + i).append(secondList);
+
+				thirdList += '<li><a href="#">' + trashId[j] + '</a></li>';
+				
+				$("#" + trashId[j] + j).append(thirdList);
+			};
+		};
 	});
-};
+};*/
+
+
 

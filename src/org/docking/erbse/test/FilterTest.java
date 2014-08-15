@@ -5,15 +5,11 @@ import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
 import org.docking.erbse.analysis.attribute.IndexAttribute;
 import org.docking.erbse.analysis.attribute.TokenAttribute;
-import org.docking.erbse.analysis.filter.DataUpdateFilter;
 import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.analysis.tokenizer.DataTokenizer;
 
-public class FilterTest {
-
-	/**
-	 * @param args
-	 */
+public class FilterTest 
+{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

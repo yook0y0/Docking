@@ -20,7 +20,7 @@ import org.docking.erbse.util.Injector;
 		
 		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk",
 
-		"/editorAdd", "/editorModify", "/editorSearch", "/editorSearchAll", "/editorDelete", "/ownEditorList", "/editorCodeAdd", "/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList",
+		"/editorAdd", "/editorModify", "/editorSearch", "/editorSearchAll", "/editorDelete", "/ownEditorList", "/editorCodeAdd", "/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList", "/childCodeList",
 
 		"/documentAdd", "/documentModify", "/documentDelete", "/documentSearch", "/ownDocumentList", "/joinDocumentList", "/contentAdd", "/contentModify", "/contentDelete", "/contentSearch", "/contentsList", "/memberInvite", "/memberExpel", "/memberPositionUpdate",
 		
@@ -183,6 +183,13 @@ public class FrontController extends HttpServlet
 			ec.setReq(req);
 			ec.setRes(res);
 			ec.codeList();
+		}
+		else if(action.equals("childCodeList"))
+		{
+			EditorController ec = (EditorController)Injector.getInstance().getObject(EditorController.class);
+			ec.setReq(req);
+			ec.setRes(res);
+			ec.childCodeList();
 		}
 		
 		/*

@@ -20,4 +20,5 @@ public interface EditorService {
 	public Integer editorCodeDelete(String path);
 	
 	public String codeList(String editorId);
+	public String childCodeList(String childId, String editorId);
 }

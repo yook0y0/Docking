@@ -38,7 +38,8 @@ public class DockingController {
 		pw.flush();
 	}
 
-	public void editorExecute() throws IOException{
+	public void editorExecute() throws IOException
+	{
 		String documentId = req.getParameter("documentId");
 		String contentId = req.getParameter("contentId");
 		String body = req.getParameter("body");

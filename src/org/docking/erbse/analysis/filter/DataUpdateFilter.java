@@ -1,88 +1,85 @@
 package org.docking.erbse.analysis.filter;
 
-import java.util.List;
-
 import org.docking.erbse.analysis.DockingAnalyzer;
 
 public class DataUpdateFilter extends DataProcessFilter {
 
+	private byte[][] targetData;
 	private byte[][] updateData;
 
 	public DataUpdateFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData, byte[][] updateData) {
+		this(stream,preData,postData,null,updateData);
+	}
+
+	public DataUpdateFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData,byte[][] targetData, byte[][] updateData) {
 		super(stream,preData,postData);
+		this.targetData = targetData;
 		this.updateData = updateData;
 	}
 
-	public byte[][] getupdateData() {
-		return updateData;
+	public byte[][] getTargetData() {
+		return this.targetData;
 	}
 
-	public void setupdateData(byte[][] updateData) {
+	public void setTargetData(byte[][] targetData) {
+		this.targetData = targetData;
+	}
+
+	public byte[][] getUpdateData() {
+		return this.updateData;
+	}
+
+	public void setUpdateData(byte[][] updateData) {
 		this.updateData = updateData;
 	}
 
-	@Override
-	protected byte[] process(byte[] data, List<Integer> startWidth, List<Integer> endWidth) {
-		int chk = 0;
-		int sChk = 0;
-		int len = 0;
+	protected byte[] process(byte[] data, int dataIndex, int srcIndex, int targetIndex){
 
-		byte[] dataArr = data;
-		byte[] bArr = dataArr;
+		byte[] targetSrc = null;
+		if(this.targetData != null){
+			targetSrc = this.targetData[srcIndex];
+		}
+		byte[] updateSrc = this.updateData[srcIndex];
+		byte[] preData = super.getPreData()[srcIndex];
+		byte[] tmp = null;
 
-		for(int i=0;i<dataArr.length;i++){
-			for(int j=0;j<super.getPreData().length;j++){
-				if(dataArr[i] == super.getPreData()[j][0]){
-					for(int k=0;k<super.getPreData()[j].length;k++){
-						if(dataArr[i+k] != super.getPreData()[j][k]){
-							break;
-						}
-						else{
-							chk++;
-						}
+		int pre = dataIndex+preData.length;
+
+		if(targetSrc == null){
+			tmp = updateSrc;
+		}
+		else{
+			byte[] targetValue = new byte[targetIndex];
+
+			boolean cmp = false;
+
+			System.arraycopy(data, pre, targetValue, 0, targetIndex);
+			for(int i=0;i<targetValue.length;i++){
+				if(targetValue[i] == targetSrc[0]){
+					tmp = new byte[targetSrc.length];
+
+					System.arraycopy(targetValue, i, tmp, 0, targetSrc.length);
+					cmp = super.compare(tmp, targetSrc);
+
+					if(cmp == true){
+						tmp = new byte[targetValue.length - targetSrc.length + updateSrc.length];
+
+						System.arraycopy(targetValue, 0, tmp, 0, i);
+						System.arraycopy(updateSrc, 0, tmp, i, updateSrc.length);
+						System.arraycopy(targetValue, i+targetSrc.length, tmp, i+updateSrc.length, (targetValue.length-i-targetSrc.length));
 					}
-					if(chk == super.getPreData()[j].length){
-						/*
-						 *  i+chk 는 시작부터 preData까지의 길이
-						 *	i는 preData 전까지의 길이
-						 */
-						len=0;
-						for(int k=i+chk;k<dataArr.length;k++,len++){
-							System.out.println("k : " + k);
-							System.out.println("dataArr.length : " + dataArr.length);
-							/*
-							 * len은 preData와 postData의 사이의 개수(빠져야함)
-							 */
-							if(dataArr[k] == super.getPostData()[j][0]){
-								sChk = 0;
-								for(int l=0;l<super.getPostData()[j].length;l++){
-									if(dataArr[k+l] == super.getPostData()[j][l]){
-										sChk++;
-									}
-									else{
-										break;
-									}
-								}
-								if(sChk == super.getPostData()[j].length){
-									System.out.println("sChk : " + sChk);
-									bArr = new byte[dataArr.length-len+this.updateData[j].length];
-
-									System.arraycopy(dataArr, 0, bArr, 0, i+super.getPreData()[j].length);
-									System.arraycopy(this.updateData[j], 0, bArr, i+super.getPreData()[j].length, this.updateData[j].length);
-									System.arraycopy(dataArr, i+super.getPreData()[j].length+len, bArr, this.updateData[j].length+i+super.getPreData()[j].length, dataArr.length-i-len-super.getPreData()[j].length);
-
-									startWidth.add(i);
-									endWidth.add(i+super.getPreData()[j].length+len);
-									
-								}
-							}
-						}
+					else{
+						tmp = updateSrc;
 					}
-					dataArr = bArr;
-					chk = 0;
 				}
 			}
 		}
-		return dataArr;
+
+		byte[] res = new byte[data.length+tmp.length-targetIndex];
+		System.arraycopy(data, 0, res, 0, pre);
+		System.arraycopy(tmp, 0, res, pre, tmp.length);
+		System.arraycopy(data, pre+targetIndex, res, pre+tmp.length, data.length-(pre+targetIndex));
+
+		return res;
 	}
 }

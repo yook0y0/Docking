@@ -41,6 +41,16 @@ public class DataRegister extends AttributeSource
 		this.data.setData(data);
 	}
 	
+	public DataRegister(byte[] data){
+		this();
+		this.data.setData(data);
+	}
+	
+	public DataRegister(byte[][] data){
+		this();
+		this.data.setData(data);
+	}
+	
 	public DataRegister(String data){
 		this();
 		this.data.setData(data);

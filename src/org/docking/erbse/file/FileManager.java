@@ -95,7 +95,7 @@ public class FileManager {
 		int len = src.lastIndexOf(".");
 		
 		if(len > 0){
-			res = src.substring(0,len+1);
+			res = src.substring(0,len);
 		}
 		return res;
 	}
@@ -225,7 +225,8 @@ public class FileManager {
 		int len = src.lastIndexOf(".");
 
 		if(len > 0){
-			dat = src.substring(0,len+1);
+			dat = src.substring(0,len);
+			System.out.println("dat : " + dat);
 		}
 
 		return this.unZip(src,dat);
@@ -289,7 +290,7 @@ public class FileManager {
 
 		List<File> list = new ArrayList<File>();
 
-		if (file.isDirectory()) {   
+		if (file.isDirectory()) {
 			if (file.listFiles().length != 0) {
 				File[] fileList = file.listFiles();
 				for (int i = 0; i < fileList.length; i++) {

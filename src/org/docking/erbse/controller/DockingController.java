@@ -3,12 +3,14 @@ package org.docking.erbse.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
+import org.docking.erbse.vo.EditorExecuteInfoVO;
 
 public class DockingController {
 	private HttpServletRequest req;
@@ -31,11 +33,19 @@ public class DockingController {
 
 	public void editorTestExecute() throws IOException{
 		String editorId = req.getParameter("editorId");
-		String jRes = ds.editorTestExecute(editorId);
-
-		PrintWriter pw = res.getWriter();
+		
+		EditorExecuteInfoVO eeivo = ds.editorTestExecute(editorId);
+		req.setAttribute("eeivo", eeivo);
+		
+		try {
+			req.getRequestDispatcher("./test.jsp").forward(req, res);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error");
+		}
+		/*PrintWriter pw = res.getWriter();
 		pw.write(jRes);
-		pw.flush();
+		pw.flush();*/
 	}
 
 	public void editorExecute() throws IOException
@@ -61,11 +71,10 @@ public class DockingController {
 	public void getEditorCode() throws IOException{
 		String editorId = req.getParameter("editorId");
 		String path = req.getParameter("path");
-		
-		String jRes = ds.getEditorCode(editorId, path);
+		String code = ds.getEditorCode(editorId,path);
 
 		PrintWriter pw = res.getWriter();
-		pw.write(jRes);
+		pw.write(code);
 		pw.flush();
 	}
 }

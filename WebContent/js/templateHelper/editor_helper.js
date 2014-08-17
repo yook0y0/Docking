@@ -75,7 +75,7 @@ function getOwnEditorList()
 			
 			
 			editorList += '<td>';
-			editorList += '<button class="btn btn-success btn-xs">';
+			editorList += '<button class="btn btn-success btn-xs ">';
 			editorList += '<i class="fa fa-check"></i></button>';
 			editorList += '<button class="btn btn-primary btn-xs" onclick="editorSearch(\'' + editor['editorId'] + '\')">';
 			editorList += '<i class="fa fa-pencil"></i></button>';

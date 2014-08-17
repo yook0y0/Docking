@@ -1,14 +1,22 @@
 package org.docking.erbse.service;
 
+import org.docking.erbse.dao.service.GenericService;
+import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.vo.ContentVO;
+import org.docking.erbse.vo.EditorCodeVO;
+import org.docking.erbse.vo.EditorExecuteInfoVO;
 
 public class DockingServiceImpl implements DockingService 
 {
 
 	@Override
-	public String editorTestExecute(String editorId) {
+	public EditorExecuteInfoVO editorTestExecute(String editorId) {
 		// TODO Auto-generated method stub
-		return null;
+
+		GenericService<EditorExecuteInfoVO>	eeiService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		EditorExecuteInfoVO eeivo = eeiService.search("editorExecute_search", editorId);
+
+		return eeivo;
 	}
 
 	@Override
@@ -20,7 +28,13 @@ public class DockingServiceImpl implements DockingService
 	@Override
 	public String getEditorCode(String editorId, String path) {
 		// TODO Auto-generated method stub
-		return null;
+
+		String realPath = editorId  + "\\" +  path;
+
+		GenericService<EditorCodeVO>	ecvoService = new GenericServiceImpl<EditorCodeVO>();
+		EditorCodeVO ecvo = ecvoService.search("editorCode_search", realPath.replace("/", "\\"));
+
+		return ecvo.getCode();
 	}
 	/*@Override
 	public String editorTestExecute(String editorId) {

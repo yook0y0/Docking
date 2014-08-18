@@ -12,19 +12,16 @@
 
 </head>
 <body>
-	<input type="hidden" id="h_documentId" value="${requestScope.documentId}" />
+	<input type="hidden" id="h_documentId"
+		value="${requestScope.documentId}" />
 	<input type="hidden" id="h_memberId" value="${requestScope.memberId}" />
 
-	<section id="container">
-	
-	<header class="header black-bg">
+	<section id="container"> <header class="header black-bg">
 	<div class="sidebar-toggle-box">
-		<div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+		<div class="fa fa-bars tooltips" data-placement="right"
+			data-original-title="Toggle Navigation"></div>
 	</div>
-	<a href="./main.jsp" class="logo"><b>DOCKING</b></a>
-
-
-	<!--  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////   -->
+	<a href="./main.jsp" class="logo"><b>DOCKING</b></a> <!--  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////   -->
 
 	<!--logo end-->
 	<div class="nav notify-row" id="top_menu">
@@ -32,54 +29,50 @@
 		<ul class="nav top-menu">
 			<!-- settings start -->
 
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////초대 -->
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////초대 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" onclick="inviteMember()"> <i
 					class="fa fa-tasks"></i> <span class="badge bg-theme"></span>
 			</a></li>
 
 			<!-- settings end -->
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////초대 -->
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////초대 -->
 
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
 			<li id="header_inbox_bar" class="dropdown"><a
 				data-toggle="dropdown" class="dropdown-toggle"
-				onclick="chatToggle()"> <i class="fa fa-envelope-o"></i> 
-				<span class="badge bg-theme" id="chat_count"> </span>
-				</a>
-			</li>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
+				onclick="chatToggle()"> <i class="fa fa-envelope-o"></i> <span
+					class="badge bg-theme" id="chat_count"> </span>
+			</a></li>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
 
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////조인멤버 -->
-			<li class="dropdown">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="index.html#"> 
-				<i class="fa fa-tasks"></i> 
-				<span class="badge bg-theme" id="user_count_area"> </span></a>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////조인멤버 -->
+			<li class="dropdown"><a data-toggle="dropdown"
+				class="dropdown-toggle" href="index.html#"> <i
+					class="fa fa-tasks"></i> <span class="badge bg-theme"
+					id="user_count_area"> </span></a>
 				<ul class="dropdown-menu extended tasks-bar" id="user_area">
 
-				</ul>
-			</li>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////조인멤버 -->
+				</ul></li>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////조인멤버 -->
 
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
-			<li class="dropdown">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="index.html#"> 
-				<i class="fa fa-tasks"></i> 
-				<span class="badge bg-theme">${contentCount }</span></a>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
+			<li class="dropdown"><a data-toggle="dropdown"
+				class="dropdown-toggle" href="index.html#"> <i
+					class="fa fa-tasks"></i> <span class="badge bg-theme">${contentCount
+						}</span></a>
 				<ul class="dropdown-menu extended tasks-bar">
 					<div class="notify-arrow notify-arrow-green"></div>
-        	  		<li><p class="green">CONTENTS LIST!</p></li>
-        	  		<c:forEach var="item" items="${contentList}">
-						<li>
-	                   		<a href="index.html#">
-	                   		<div class="task-info">
-	                   		<div class="desc">${item.editorId}</div>
-	                   		</div></a>
-	                   	</li>
+					<li><p class="green">CONTENTS LIST!</p></li>
+					<c:forEach var="item" items="${contentList}">
+						<li><a href="index.html#">
+								<div class="task-info">
+									<div class="desc">${item.editorId}</div>
+								</div>
+						</a></li>
 					</c:forEach>
-				</ul>
-			</li>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
+				</ul></li>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
 
 		</ul>
 	</div>
@@ -97,12 +90,11 @@
 			</li>
 		</ul>
 	</div>
-	
+
 	</header> <!--header end--> <!-- **********************************************************************************************************************************************************
       MAIN SIDEBAR MENU
       *********************************************************************************************************************************************************** -->
-	<!--sidebar start--> <aside>
-	<%-- <div id="sidebar" class="nav-collapse " style="display:none">
+	<!--sidebar start--> <aside> <%-- <div id="sidebar" class="nav-collapse " style="display:none">
 		<!-- sidebar menu start-->
 		<ul class="sidebar-menu" id="nav-accordion">
 			<li class="sub-menu"><a onclick="getCont('main');"> <i
@@ -129,7 +121,8 @@
 	<script src="assets/js/jquery.js"></script>
 	<script src="assets/js/jquery-1.8.3.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
-	<script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+	<script class="include" type="text/javascript"
+		src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
 	<script src="assets/js/jquery.scrollTo.min.js"></script>
 	<script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
 	<script src="assets/js/jquery.sparkline.js"></script>
@@ -137,15 +130,16 @@
 
 	<!--common script for all pages-->
 	<script src="assets/js/common-scripts.js"></script>
-	<script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
+	<script type="text/javascript"
+		src="assets/js/gritter/js/jquery.gritter.js"></script>
 	<script type="text/javascript" src="assets/js/gritter-conf.js"></script>
 	<!--script for this page-->
 	<script src="assets/js/sparkline-chart.js"></script>
 	<script src="assets/js/zabuto_calendar.js"></script>
 	<script type="application/javascript">
-		
+	
         $(document).ready(function () 
-       	{
+       	{        		   	
         	var memberId = $("#h_memberId").val();
         	var docId = $("#h_documentId").val();
         	//var body = $("#body").val();
@@ -162,6 +156,22 @@
               data_set(data);
            });
            
+           //
+           //	Data set / get
+           //
+           socket.on('dataGet', function(data) 
+           {
+        		return jMap.toXML();        		
+           });
+           
+           socket.on('dataSet', function(data)
+           {
+        	   	jMap.controller.customLoadMap(data);
+		   });
+           
+        /////////   
+   		
+   		
            socket.on('userList', function(data)
         	{
         	   var jsonDataList = eval('('+data+')');
@@ -265,175 +275,227 @@
                 $(this).hide();
             });
         });
-	</script>
 	
-	<style>
-		@import url(http://weloveiconfonts.com/api/?family=typicons);
-		[class*="typicons-"]:before {
-		  font-family: 'Typicons', sans-serif;
-		}
-		
-		.module {
-		  width: 300px;
-		  margin: 20px auto;
-		}
-		
-		.top-bar {
-		  background: #666;
-		  color: white;
-		  padding: 0.5rem;
-		  position: relative;
-		  overflow: hidden;
-		  h1 {
-		    display: inline;
-		    font-size: 1.1rem;
-		  }
-		  .typicons-message {
-		    display: inline-block;
-		    padding: 4px 5px 2px 5px;
-		  }
-		  .typicons-minus {
-		    position: relative;
-		    top: 3px;
-		  }
-		  .left {
-		    float: left;
-		  }
-		  .right {
-		    float: right;
-		    padding-top: 5px;
-		  }
-		  > * {
-		    position: relative; 
-		  }
-		  &::before {
-		    content: "";
-		    position: absolute;
-		    top: -100%;
-		    left: 0;
-		    right: 0;
-		    bottom: -100%;
-		    opacity: 0.25;
-		    background: radial-gradient(white, black);
-		    animation: pulse 1s ease alternate infinite;
-		  }
-		}
-		
-		.discussion {
-		  list-style: none;
-		  background: #e5e5e5;
-		  margin: 0;
-		  padding: 0 0 50px 0; // finality
-		  li {
-		    padding: 0.5rem;
-		    overflow: hidden;
-		    display: flex;
-		  }
-		  .avatar {
-		    width: 40px; // stronger than %
-		    // could set height, but gonna bottom-align instead
-		    position: relative; // for triangle
-		    img {
-		      display: block; // triangle position
-		      width: 100%;
-		    }
-		  }
-		}
-		
-		.other {
-		  .avatar {
-		    &:after {
-		      content: "";
-		      position: absolute;
-		      top: 0;
-		      right: 0;
-		      width: 0;
-		      height: 0;
-		      border: 5px solid white;
-		      border-left-color: transparent;
-		      border-bottom-color: transparent;
-		    }
-		  }
-		}
-		
-		.self {
-		  justify-content: flex-end;
-		  align-items: flex-end;
-		  .messages {
-		    order: 1;
-		    border-bottom-right-radius: 0; // weird shadow fix
-		  }
-		  .avatar {
-		    order: 2;
-		    &:after {
-		      content: "";
-		      position: absolute;
-		      bottom: 0;
-		      left: 0;
-		      width: 0;
-		      height: 0;
-		      border: 5px solid white;
-		      border-right-color: transparent;
-		      border-top-color: transparent;
-		      box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
-		    }
-		  }
-		}
-		
-		.messages {
-		  background: white;
-		  padding: 10px;
-		  border-radius: 2px;
-		  box-shadow: 0 1px 2px rgba(black, 0.2);
-		  p {
-		    font-size: 0.8rem;
-		    margin: 0 0 0.2rem 0;
-		  }
-		  time {
-		    font-size: 0.7rem;
-		    color: #ccc;
-		  }
-		}
-		
-		@keyframes pulse {
-		  from { opacity: 0; }
-		  to { opacity: 0.5; }
-		}
-		
-		#chat_main
-		{
-			position : absolute;
-			top : 20px;
-			right : 5px;
-		}
-	</style>
+	
+	</script>
 
-	<section class="module" id="chat_main" style="display:none"> 
-		<header class="top-bar">
-			<div class="left">
-				<span class="icon typicons-message"></span>
-				<h1>DOCKING CHAT</h1>
-			</div>
-		</header>
-		
-		<div style="overflow:scroll; width:300px; height:450px;">
-			<ol class="discussion" id="chat_area">
-			
-			</ol>
+	<style>
+@import url(http://weloveiconfonts.com/api/?family=typicons);
+
+[class*="typicons-"]:before {
+	font-family: 'Typicons', sans-serif;
+}
+
+.module {
+	width: 300px;
+	margin: 20px auto;
+}
+
+.top-bar {
+	background: #666;
+	color: white;
+	padding: 0.5rem;
+	position: relative;
+	overflow: hidden; h1 { display : inline;
+	font-size: 1.1rem;
+}
+
+.typicons-message {
+	display: inline-block;
+	padding: 4px 5px 2px 5px;
+}
+
+.typicons-minus {
+	position: relative;
+	top: 3px;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+	padding-top: 5px;
+}
+
+>
+* {
+	position: relative;
+}
+
+&
+::before {
+	content: "";
+	position: absolute;
+	top: -100%;
+	left: 0;
+	right: 0;
+	bottom: -100%;
+	opacity: 0.25;
+	background: radial-gradient(white, black);
+	animation: pulse 1s ease alternate infinite;
+}
+
+}
+.discussion {
+	list-style: none;
+	background: #e5e5e5;
+	margin: 0;
+	padding: 0 0 50px 0; // finality li { padding : 0.5rem;
+	overflow: hidden;
+	display: flex;
+}
+
+.avatar {
+	width: 40px;
+	//
+	stronger
+	than
+	%
+	//
+	could
+	set
+	height,
+	but
+	gonna
+	bottom-align
+	instead
+	position
+	:
+	relative;
+	//
+	for
+	triangle
+	img
+	{
+	display
+	:
+	block;
+	//
+	triangle
+	position
+	width
+	:
+	100%;
+}
+
+}
+}
+.other { .avatar { &:after {
+		      content : "";
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 0;
+	height: 0;
+	border: 5px solid white;
+	border-left-color: transparent;
+	border-bottom-color: transparent;
+}
+
+}
+}
+.self {
+	justify-content: flex-end;
+	align-items: flex-end; . messages { order : 1;
+	border-bottom-right-radius: 0;
+	//
+	weird
+	shadow
+	fix
+}
+
+.avatar {
+	order: 2; &: after { content : "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	border: 5px solid white;
+	border-right-color: transparent;
+	border-top-color: transparent;
+	box-shadow: 1px 1px 2px rgba(black, 0.2);
+	//
+	not
+	quite
+	perfect
+	but
+	close
+}
+
+}
+}
+.messages {
+	background: white;
+	padding: 10px;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px rgba(black, 0.2); p { font-size : 0.8rem;
+	margin: 0 0 0.2rem 0;
+}
+
+time {
+	font-size: 0.7rem;
+	color: #ccc;
+}
+
+}
+@
+keyframes pulse {from { opacity:0;
+	
+}
+
+to {
+	opacity: 0.5;
+}
+
+}
+#chat_main {
+	position: absolute;
+	top: 20px;
+	right: 5px;
+}
+</style>
+
+	<section class="module" id="chat_main" style="display:none">
+	<header class="top-bar">
+	<div class="left">
+		<span class="icon typicons-message"></span>
+		<h1>DOCKING CHAT</h1>
+	</div>
+	</header>
+
+	<div style="overflow: scroll; width: 300px; height: 450px;">
+		<ol class="discussion" id="chat_area">
+
+		</ol>
+	</div>
+
+	<div class="panel-footer">
+		<div class="input-group">
+			<input id="btn-input" type="text" class="form-control input-sm"
+				placeholder="Type your message here..." /> <span
+				class="input-group-btn">
+				<button class="btn btn-warning btn-sm" id="btn-chat">Send</button>
+			</span>
 		</div>
-		
-		<div class="panel-footer">
-			<div class="input-group">
-				<input id="btn-input" type="text" class="form-control input-sm"
-					placeholder="Type your message here..." /> <span
-					class="input-group-btn">
-					<button class="btn btn-warning btn-sm" id="btn-chat">
-						Send</button>
-				</span>
-			</div>
-		</div>
+	</div>
 	</section>
 
-	<div id="contents_inside"></div>
+	<script>
+function data_get() {
+	return jMap.toXML();
+};
+
+function data_set(data) {
+	jMap.controller.customLoadMap(data);
+};
+</script>
+	<div id="contents_inside">
+		<c:import
+			url="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" />
+
+	</div>
 </body>
 </html>

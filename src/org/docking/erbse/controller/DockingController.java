@@ -13,7 +13,9 @@ import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
+import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
+import org.docking.erbse.vo.EditorVO;
 import org.docking.erbse.vo.MemberVO;
 
 public class DockingController {
@@ -56,11 +58,26 @@ public class DockingController {
 		String contentId = req.getParameter("contentId");
 		
 		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();
-		ContentVO	vo = service.search("content_search", contentId);
+		ContentVO	cvo = service.search("content_search", contentId);
 		
-		List<ContentVO>	contentList = service.searchAll("content_searchAll_key", vo.getDocumentId());
+		GenericService<EditorExecuteInfoVO> eeivoService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", cvo.getEditorId());
 		
-		req.setAttribute("documentId", vo.getDocumentId());
+		List<ContentVO>	contentList = service.searchAll("content_searchAll_key", cvo.getDocumentId());
+		
+		req.setAttribute("getMethod", eeivo.getGetMethod());
+		req.setAttribute("setMethod", eeivo.getSetMethod());
+/*		req.setAttribute("getMethod", "jMap.toXML()");
+		req.setAttribute("setMethod", "jMap.controller.customLoadMap(data)");*/
+		
+		req.setAttribute("startPage", eeivo.getStartPage());
+		req.setAttribute("editorId", eeivo.getEditorId());
+		
+		System.out.println("eeivo.getGetMethod()" + eeivo.getGetMethod());
+		System.out.println("eeivo.getSetMethod()" + eeivo.getSetMethod());
+		System.out.println("eeivo.getStartPage()" + eeivo.getStartPage());
+		
+		req.setAttribute("documentId", cvo.getDocumentId());
 		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		req.setAttribute("contentList", contentList);
 		req.setAttribute("contentCount", contentList.size());

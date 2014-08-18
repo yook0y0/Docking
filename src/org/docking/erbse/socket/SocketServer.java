@@ -1,8 +1,6 @@
 package org.docking.erbse.socket;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.util.JsonParser;

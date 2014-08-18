@@ -13,11 +13,8 @@ import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
-<<<<<<< HEAD
-import org.docking.erbse.vo.MemberVO;
-=======
 import org.docking.erbse.vo.EditorExecuteInfoVO;
->>>>>>> e9c07afafa3b17e4dd8cbfaba9cc5a1396bd8937
+import org.docking.erbse.vo.MemberVO;
 
 public class DockingController {
 	private HttpServletRequest req;
@@ -55,8 +52,7 @@ public class DockingController {
 		pw.flush();*/
 	}
 
-	public void editorExecute() throws IOException, ServletException
-	{
+	public void editorExecute() throws IOException, ServletException{
 		String contentId = req.getParameter("contentId");
 		
 		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();

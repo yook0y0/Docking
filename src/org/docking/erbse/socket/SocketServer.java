@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.util.JsonParser;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
@@ -20,7 +21,7 @@ import com.nhncorp.mods.socket.io.spring.DefaultEmbeddableVerticle;
 public class SocketServer extends DefaultEmbeddableVerticle 
 {
 	private static SocketIOServer io = null;
-	private int	port;
+	private int     	port;
 
 	public int getPort() 
 	{
@@ -30,64 +31,59 @@ public class SocketServer extends DefaultEmbeddableVerticle
 	{
 		this.port = port;
 	}
-	
-	public void start(){
-		this.start(Vertx.newVertx());
-	}
 
 	@Override
 	public void start(Vertx vertx) 
 	{
+		// HttpServlet ��
 		HttpServer server = vertx.createHttpServer();
 
 		io = new DefaultSocketIOServer(vertx, server);
 
+		System.out.println("SocketIOServer create");
+
+		// Connection �̺�Ʈ ����
+
 		io.sockets().onConnection(new Handler<SocketIOSocket>() {
+
 			public void handle(final SocketIOSocket socket) 
 			{
-				socket.on("document", new Handler<JsonObject>() {
+				System.out.println("Connection handling");
+
+				socket.on("room", new Handler<JsonObject>() {
+
 					public void handle(JsonObject data) 
 					{
-						String room = data.getString("document");
+						String room = data.getString("room");
 						socket.join(room);
 
 						String	memberId = data.getString("memberId");
-						String	initData = setInitData(room);
+
+						//String	initData = setInitData(room);
 
 
-						if(!initData.equals("0"))
+						/*if(!initData.equals("0"))
 						{
 							socket.emit("roomCreate",initData);
-						}
+						}*/
 
-						/*Attr.socketList.put(socket.getId(), memberId);*/
+						Attr.socketList.put(socket.getId(), memberId);
 
 						String[] clients = io.sockets().clients(room);
 
 						String[] userIdList = new String[clients.length];
 						for(int i=0;i<clients.length;i++){
-							/*userIdList[i] = Attr.socketList.get(clients[i]);*/
+							userIdList[i] = Attr.socketList.get(clients[i]);
 						}
 
 						io.sockets().in(room).emit("userList", JsonParser.getInstance().jParseArr(userIdList));
-						io.sockets().in(room).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"join",memberId," �섏씠 �낆옣�섏뀲�듬땲��"}));
+						io.sockets().in(room).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"join",memberId," 님이 입장하셨습니다."}));
 
 						print(io.sockets().manager().rooms());
 						print(io.sockets().clients(room));
 						print(io.sockets().manager().roomClients(socket.getId()));
 					}
 				});
-				
-				socket.on("chat_send", new Handler<JsonObject>() 
-						{
-							public void handle(JsonObject data) 
-							{
-								String	memberId = data.getString("memberId");
-								String	message = data.getString("data");
-								
-								io.sockets().emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
-							}
-						});
 
 				socket.on("data", new Handler<JsonObject>() 
 						{
@@ -108,13 +104,24 @@ public class SocketServer extends DefaultEmbeddableVerticle
 					}
 						});
 
-				socket.onDisconnect(new Handler<JsonObject>() 
+				socket.on("chat_send", new Handler<JsonObject>() 
+						{
+							public void handle(JsonObject data) 
+							{
+								String	memberId = data.getString("memberId");
+								String	message = data.getString("data");
+								
+								io.sockets().emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
+							}
+						});
+
+				/*socket.onDisconnect(new Handler<JsonObject>() 
 						{
 					public void handle(JsonObject data) 
 					{
-						/*String	memberId = Attr.socketList.get(socket.getId());
+						String	memberId = Attr.socketList.get(socket.getId());
 						
-						Attr.socketList.remove(socket.getId());*/
+						Attr.socketList.remove(socket.getId());
 
 						RoomClient rc = io.sockets().manager().roomClients(socket.getId());
 						Set<String> rs = rc.rooms();
@@ -131,34 +138,34 @@ public class SocketServer extends DefaultEmbeddableVerticle
 							}
 						}
 
-					//	String[] clients = io.sockets().clients(roomId);
+						String[] clients = io.sockets().clients(roomId);
 
 
-					//	String[] userIdList = new String[clients.length];
+						String[] userIdList = new String[clients.length];
 
-						/*for(int i=0;i<clients.length;i++)
+						for(int i=0;i<clients.length;i++)
 						{
 							userIdList[i] = Attr.socketList.get(clients[i]);
 						}
 
 						io.sockets().in(roomId).emit("userList", JsonParser.getInstance().jParseArr(userIdList));
 
-						io.sockets().in(roomId).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"exit",memberId," �섏씠 �댁옣�섏뀲�듬땲��"}));*/
+						io.sockets().in(roomId).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"exit",memberId," 님이 퇴장하셨습니다."}));
 					}
-						});
+						});*/
 			}
 		});
 
 		server.listen(port);
 	}
 
-	private String setInitData(String room)
+	/*private String setInitData(String room)
 	{
-		//String	docId = room;
+		String	docId = room;
 
-		/*SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);*/
+		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
 
-		/*List<TempVO>	tempList = searchAction.searchTempByDocId(docId);
+		List<TempVO>	tempList = searchAction.searchTempByDocId(docId);
 
 		String	backUpData = "0";
 
@@ -177,9 +184,10 @@ public class SocketServer extends DefaultEmbeddableVerticle
 			}
 		}
 
-		return backUpData;*/
+		return backUpData;
+		
 		return null;
-	}
+	}*/
 
 	private void print(RoomClient roomClient) {
 		System.out.println("===================== RoomClient ===================");

@@ -28,7 +28,7 @@ function getContentsList(documentId)
 			}
 	
 			contentList += '<tr>';
-			contentList += '<td><a onclick="getDockingStart(\'' + content['contentId'] + '\')">' + content['editorId'] + '</a></td>';
+			contentList += '<td><a href="./editorExecute?contentId=' + content['contentId'] + '">' + content['editorId'] + '</a></td>';
 			contentList += '<td>' + content['body'] + '</td>';
 			
 			if(content['writer'] == content['logInMember'])

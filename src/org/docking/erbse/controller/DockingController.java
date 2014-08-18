@@ -2,13 +2,18 @@ package org.docking.erbse.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.docking.erbse.dao.service.GenericService;
+import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
+import org.docking.erbse.vo.MemberVO;
 
 public class DockingController {
 	private HttpServletRequest req;
@@ -38,24 +43,21 @@ public class DockingController {
 		pw.flush();
 	}
 
-	public void editorExecute() throws IOException
+	public void editorExecute() throws IOException, ServletException
 	{
-		String documentId = req.getParameter("documentId");
 		String contentId = req.getParameter("contentId");
-		String body = req.getParameter("body");
-		String editorId = req.getParameter("editorId");
 		
-		ContentVO cvo = new ContentVO();
-		cvo.setDocumentId(documentId);
-		cvo.setContentId(contentId);
-		cvo.setBody(body);
-		cvo.setEditorId(editorId);
+		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();
+		ContentVO	vo = service.search("content_search", contentId);
 		
-		String jRes = ds.editorExecute(cvo);
-
-		PrintWriter pw = res.getWriter();
-		pw.write(jRes);
-		pw.flush();
+		List<ContentVO>	contentList = service.searchAll("content_searchAll_key", vo.getDocumentId());
+		
+		req.setAttribute("documentId", vo.getDocumentId());
+		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
+		req.setAttribute("contentList", contentList);
+		req.setAttribute("contentCount", contentList.size());
+		
+		req.getRequestDispatcher("./docking.jsp").forward(req, res);
 	}
 
 	public void getEditorCode() throws IOException{

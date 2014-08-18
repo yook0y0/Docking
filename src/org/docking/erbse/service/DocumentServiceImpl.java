@@ -10,10 +10,11 @@ import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberContentVO;
+import org.docking.erbse.vo.MemberVO;
 
 
-public class DocumentServiceImpl implements DocumentService {
-
+public class DocumentServiceImpl implements DocumentService 
+{
 	@Override
 	public Integer documentAdd(DocumentVO document, MemberContentVO memberContent) 
 	{
@@ -253,9 +254,25 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public Integer memberInvite(MemberContentVO memberContent) {
-		// TODO Auto-generated method stub
+	public Integer memberInvite(MemberContentVO memberContent) 
+	{
+		GenericService<MemberVO>	mService = new GenericServiceImpl<MemberVO>();
+		MemberVO member = mService.search("member_search", memberContent.getMemberId());
+		
+		if(member == null)
+		{
+			return -1;
+		}
+		
 		GenericService<MemberContentVO>	genericService = new GenericServiceImpl<MemberContentVO>();
+		MemberContentVO	memberContentVO = genericService.search("memberContent_searchAllbyMemberId", memberContent.getMemberId());
+		
+		if(memberContentVO.getDocumentId().equals(memberContent.getDocumentId()))
+		{
+			return -2;
+		}
+		
+		
 		Integer res = genericService.add("memberContent_add", memberContent);
 		
 		return res;

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="assets/css/default.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/component.css" />
+		<link href="assets/css/chat.css" rel="stylesheet">
+		
+		<script src="assets/js/modernizr.custom.js"></script>
+		
+		<!-- Bootstrap core CSS -->
+		
+		<script src="assets/js/chart.js"></script>
+		<script src="assets/js/bootstrap_chat.js"></script>
+		<script src="assets/js/classie.js"></script>
+
+	</head>
+	<body class="cbp-spmenu-push">
+		<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+			<h3>DOCKING CHAT</h3>
+				<div class="container">
+				<div class="row">
+					<div class="col-md-5">
+						<div class="panel panel-primary">
+							
+							<div class="panel-collapse collapse" id="collapseOne">
+								<div class="panel-body">
+									<ul id="chat_area" class="chat">
+										
+									</ul>
+								</div>
+								
+								<div class="panel-footer">
+									<div class="input-group">
+										<input id="btn-input" type="text" class="form-control input-sm"
+											placeholder="Type your message here..." /> <span
+											class="input-group-btn">
+											<button class="btn btn-warning btn-sm" id="btn-chat">
+												Send</button>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container">
+			<div class="main">
+				<section>
+	
+				</section>
+			</div>
+		</div>
+		
+		<script>			
+			var menuRight = document.getElementById( 'cbp-spmenu-s2' );
+			var showRight = document.getElementById( 'showRight' );
+
+			function chatShowRight()
+			{
+				classie.toggle( this, 'active' );
+				classie.toggle( menuRight, 'cbp-spmenu-open' );
+				disableOther( 'showRight' );
+			};
+
+			function disableOther( button ) 
+			{
+				if( button !== 'showRight' ) 
+				{
+					classie.toggle( showRight, 'disabled' );
+				}
+			}
+		</script>
+	</body>
+</html>

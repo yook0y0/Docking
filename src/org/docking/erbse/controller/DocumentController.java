@@ -192,16 +192,29 @@ public class DocumentController
 		pw.flush();
 	}
 	
-	public void memberInvite() throws IOException {
+	public void memberInvite() throws IOException 
+	{
 		MemberContentVO mcvo = new MemberContentVO();
-		mcvo.setDocumentId(req.getParameter("documnetId"));
+		mcvo.setDocumentId(req.getParameter("documentId"));
 		mcvo.setMemberId(req.getParameter("memberId"));
-		mcvo.setMemberPosition(Integer.valueOf(req.getParameter("memberPosition")));
+		mcvo.setMemberPosition(1);
 
 		Integer code = ds.memberInvite(mcvo);
+		
+		String	message = "SUCCESS!";
+		
+		if(code == -1)
+		{
+			message = "FAIL";
+		}
+		
+		else if(code == -2)
+		{
+			message = "ALREADY INVITED MEMBER!";
+		}
 
 		PrintWriter pw = res.getWriter();
-		pw.write(code);
+		pw.write(message);
 		pw.flush();	
 	}
 	

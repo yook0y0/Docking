@@ -16,16 +16,16 @@ import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.ContentVO;
-<<<<<<< HEAD
+
 import org.docking.erbse.vo.MemberVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.TempVO;
-=======
+
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorVO;
 import org.docking.erbse.vo.MemberVO;
->>>>>>> a7ae74fcd34a73c1e611a16b0df6e2eaea63360a
+
 
 public class DockingController {
 	private HttpServletRequest req;
@@ -86,12 +86,8 @@ public class DockingController {
 		System.out.println("eeivo.getSetMethod()" + eeivo.getSetMethod());
 		System.out.println("eeivo.getStartPage()" + eeivo.getStartPage());
 		
-<<<<<<< HEAD
-		req.setAttribute("documentId", vo.getDocumentId());
 		req.setAttribute("contentId", contentId);
-=======
 		req.setAttribute("documentId", cvo.getDocumentId());
->>>>>>> a7ae74fcd34a73c1e611a16b0df6e2eaea63360a
 		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		req.setAttribute("contentList", contentList);
 		req.setAttribute("contentCount", contentList.size());

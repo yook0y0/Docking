@@ -12,8 +12,7 @@
 
 </head>
 <body>
-	<input type="hidden" id="h_documentId"
-		value="${requestScope.documentId}" />
+	<input type="hidden" id="h_documentId" value="${requestScope.documentId}" />
 	<input type="hidden" id="h_memberId" value="${requestScope.memberId}" />
 	<input type="hidden" id="h_contentId" value="${requestScope.contentId}" />
 
@@ -75,36 +74,20 @@
 				</ul></li>
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
 
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
-			 <li class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                    <i class="fa fa-tasks"></i>
-                    <span class="badge bg-theme">4</span>
-                </a>
-                <ul class="dropdown-menu extended tasks-bar" id="backUp_area">
-                    <div class="notify-arrow notify-arrow-green"></div>
-                    <li>
-                        <p class="green">BACK UP LIST</p>
-                    </li>
-                    <li>
-                        <a href="index.html#">
-                            <div class="task-info">
-                                <div class="desc">Database Update</div>
-                                <div class="percent">60%</div>
-                            </div>
-                            <div class="progress progress-striped">
-                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                    <span class="sr-only">60% Complete (warning)</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="external">
-                        <a onclick="backUpAdd()">BACK UP DATA</a>
-                    </li>
-                </ul>
-            </li>
-<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
+			<li class="dropdown"><a data-toggle="dropdown"
+				class="dropdown-toggle" href="index.html#"> <i
+					class="fa fa-tasks"></i> <span class="badge bg-theme"></span>
+			</a>
+				<ul class="dropdown-menu extended tasks-bar" id="backUp_area">
+					<div class="notify-arrow notify-arrow-green"></div>
+					<li>
+						<p class="green">BACK UP LIST</p>
+					</li>
+
+					<li class="external"><a onclick="backUpAdd()">Add</a></li>
+				</ul></li>
+			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
 
 		</ul>
 	</div>
@@ -124,30 +107,30 @@
 	</div>
 
 	</header> <!--header end--> <!-- **********************************************************************************************************************************************************
-      MAIN SIDEBAR MENU
-      *********************************************************************************************************************************************************** -->
+	      MAIN SIDEBAR MENU
+	      *********************************************************************************************************************************************************** -->
 	<!--sidebar start--> <aside> <%-- <div id="sidebar" class="nav-collapse " style="display:none">
-		<!-- sidebar menu start-->
-		<ul class="sidebar-menu" id="nav-accordion">
-			<li class="sub-menu"><a onclick="getCont('main');"> <i
-					class="fa fa-home"></i> <span>HOME</span>
-			</a> <li class="sub-menu"><a onclick='getJoinedDocumentList()'> <i
-					class="fa fa-book"></i> <span>DOCUMENT</span>
-			</a>
-			
-			<li class="sub-menu"><a onclick='getReviewList()'> <i
-					class="fa fa-th"></i> <span>REVIEW</span>
-			</a> <c:if test="${sessionScope.logInMember.type == 1 }">
-					<li class="sub-menu"><a onclick='getOwnEditorList()'> <i
-							class="fa fa-desktop"></i> <span>FOR DEVELOPER</span>
-					</a>
+			<!-- sidebar menu start-->
+			<ul class="sidebar-menu" id="nav-accordion">
+				<li class="sub-menu"><a onclick="getCont('main');"> <i
+						class="fa fa-home"></i> <span>HOME</span>
+				</a> <li class="sub-menu"><a onclick='getJoinedDocumentList()'> <i
+						class="fa fa-book"></i> <span>DOCUMENT</span>
+				</a>
 				
-				</c:if>
-		
-		</ul>
-		<!-- sidebar menu end-->
-	</div>
-	</aside> <!--main content end-->  --%></section>
+				<li class="sub-menu"><a onclick='getReviewList()'> <i
+						class="fa fa-th"></i> <span>REVIEW</span>
+				</a> <c:if test="${sessionScope.logInMember.type == 1 }">
+						<li class="sub-menu"><a onclick='getOwnEditorList()'> <i
+								class="fa fa-desktop"></i> <span>FOR DEVELOPER</span>
+						</a>
+					
+					</c:if>
+			
+			</ul>
+			<!-- sidebar menu end-->
+		</div>
+		</aside> <!--main content end-->  --%></section>
 
 	<!-- js placed at the end of the document so the pages load faster -->
 	<script src="assets/js/jquery.js"></script>
@@ -169,172 +152,152 @@
 	<script src="assets/js/sparkline-chart.js"></script>
 	<script src="assets/js/zabuto_calendar.js"></script>
 	<script type="application/javascript">
-	
-        $(document).ready(function () 
-       	{        		   	
-        	var memberId = $("#h_memberId").val();
-        	var docId = $("#h_documentId").val();
-        	var body_data;
-        	
-           var socket = io.connect("http://localhost:9000");
-           console.log('client socket create..');
-           socket.emit('room', {room : docId, memberId : memberId});
-           
-           // receive
-           socket.on('roomCreate', function(data) 
-           { 
-              console.log(data);
-              
-              data_set(data);
-           });
-           
-           //
-           //	Data set / get
-           //
-           socket.on('dataGet', function(data) 
-           {
-        		return jMap.toXML();        		
-           });
-           
-           socket.on('dataSet', function(data)
-           {
-        	   	jMap.controller.customLoadMap(data);
-		   });
-           
-        /////////   
-   		
-   		
-           socket.on('userList', function(data)
-        	{
-        	   var jsonDataList = eval('('+data+')');
-        	   var setting = "";
-        	   
-        	   var user_count_area = 0;
-        	   
-        	   $('#user_area').html("");
-        	   
-        	   $('#user_area').append('<div class="notify-arrow notify-arrow-green"></div>');
-        	   $('#user_area').append('<li><p class="green">JOINED MEMBER LIST!</p></li>');
-        	   
-        	   $('#user_count_area').html("");
-        	   
-        	   for(var i = 0 ; i < jsonDataList.length ; i++)
-        		{
-        		   if(jsonDataList[i] != null)
-        			{
-                   		setting += '<li>';
-                   		setting += '<a href="index.html#">';
-                   		setting += '<div class="task-info">';
-                   		setting += '<div class="desc">' + jsonDataList[i] + '</div>';
-                   		setting += '</div></a></li>';
-                   		
-                   		user_count_area++;
-        			}  
-        		}
-        	   
-        	   $('#user_count_area').append(user_count_area);
-        	   $('#user_area').append(setting);
-        	});
-           
-           var chat_count = 0;
-           
-           socket.on('chat_receive', function(data) 
-		    {
-				 var jsonDataList = eval('('+data+')');
-				 
-				 var messageType = jsonDataList[0];
-				 var messageId = jsonDataList[1];
-				 var dat = jsonDataList[2];
-				 
-				 var message = "";
-				 var messageList = "";
-				 
-				 if(messageType == "chat")
-				 {
-					 if(messageId == memberId)
+		
+	        $(document).ready(function () 
+	       	{        		   	
+	        	var memberId = $("#h_memberId").val();
+	        	var docId = $("#h_documentId").val();
+	        	var body_data;
+	        	
+	           var socket = io.connect("http://localhost:9000");
+	           console.log('client socket create..');
+	           socket.emit('room', {room : docId, memberId : memberId});
+	           
+	           // receive
+	           socket.on('roomCreate', function(data) 
+	           { 
+	              console.log(data);
+	              
+	              data_set(data);
+	           });
+	   		
+	           socket.on('userList', function(data)
+	        	{
+	        	   var jsonDataList = eval('('+data+')');
+	        	   var setting = "";
+	        	   
+	        	   var user_count_area = 0;
+	        	   
+	        	   $('#user_area').html("");
+	        	   
+	        	   $('#user_area').append('<div class="notify-arrow notify-arrow-green"></div>');
+	        	   $('#user_area').append('<li><p class="green">JOINED MEMBER LIST!</p></li>');
+	        	   
+	        	   $('#user_count_area').html("");
+	        	   
+	        	   for(var i = 0 ; i < jsonDataList.length ; i++)
+	        		{
+	        		   if(jsonDataList[i] != null)
+	        			{
+	                   		setting += '<li>';
+	                   		setting += '<a href="index.html#">';
+	                   		setting += '<div class="task-info">';
+	                   		setting += '<div class="desc">' + jsonDataList[i] + '</div>';
+	                   		setting += '</div></a></li>';
+	                   		
+	                   		user_count_area++;
+	        			}  
+	        		}
+	        	   
+	        	   $('#user_count_area').append(user_count_area);
+	        	   $('#user_area').append(setting);
+	        	});
+	           
+	           socket.on('map', function(data) 
+       		   {
+       			   var jsonDataList = eval('('+data+')');
+       			      
+       			   data_set(jsonDataList.data);  
+       		   });
+       		    
+       		  /*   $("body").keydown(function() 
+       		    {
+       		      setTimeout(function()
+       		      {
+       		         console.log('data send..');
+       		      
+       		         var data = data_get();
+       		         if(doc != data){
+       		         doc = data;
+       		      
+       		         socket.emit('data', {data : data, room : docId, memberId : memberId});
+       		         }
+       		      }, 3000); 
+       		   }); */
+	           
+	           var chat_count = 0;
+	           
+	           socket.on('chat_receive', function(data) 
+			    {
+					 var jsonDataList = eval('('+data+')');
+					 
+					 var messageType = jsonDataList[0];
+					 var messageId = jsonDataList[1];
+					 var dat = jsonDataList[2];
+					 
+					 var message = "";
+					 var messageList = "";
+					 
+					 if(messageType == "chat")
 					 {
-						 messageId = "나";
+						 if(messageId == memberId)
+						 {
+							 messageId = "나";
+						 }
+						 
+						 message = messageId + " : " + dat;
+						 
+						 messageList += '<li class="self">';
+						 messageList += '<div class="avatar">';
+						 messageList += '----------------------------------------';
+						 messageList += '</div>';
+						 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
 					 }
 					 
-					 message = messageId + " : " + dat;
+					 else
+					 {
+						 message = messageId + dat;
+						 
+						 messageList += '<li class="other">';
+						 messageList += '<div class="avatar">';
+						 messageList += '----------------------------------------';
+						 messageList += '</div>';
+						 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
+					 }
 					 
-					 messageList += '<li class="self">';
-					 messageList += '<div class="avatar">';
-					 messageList += '----------------------------------------------------------------------';
-					 messageList += '</div>';
-					 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
-				 }
-				 
-				 else
-				 {
-					 message = messageId + dat;
-					 
-					 messageList += '<li class="other">';
-					 messageList += '<div class="avatar">';
-					 messageList += '----------------------------------------------------------------------';
-					 messageList += '</div>';
-					 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
-				 }
-				 
-				$("#chat_area").append(messageList);
-				
-				$("#chat_count").html("");
-				
-				chat_count++;
-				
-				if(isShow == 1)
+					$("#chat_area").append(messageList);
+					
+					$("#chat_count").html("");
+					
+					chat_count++;
+					
+					if(isShow == 1)
+					{
+						chat_count = 0;
+					}
+					
+					$("#chat_count").append(chat_count);
+			    });
+				   
+			   $("#btn-chat").click(function()
 				{
-					chat_count = 0;
-				}
-				
-				$("#chat_count").append(chat_count);
-		    });
-			   
-		   $("#btn-chat").click(function()
-			{
-			   var data = $("#btn-input").val();
-		
-			   socket.emit('chat_send', {data : data, memberId : memberId});
-			   
-			   $("#btn-input").val("");
-			});
-		   
-///////////////////////////////////////////////////////////////// 백업 //////////////////////////////////////////////////////////////
+				   var data = $("#btn-input").val();
 			
-			/* setInterval(function()
-			{
-			   var docId = $("#h_documentId").val();
-			   var data = data_get();
-			
-			   $.post("./temp_add", 
-				{ 
-		   			docId : docId,
-					data : data
-				},
-				
-				function(result) 
-				{	
-					var	data = result.split("|");
-					
-					var docId = data[0];
-					var lastDate = data[1];
-					var date = data[2];
-					
-					 $("#backUp_area").append("<li><a href='./temp_searchAll?docId=" + docId + "&lastDate=" + lastDate + "'>" + date + "</a></li>");
+				   socket.emit('chat_send', {data : data, memberId : memberId});
+				   
+				   $("#btn-input").val("");
 				});
-			}, 10000);  */  
-           
-//========================================================================================================================================================================           
-  			$('select.styled').customSelect();
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-                $(this).hide();
-            });
-        });
-	
-	
-	</script>
+		
+	           
+	//========================================================================================================================================================================           
+	  			$('select.styled').customSelect();
+	            $("#date-popover").popover({html: true, trigger: "manual"});
+	            $("#date-popover").hide();
+	            $("#date-popover").click(function (e) {
+	                $(this).hide();
+	            });
+	        });
+		</script>
 
 	<style>
 @import url(http://weloveiconfonts.com/api/?family=typicons);
@@ -440,7 +403,7 @@
 }
 }
 .other { .avatar { &:after {
-		      content : "";
+					      content : "";
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -539,20 +502,12 @@ to {
 		</div>
 	</div>
 	</section>
-
-	<script>
-function data_get() {
-	return jMap.toXML();
-};
-
-function data_set(data) {
-	jMap.controller.customLoadMap(data);
-};
-</script>
-	<div id="contents_inside">
+	
+		
+	<%-- <div id="contents_inside">
 		<c:import
 			url="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" />
-
-	</div>
+	</div> --%>
+	
 </body>
 </html>

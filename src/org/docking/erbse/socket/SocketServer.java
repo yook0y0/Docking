@@ -1,10 +1,7 @@
 package org.docking.erbse.socket;
 
-<<<<<<< HEAD
 import java.util.Iterator;
 import java.util.List;
-=======
->>>>>>> a7ae74fcd34a73c1e611a16b0df6e2eaea63360a
 import java.util.Map;
 
 import org.docking.erbse.analysis.attribute.Attr;

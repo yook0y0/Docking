@@ -47,11 +47,15 @@ function chatToggle()
 	}
 };
 
+var backUp_count = 0;
+
 function backUpAdd()
 {
 	var memberId = $("#h_memberId").val();
 	var contentsBody = "";
-	var contentId = $("#h_contentId").val();;
+	var contentId = $("#h_contentId").val();
+	
+	backUp_count++;
 	
 	$.post("./tempAdd",
 	{ 
@@ -66,6 +70,16 @@ function backUpAdd()
 		var result = $.parseJSON(jData.tempVO);
 		
 		var tempDiv = "";
+		
+		if(backUp_count == 10)
+		{
+			$("#backUp_area").html("");
+			
+			tempDiv += '<div class="notify-arrow notify-arrow-green"></div>';
+			tempDiv += '<li><p class="green">BACK UP LIST</p></li>';
+			
+			backUp_count = 0;
+		}
 		
 		tempDiv += '<li>';
 		tempDiv += '<a onclick="tempSearch(\'' + review['tempId'] + '\')">';
@@ -89,6 +103,6 @@ function tempSearch(tempId)
 	
 	function(data)
 	{
-		// ╪рдою╦╥н ╣╔юлем ╫Важ╢б╟е
+		// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ж╢б╟О©╫
 	});
 }

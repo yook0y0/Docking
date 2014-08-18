@@ -15,6 +15,7 @@
 	<input type="hidden" id="h_documentId"
 		value="${requestScope.documentId}" />
 	<input type="hidden" id="h_memberId" value="${requestScope.memberId}" />
+	<input type="hidden" id="h_contentId" value="${requestScope.contentId}" />
 
 	<section id="container"> <header class="header black-bg">
 	<div class="sidebar-toggle-box">
@@ -73,6 +74,37 @@
 					</c:forEach>
 				</ul></li>
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
+			 <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                    <i class="fa fa-tasks"></i>
+                    <span class="badge bg-theme">4</span>
+                </a>
+                <ul class="dropdown-menu extended tasks-bar" id="backUp_area">
+                    <div class="notify-arrow notify-arrow-green"></div>
+                    <li>
+                        <p class="green">BACK UP LIST</p>
+                    </li>
+                    <li>
+                        <a href="index.html#">
+                            <div class="task-info">
+                                <div class="desc">Database Update</div>
+                                <div class="percent">60%</div>
+                            </div>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                    <span class="sr-only">60% Complete (warning)</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="external">
+                        <a onclick="backUpAdd()">BACK UP DATA</a>
+                    </li>
+                </ul>
+            </li>
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
 
 		</ul>
 	</div>
@@ -142,7 +174,7 @@
        	{        		   	
         	var memberId = $("#h_memberId").val();
         	var docId = $("#h_documentId").val();
-        	//var body = $("#body").val();
+        	var body_data;
         	
            var socket = io.connect("http://localhost:9000");
            console.log('client socket create..');
@@ -266,6 +298,31 @@
 			   
 			   $("#btn-input").val("");
 			});
+		   
+///////////////////////////////////////////////////////////////// 백업 //////////////////////////////////////////////////////////////
+			
+			/* setInterval(function()
+			{
+			   var docId = $("#h_documentId").val();
+			   var data = data_get();
+			
+			   $.post("./temp_add", 
+				{ 
+		   			docId : docId,
+					data : data
+				},
+				
+				function(result) 
+				{	
+					var	data = result.split("|");
+					
+					var docId = data[0];
+					var lastDate = data[1];
+					var date = data[2];
+					
+					 $("#backUp_area").append("<li><a href='./temp_searchAll?docId=" + docId + "&lastDate=" + lastDate + "'>" + date + "</a></li>");
+				});
+			}, 10000);  */  
            
 //========================================================================================================================================================================           
   			$('select.styled').customSelect();

@@ -5,11 +5,16 @@ import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
 import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
 import org.docking.erbse.analysis.register.DataRegister;
+import java.util.List;
+
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.GlobalVariable;
+import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
+import org.docking.erbse.vo.TempVO;
 
 public class DockingServiceImpl implements DockingService 
 {
@@ -162,4 +167,43 @@ public class DockingServiceImpl implements DockingService
 		String[] objName = {"code"};
 		return JsonParser.getInstance().jParseObj(objName,new String[]{code});
 	}*/
+	
+	public String tempAdd(TempVO tempVO)
+	{
+		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+		tempService.add("temp_add", tempVO);
+		
+		List<TempVO>	tempList = tempService.searchAll("temp_searchAll");
+		
+		String[] objName = {"tempVO"};
+
+		int	lastDate = 0;
+
+		if(tempList.size() != 0)
+		{
+			lastDate = tempList.get(0).getTempId();
+			
+			for(TempVO vo : tempList)
+			{
+				if(vo.getTempId() >= lastDate)
+				{
+					lastDate = vo.getTempId();
+				}
+			}
+		}
+		
+		TempVO	vo = tempService.search("temp_search", lastDate);
+
+		String jMvo = JsonParser.getInstance().jParseObj(GlobalVariable.TEMP_VO_FIELD, new String[]{String.valueOf(vo.getTempId()),vo.getContentId(),vo.getMemberId(),vo.getContentsBody(),vo.getDate()});
+
+	    return JsonParser.getInstance().jParseObj(objName,new String[]{jMvo});
+	}
+	
+	public String tempSearch(String tempId)
+	{
+		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+		TempVO	tempVO = tempService.search("temp_search",tempId);
+		
+		return tempVO.getContentsBody();
+	}
 }

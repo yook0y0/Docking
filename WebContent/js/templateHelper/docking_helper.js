@@ -46,3 +46,49 @@ function chatToggle()
 		isShow = 0;
 	}
 };
+
+function backUpAdd()
+{
+	var memberId = $("#h_memberId").val();
+	var contentsBody = "";
+	var contentId = $("#h_contentId").val();;
+	
+	$.post("./tempAdd",
+	{ 
+		memberId : memberId,
+		contentsBody : contentsBody,
+		contentId : contentId
+	},
+	
+	function(data)
+	{
+		jData = JSON.parse(data);
+		var result = $.parseJSON(jData.tempVO);
+		
+		var tempDiv = "";
+		
+		tempDiv += '<li>';
+		tempDiv += '<a onclick="tempSearch(\'' + review['tempId'] + '\')">';
+		tempDiv += '<div class="task-info">';
+		tempDiv += '<div class="desc">' + result['date'] + '</div>';
+		tempDiv += '<div class="percent">' + result['memberId'] + '</div>';
+		tempDiv += '</div>';
+		tempDiv += '<div class="progress progress-striped">';
+		tempDiv += '</div></a></li>';
+
+		$("#backUp_area").append(tempDiv);
+	});
+};
+
+function tempSearch(tempId)
+{
+	$.post("./tempSearch",
+	{ 
+		tempId : tempId
+	},
+	
+	function(data)
+	{
+		// 소켓으로 데이터 쏴주는거
+	});
+}

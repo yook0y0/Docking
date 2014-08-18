@@ -1,11 +1,15 @@
 package org.docking.erbse.socket;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.dao.service.GenericService;
+import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.util.JsonParser;
+import org.docking.erbse.vo.TempVO;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.http.HttpServer;
@@ -159,34 +163,30 @@ public class SocketServer extends DefaultEmbeddableVerticle
 		server.listen(port);
 	}
 
-	/*private String setInitData(String room)
+	/*private String setInitData(String contentId)
 	{
-		String	docId = room;
+		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
 
-		SearchAction searchAction = (SearchAction)Injector.getInstance().getObject(SearchAction.class);
-
-		List<TempVO>	tempList = searchAction.searchTempByDocId(docId);
+		List<TempVO>	tempList = tempService.searchAll("temp_searchAll_key", contentId);
 
 		String	backUpData = "0";
 
 		if(tempList.size() != 0)
 		{
-			int	lastDate = tempList.get(0).getCheckLast();
+			int	lastDate = tempList.get(0).getTempId();
 
 			for(TempVO vo : tempList)
 			{
-				if(vo.getCheckLast() >= lastDate)
+				if(vo.getTempId() >= lastDate)
 				{
-					lastDate = vo.getCheckLast();
+					lastDate = vo.getTempId();
 
-					backUpData = vo.getBackUpData();
+					backUpData = vo.getContentsBody();
 				}
 			}
 		}
 
 		return backUpData;
-		
-		return null;
 	}*/
 
 	private void print(RoomClient roomClient) {

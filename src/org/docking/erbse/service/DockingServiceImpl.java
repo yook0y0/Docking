@@ -1,5 +1,10 @@
 package org.docking.erbse.service;
 
+import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
+import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.vo.ContentVO;
@@ -28,13 +33,28 @@ public class DockingServiceImpl implements DockingService
 	@Override
 	public String getEditorCode(String editorId, String path) {
 		// TODO Auto-generated method stub
-
+		
+		GenericService<EditorExecuteInfoVO> eeivoService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", editorId);
+		
 		String realPath = editorId  + "\\" +  path;
 
+
+		String code = null;
+		
 		GenericService<EditorCodeVO>	ecvoService = new GenericServiceImpl<EditorCodeVO>();
 		EditorCodeVO ecvo = ecvoService.search("editorCode_search", realPath.replace("/", "\\"));
-
-		return ecvo.getCode();
+		code = ecvo.getCode();
+				
+		if(eeivo.getStartPage().equals(path)){
+			String scriptSrc = "<head><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){ "+ eeivo.getGetMethod() + "; };</script>";
+			DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<head>".getBytes()},new byte[][]{scriptSrc.getBytes()});
+			da.analyze();
+			DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+			code = dAttr.getStringValue()[0];
+		}
+		
+		return code;
 	}
 	/*@Override
 	public String editorTestExecute(String editorId) {

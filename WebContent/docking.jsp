@@ -483,19 +483,9 @@ to {
 	</div>
 	</section>
 
-	<script>
-function data_get() {
-	return jMap.toXML();
-};
-
-function data_set(data) {
-	jMap.controller.customLoadMap(data);
-};
-</script>
 	<div id="contents_inside">
 		<c:import
 			url="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" />
-
-	</div>
+ </div>
 </body>
 </html>

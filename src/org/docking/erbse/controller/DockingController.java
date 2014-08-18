@@ -55,6 +55,7 @@ public class DockingController {
 	}
 
 	public void editorExecute() throws IOException, ServletException{
+		
 		String contentId = req.getParameter("contentId");
 		
 		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();
@@ -67,15 +68,8 @@ public class DockingController {
 		
 		req.setAttribute("getMethod", eeivo.getGetMethod());
 		req.setAttribute("setMethod", eeivo.getSetMethod());
-/*		req.setAttribute("getMethod", "jMap.toXML()");
-		req.setAttribute("setMethod", "jMap.controller.customLoadMap(data)");*/
-		
 		req.setAttribute("startPage", eeivo.getStartPage());
 		req.setAttribute("editorId", eeivo.getEditorId());
-		
-		System.out.println("eeivo.getGetMethod()" + eeivo.getGetMethod());
-		System.out.println("eeivo.getSetMethod()" + eeivo.getSetMethod());
-		System.out.println("eeivo.getStartPage()" + eeivo.getStartPage());
 		
 		req.setAttribute("documentId", cvo.getDocumentId());
 		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());

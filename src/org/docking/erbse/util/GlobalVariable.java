@@ -29,5 +29,11 @@ public class GlobalVariable {
 	 * 
 	 */
 	public static String EDITOR_START_PAGE = "start.jsp";
-	public static String SERVER_ADDRESS = "http://localhost:8089/Docking";
+	public static String SERVER_ADDRESS = "http://localhost:8089/Docking/";
+	
+	/*
+	 * Path rsc
+	 */
+	public static String PATH_CASE_1 = "src=\"" + GlobalVariable.SERVER_ADDRESS;
+	public static String PATH_CASE_2 = "href=\"" + GlobalVariable.SERVER_ADDRESS;
 }

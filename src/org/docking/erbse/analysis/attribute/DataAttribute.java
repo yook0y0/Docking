@@ -14,6 +14,10 @@ public class DataAttribute extends BaseAttribute {
 	public byte[][] getData() {
 		return data;
 	}
+	
+	public void setData(byte[] data) {
+		this.data = new byte[][]{data};
+	}
 
 	public void setData(byte[][] data) {
 		this.data = data;

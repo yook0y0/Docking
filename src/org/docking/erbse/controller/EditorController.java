@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.docking.erbse.file.FileManager;
 import org.docking.erbse.service.EditorService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.vo.EditorCodeVO;
@@ -38,7 +39,7 @@ public class EditorController {
 	
 	public void editorAdd() throws IOException
 	{
-		String savePath = req.getServletContext().getRealPath("tmp/");
+		String savePath = req.getServletContext().getRealPath("tmp\\");
 		new File(savePath).mkdir();
 		int sizeLimit = 1024*1024*15;
 		
@@ -74,9 +75,12 @@ public class EditorController {
 		eeivo.setStartPage(startPage);
 		eeivo.setUseRange(useRange);
 		
-		String path = savePath + "/" + zipFileName;
+		String path = savePath + "\\" + zipFileName;
 		
 		Integer code = es.editorAdd(path, evo, eeivo);
+		
+		FileManager fm = (FileManager)Injector.getInstance().getObject(FileManager.class);
+		fm.delete(savePath);
 
 		PrintWriter pw = res.getWriter();
 		pw.write(code);

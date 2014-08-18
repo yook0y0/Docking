@@ -1,4 +1,4 @@
-package org.docking.erbse.analysis.filter;
+package org.docking.erbse.analysis.filter.process;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,35 +7,15 @@ import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
 import org.docking.erbse.analysis.attribute.IndexAttribute;
+import org.docking.erbse.analysis.filter.Filter;
 
-public abstract class DataProcessFilter extends Filter {
+public abstract class DataProcessFilter extends Filter{
 
-	private byte[][] preData;
-	private byte[][] postData;
-	
-	public DataProcessFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData) {
+	public DataProcessFilter(DockingAnalyzer stream) {
 		super(stream);
-		this.preData = preData;
-		this.postData = postData;
 		// TODO Auto-generated constructor stub
 	}
 
-	public byte[][] getPreData() {
-		return preData;
-	}
-
-	public void setPreData(byte[][] preData) {
-		this.preData = preData;
-	}
-
-	public byte[][] getPostData() {
-		return postData;
-	}
-
-	public void setPostData(byte[][] postData) {
-		this.postData = postData;
-	}
-	
 	@Override
 	public void analyze() {
 		// TODO Auto-generated method stub
@@ -59,7 +39,7 @@ public abstract class DataProcessFilter extends Filter {
 
 			for(int i=0;i<data.length;i++){
 				data[i] = this.process(data[i],startWidth,endWidth);
-
+				
 				startIndex[i] = new int[startWidth.size()];
 				endIndex[i] = new int[startWidth.size()];
 
@@ -85,5 +65,29 @@ public abstract class DataProcessFilter extends Filter {
 		}
 	}
 	
-	abstract protected byte[] process(byte[] data,List<Integer> startWidth,List<Integer> endWidth);
+	protected boolean compare(byte[] src, byte[] target){
+		
+		if(src.length == target.length){
+			int chk = 0;
+			for(int i=0;i<src.length;i++){
+				if(src[i] == target[i]){
+					chk++;
+				}
+				else{
+					break;
+				}
+			}
+			if(chk == src.length){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	abstract protected byte[] process(byte[] data, List<Integer> startWidth, List<Integer> endWidth);
 }

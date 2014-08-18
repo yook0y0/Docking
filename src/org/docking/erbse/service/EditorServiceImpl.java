@@ -4,7 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
+import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.file.FileManager;
@@ -15,8 +22,6 @@ import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
-
-import java.util.regex.*;
 
 
 public class EditorServiceImpl implements EditorService {
@@ -30,23 +35,69 @@ public class EditorServiceImpl implements EditorService {
 		FileManager fm = (FileManager)Injector.getInstance().getObject(FileManager.class);
 		int unzipRes = fm.unZip(path);
 
+		int len = path.lastIndexOf(".");
+		if(len > 0){
+			path = path.substring(0,len);
+		}
+
 		GenericService<EditorVO>	editService = new GenericServiceImpl<EditorVO>();
 		res += editService.add("editor_add", editor);
 
-		//EditorCodeVO ecvo = null;
-		List<EditorCodeVO> ecvoList = new ArrayList<EditorCodeVO>();
+		List<File> fileList = new ArrayList<File>();
 
-		File[] files = null;
 		try {
-			files = fm.fileStructureChk(fm.fileNameChk(path));
-
-			for(int i=0;i<files.length;i++){
-				this.fileChk(path,files[i], editor.getEditorId(), ecvoList);
-			}
+			this.fileChk(new File(path), fileList);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		String editorId = editor.getEditorId();
+		EditorCodeVO ecvo = null;
+		List<EditorCodeVO> ecvoList = new ArrayList<EditorCodeVO>();
+
+		String code = null;
+		String p = null;
+		for(int i=0;i<fileList.size();i++){
+			if(!fileList.get(i).isDirectory()){
+				ecvo = new EditorCodeVO();
+				ecvo.setEditorId(editorId);
+				
+				/*
+				 * 애초에 서버 등록 시 주소 바꾸도록 해봄 (일반 사용자 실행속도 ↑ , code 보여줄때는 다시 원래대로 바꾸어줘야할 듯)
+				 */
+				///////////////////////////////////////////////
+				byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
+				
+				String path1 = GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
+				String path2 = GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
+				
+				byte[][] processData = {path1.getBytes(),path2.getBytes()};
+				
+				DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(fm.read(fileList.get(i))),targetData,processData);
+				
+				da.analyze();
+				
+				DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+				String[] sArray = dAttr.getStringValue();
+				
+				
+				///////////////////////////////////////////////
+				code = sArray[0];
+				if(code.equals(null) || code == null || code.equals("")){
+					code = "code";
+				}
+				ecvo.setCode(code);
+				p = editorId + fileList.get(i).getPath().replace(path, "");
+				System.out.println("p : " + p);
+				ecvo.setPath(p);
+				ecvoList.add(ecvo);
+			}
+		}
+
+		/*		for(int i=0;i<ecvoList.size();i++){
+			System.out.println("name : " + ecvoList.get(i).getPath());
+		}*/
 
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
 		res = editCodeService.add("editorCode_add", ecvoList);
@@ -59,32 +110,52 @@ public class EditorServiceImpl implements EditorService {
 		return res;
 	}
 
+	public void fileChk(File file, List<File> list) throws IOException {
+		if (file.isDirectory()) {
+			if (file.listFiles().length != 0) {
+				File[] fileList = file.listFiles();
+				for (int i = 0; i < fileList.length; i++) {
+					fileChk(fileList[i],list);
+				}
+			}
+			else {
+				list.add(file);
+			}
+		} else {
+			list.add(file);
+		}
+
+		return;
+	}
+	/*
 	private void fileChk(String path, File file, String editorId, List<EditorCodeVO> ecvoList) throws IOException{
 		FileManager fm = (FileManager) Injector.getInstance().getObject(FileManager.class);
 		EditorCodeVO ecvo = null;
 
-		String filePath = file.getPath();
+		String unzipFol = path;
+		int len = path.lastIndexOf(".");
+		if(len > 0){
+			path = path.substring(0,len);
+		}
 
-		filePath = filePath.replace("C:\\play-2.1.0\\play-2.1.0\\yobi\\project\\dead\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Docking\\tmp\\testZip.\\","");
+		String filePath = file.getPath().replace(unzipFol, "");
 
 		if(file.isDirectory()){
-			File[] files = fm.fileStructureChk(file);
-			for(int i=0;i<files.length;i++){
-				fileChk(path,files[i],editorId,ecvoList);
-			}
-		}
+		File[] files = fm.fileStructureChk(file);
+
+
+		System.out.println("files : " + files.length);
+				}
 		else{
 			ecvo = new EditorCodeVO();
 			ecvo.setEditorId(editorId);
 			ecvo.setCode(new String(fm.read(file)));
-			ecvo.setPath(editorId + "\\" + filePath);
-
-			System.out.println(ecvo.getPath());
+			ecvo.setPath(editorId + filePath);
 
 			ecvoList.add(ecvo);
 		}
 	}
-
+	 */
 	@Override
 	public Integer editorModify(EditorVO editor , EditorExecuteInfoVO editorExecuteInfo) 
 	{
@@ -288,33 +359,33 @@ public class EditorServiceImpl implements EditorService {
 			if(index != -1)
 			{
 				String	sub = str.getPath().substring(0,str.getPath().indexOf(childId));
-				
+
 				Pattern p = Pattern.compile("\\\\");
 				Matcher m = p.matcher(sub);
-				
+
 				int count = 0;
 				//int	count2 = 0;
-				
+
 				for( int i = 0; m.find(i); i = m.end())
 				{
 					count++;
 				}
-				
+
 				/*Pattern p2 = Pattern.compile(".");
 				Matcher m2 = p2.matcher(sub);
-				
+
 				for(int i = 0 ; m2.find(i) ; i = m2.end())
 				{
 					count2++;
 				}*/
-				
+
 				System.out.println(count);
 				//System.out.println(count2);
-				
+
 				if(count < 2)
 				{
 					tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.CHILD_CODE, new String[]{(str.getPath()).substring(index)}));
-					
+
 					System.out.println((str.getPath()).substring(index));
 				}
 			}

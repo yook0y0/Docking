@@ -71,7 +71,7 @@ public class DockingServiceImpl implements DockingService
 		 */
 				
 		if(eeivo.getStartPage().equals(path)){
-			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
+			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getGetMethod() + "; };" + "function data_set(data){"+ eeivo.getSetMethod() + "; };</script>";
 	
 			da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
 			da.analyze();

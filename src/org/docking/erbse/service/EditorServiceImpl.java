@@ -18,6 +18,7 @@ import org.docking.erbse.file.FileManager;
 import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.util.JsonParser;
+import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorReviewBBSVO;
@@ -183,6 +184,9 @@ public class EditorServiceImpl implements EditorService {
 
 		GenericService<EditorExecuteInfoVO>	eeService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		res += eeService.delete("editorExecute_delete", editorId);
+		
+		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
+		res += conService.delete("content_delete", editorId);
 
 		return res;
 	}

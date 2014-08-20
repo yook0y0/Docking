@@ -2,10 +2,8 @@ package org.docking.erbse.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +13,11 @@ import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
+import org.docking.erbse.view.ContentsView;
 import org.docking.erbse.vo.ContentVO;
 
 import org.docking.erbse.vo.MemberVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
-import org.docking.erbse.vo.TempVO;
 
 
 public class DockingController {
@@ -58,8 +56,8 @@ public class DockingController {
 		pw.flush();*/
 	}
 
-	public void editorExecute() throws IOException, ServletException{
-		
+	public void editorExecute() throws IOException, ServletException
+	{
 		String contentId = req.getParameter("contentId");
 		
 		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();
@@ -69,6 +67,19 @@ public class DockingController {
 		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", cvo.getEditorId());
 		
 		List<ContentVO>	contentList = service.searchAll("content_searchAll_key", cvo.getDocumentId());
+		List<ContentsView>	contentsViewList = new ArrayList<ContentsView>();
+		
+		ContentsView	cv;
+		
+		for(ContentVO conVO : contentList)
+		{
+			cv = new ContentsView();
+			
+			cv.setEditorId(conVO.getEditorId());
+			cv.setStartPage((eeivoService.search("editorExecute_search", conVO.getEditorId())).getStartPage());
+			
+			contentsViewList.add(cv);
+		}
 		
 		req.setAttribute("getMethod", eeivo.getGetMethod());
 		req.setAttribute("setMethod", eeivo.getSetMethod());
@@ -82,7 +93,7 @@ public class DockingController {
 		req.setAttribute("contentId", contentId);
 		req.setAttribute("documentId", cvo.getDocumentId());
 		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
-		req.setAttribute("contentList", contentList);
+		req.setAttribute("contentsViewList", contentsViewList);
 		req.setAttribute("contentCount", contentList.size());
 		
 		req.getRequestDispatcher("./docking.jsp").forward(req, res);

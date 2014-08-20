@@ -16,7 +16,7 @@ public class FilterTest
 		FileManager fm = new FileManager();
 		
 		String str = new String(fm.read("C:\\start.html"));
-		String test = "./css/.a";
+		//String test = "./css/.a";
 /*		String[] test = {"12345@6789","98765432@"};
 		byte[][] preData = {"@".getBytes(),"8".getBytes()};
 		byte[][] postData = {"#".getBytes(),"9".getBytes()};

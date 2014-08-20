@@ -184,14 +184,14 @@
 	}
 </style>
 
-<style>
+<!-- <style>
 	html, body
 	{
 		width: 100%;
 		height: 100%; 
 		overflow:hidden;
 	}
-</style>
+</style> -->
 <%@ include file="import.html"%>
 
 <script src="socket.io.js"></script>
@@ -247,13 +247,12 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" href="index.html#"> <i
-					class="fa fa-tasks"></i> <span class="badge bg-theme">${contentCount
-						}</span></a>
+					class="fa fa-tasks"></i> <span class="badge bg-theme">${contentCount }</span></a>
 				<ul class="dropdown-menu extended tasks-bar">
 					<div class="notify-arrow notify-arrow-green"></div>
 					<li><p class="green">CONTENTS LIST!</p></li>
-					<c:forEach var="item" items="${contentList}">
-						<li><a href="index.html#">
+					<c:forEach var="item" items="${contentsViewList}">
+						<li><a onclick="changeFrame('${item.editorId}','${item.startPage}')">
 								<div class="task-info">
 									<div class="desc">${item.editorId}</div>
 								</div>
@@ -546,6 +545,11 @@
 	 			
 				 socket.emit('set_backUpData', {data : data});
 	        };
+	        
+	        function changeFrame(editorId, startPage)
+	        {
+	        	$('#editor_frame').attr('src', "http://localhost:8089/Docking/getEditorCode?path=" + startPage + "&editorId=" + editorId);
+	        }
 		</script>
 
 
@@ -574,7 +578,9 @@
 		</div>
 	</div>
 	</section>
-
- 	<iframe style="height:100%; width:100%" src="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" id="editor_frame"></iframe> 
+	
+	<div style="width:100%; height:100%; padding:55px 0 0 0;">
+ 		<iframe style="height:100%; width:100%" src="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" id="editor_frame"></iframe>
+ 	</div> 
 </body>
 </html>

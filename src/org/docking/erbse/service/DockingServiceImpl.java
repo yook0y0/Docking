@@ -56,7 +56,7 @@ public class DockingServiceImpl implements DockingService
 		
 		byte[][] processData = {path1.getBytes(),path2.getBytes()};
 		
-		byte[][] srcData = new byte[][]{"script src=\"".getBytes()};
+		byte[][] srcData = new byte[][]{" src=\"".getBytes()," href=\"".getBytes()};
 		byte[][] rsrcData = new byte[][]{"./".getBytes(),"/".getBytes(),"http:".getBytes()};
 		byte[] insertData = "./".getBytes();
 		DockingAnalyzer da = new SingleDataUpdateFilter(new NextDataTargetInsertFilter(new DataRegister(code),srcData,rsrcData,insertData,false),targetData,processData);

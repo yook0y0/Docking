@@ -1,15 +1,15 @@
 package org.docking.erbse.service;
 
-import java.util.List;
-
+import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
+import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
-import org.docking.erbse.util.GlobalVariable;
-import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
-import org.docking.erbse.vo.TempVO;
 
 public class DockingServiceImpl implements DockingService 
 {
@@ -33,13 +33,30 @@ public class DockingServiceImpl implements DockingService
 	@Override
 	public String getEditorCode(String editorId, String path) {
 		// TODO Auto-generated method stub
-
+		
+		GenericService<EditorExecuteInfoVO> eeivoService = new GenericServiceImpl<EditorExecuteInfoVO>();
+		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", editorId);
+		
 		String realPath = editorId  + "\\" +  path;
 
+
+		String code = null;
+		
 		GenericService<EditorCodeVO>	ecvoService = new GenericServiceImpl<EditorCodeVO>();
 		EditorCodeVO ecvo = ecvoService.search("editorCode_search", realPath.replace("/", "\\"));
-
-		return ecvo.getCode();
+		code = ecvo.getCode();
+				
+		if(eeivo.getStartPage().equals(path)){
+			//String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
+			String scriptSrc = "<body><script>$(document).ready(function () {window.location = " + eeivo.getStartPage() + "; }); function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
+			
+			DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
+			da.analyze();
+			DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+			code = dAttr.getStringValue()[0];
+		}
+		
+		return code;
 	}
 	/*@Override
 	public String editorTestExecute(String editorId) {
@@ -146,44 +163,5 @@ public class DockingServiceImpl implements DockingService
 
 		String[] objName = {"code"};
 		return JsonParser.getInstance().jParseObj(objName,new String[]{code});
-	}*/
-	
-	public String tempAdd(TempVO tempVO)
-	{
-		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
-		tempService.add("temp_add", tempVO);
-		
-		List<TempVO>	tempList = tempService.searchAll("temp_searchAll");
-		
-		String[] objName = {"tempVO"};
-
-		int	lastDate = 0;
-
-		if(tempList.size() != 0)
-		{
-			lastDate = tempList.get(0).getTempId();
-			
-			for(TempVO vo : tempList)
-			{
-				if(vo.getTempId() >= lastDate)
-				{
-					lastDate = vo.getTempId();
-				}
-			}
-		}
-		
-		TempVO	vo = tempService.search("temp_search", lastDate);
-
-		String jMvo = JsonParser.getInstance().jParseObj(GlobalVariable.TEMP_VO_FIELD, new String[]{String.valueOf(vo.getTempId()),vo.getContentId(),vo.getMemberId(),vo.getContentsBody(),vo.getDate()});
-
-	    return JsonParser.getInstance().jParseObj(objName,new String[]{jMvo});
-	}
-	
-	public String tempSearch(String tempId)
-	{
-		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
-		TempVO	tempVO = tempService.search("temp_search",tempId);
-		
-		return tempVO.getContentsBody();
-	}
+	}*/	
 }

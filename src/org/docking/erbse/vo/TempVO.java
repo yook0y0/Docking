@@ -10,7 +10,7 @@ public class TempVO	implements	Serializable
 	private String	contentId;
 	private String	memberId;
 	private	String	contentsBody;
-	private	String	date;
+	private	String	backUpDate;
 	
 	public Integer getTempId() {
 		return tempId;
@@ -36,11 +36,11 @@ public class TempVO	implements	Serializable
 	public void setContentsBody(String contentsBody) {
 		this.contentsBody = contentsBody;
 	}
-	public String getDate() {
-		return date;
+	public String getBackUpDate() {
+		return backUpDate;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setBackUpDate(String backUpDate) {
+		this.backUpDate = backUpDate;
 	}
 	@Override
 	public int hashCode() {
@@ -69,6 +69,6 @@ public class TempVO	implements	Serializable
 	public String toString() {
 		return "TempVO [tempId=" + tempId + ", contentId=" + contentId
 				+ ", memberId=" + memberId + ", contentsBody=" + contentsBody
-				+ ", date=" + date + "]";
+				+ ", backUpDate=" + backUpDate + "]";
 	}
 }

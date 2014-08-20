@@ -26,9 +26,7 @@ import org.docking.erbse.util.Injector;
 		
 		"/reviewAdd", "/reviewModify", "/reviewSearch", "/reviewDelete", "/reviewList", "/reviewListByEditor", "/reviewListByWriter",
 
-		"/editorTestExecute", "/editorExecute", "/getEditorCode",
-		
-		"/tempAdd", "/tempSearch"
+		"/editorTestExecute", "/editorExecute", "/getEditorCode"
 })
 public class FrontController extends HttpServlet 
 {
@@ -372,25 +370,6 @@ public class FrontController extends HttpServlet
 			dc.setReq(req);
 			dc.setRes(res);
 			dc.getEditorCode();
-		}
-		
-		/*
-		 * TempController
-		 */
-		else if(action.equals("tempAdd"))
-		{
-			DockingController dc = (DockingController)Injector.getInstance().getObject(DockingController.class);
-			dc.setReq(req);
-			dc.setRes(res);
-			dc.tempAdd();
-		}
-		
-		else if(action.equals("tempSearch"))
-		{
-			DockingController dc = (DockingController)Injector.getInstance().getObject(DockingController.class);
-			dc.setReq(req);
-			dc.setRes(res);
-			dc.tempSearch();
 		}
 	}
 }

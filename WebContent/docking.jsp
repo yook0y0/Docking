@@ -5,7 +5,195 @@
 
 <html lang="en">
 <head>
+<style>
+	@import url(http://weloveiconfonts.com/api/?family=typicons);
+	
+	[class*="typicons-"]:before {
+		font-family: 'Typicons', sans-serif;
+	}
+	
+	.module {
+		width: 300px;
+		margin: 20px auto;
+	}
+	
+	.top-bar {
+		background: #666;
+		color: white;
+		padding: 0.5rem;
+		position: relative;
+		overflow: hidden; h1 { display : inline;
+		font-size: 1.1rem;
+	}
+	
+	.typicons-message {
+		display: inline-block;
+		padding: 4px 5px 2px 5px;
+	}
+	
+	.typicons-minus {
+		position: relative;
+		top: 3px;
+	}
+	
+	.left {
+		float: left;
+	}
+	
+	.right {
+		float: right;
+		padding-top: 5px;
+	}
+	
+	>
+	* {
+		position: relative;
+	}
+	
+	&
+	::before {
+		content: "";
+		position: absolute;
+		top: -100%;
+		left: 0;
+		right: 0;
+		bottom: -100%;
+		opacity: 0.25;
+		background: radial-gradient(white, black);
+		animation: pulse 1s ease alternate infinite;
+	}
+	
+	}
+	.discussion {
+		list-style: none;
+		background: #e5e5e5;
+		margin: 0;
+		padding: 0 0 50px 0; // finality li { padding : 0.5rem;
+		overflow: hidden;
+		display: flex;
+	}
+	
+	.avatar {
+		width: 40px;
+		//
+		stronger
+		than
+		%
+		//
+		could
+		set
+		height,
+		but
+		gonna
+		bottom-align
+		instead
+		position
+		:
+		relative;
+		//
+		for
+		triangle
+		img
+		{
+		display
+		:
+		block;
+		//
+		triangle
+		position
+		width
+		:
+		100%;
+	}
+	
+	}
+	}
+	.other { .avatar { &:after {
+						      content : "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 0;
+		height: 0;
+		border: 5px solid white;
+		border-left-color: transparent;
+		border-bottom-color: transparent;
+	}
+	
+	}
+	}
+	.self {
+		justify-content: flex-end;
+		align-items: flex-end; . messages { order : 1;
+		border-bottom-right-radius: 0;
+		//
+		weird
+		shadow
+		fix
+	}
+	
+	.avatar {
+		order: 2; &: after { content : "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 0;
+		height: 0;
+		border: 5px solid white;
+		border-right-color: transparent;
+		border-top-color: transparent;
+		box-shadow: 1px 1px 2px rgba(black, 0.2);
+		//
+		not
+		quite
+		perfect
+		but
+		close
+	}
+	
+	}
+	}
+	.messages {
+		background: white;
+		padding: 10px;
+		border-radius: 2px;
+		box-shadow: 0 1px 2px rgba(black, 0.2); p { font-size : 0.8rem;
+		margin: 0 0 0.2rem 0;
+	}
+	
+	time {
+		font-size: 0.7rem;
+		color: #ccc;
+	}
+	
+	}
+	@
+	keyframes pulse {from { opacity:0;
+		
+	}
+	
+	to {
+		opacity: 0.5;
+	}
+	
+	}
+	#chat_main {
+		position: absolute;
+		top: 20px;
+		right: 5px;
+	}
+</style>
+
+<style>
+	html, body
+	{
+		width: 100%;
+		height: 100%; 
+		overflow:hidden;
+	}
+</style>
 <%@ include file="import.html"%>
+
 <script src="socket.io.js"></script>
 <title>DOCKING - Real-time working environment</title>
 
@@ -84,8 +272,6 @@
 					<li>
 						<p class="green">BACK UP LIST</p>
 					</li>
-
-					<li class="external"><a onclick="backUpAdd()">Add</a></li>
 				</ul></li>
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
 
@@ -97,7 +283,14 @@
 	<!--  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////   -->
 	<div class="top-menu">
 		<ul class="nav pull-right top-menu" id="login_ul">
-			<li style="margin: 20% -15%">
+			 <li style="margin:10px">
+				<div class="btn-group">
+					<button type="button" class="btn btn-theme dropdown-toggle"
+						id="backUp_btn">BACKUP</button> 
+				</div>
+			</li>
+			
+			<li style="margin:10px">
 				<div class="btn-group">
 					<button type="button" class="btn btn-theme dropdown-toggle"
 						onclick='exit'>EXIT</button>
@@ -153,13 +346,15 @@
 	<script src="assets/js/zabuto_calendar.js"></script>
 	<script type="application/javascript">
 		
+	var socket;
+	
 	        $(document).ready(function () 
 	       	{        		   	
 	        	var memberId = $("#h_memberId").val();
 	        	var docId = $("#h_documentId").val();
-	        	var body_data;
+	        	var contentId = $("#h_contentId").val();
 	        	
-	           var socket = io.connect("http://localhost:9000");
+	          	socket = io.connect("http://localhost:9000");
 	           console.log('client socket create..');
 	           socket.emit('room', {room : docId, memberId : memberId});
 	           
@@ -168,7 +363,7 @@
 	           { 
 	              console.log(data);
 	              
-	              data_set(data);
+	              $('#editor_frame')[0].contentWindow.data_set(data);
 	           });
 	   		
 	           socket.on('userList', function(data)
@@ -206,24 +401,21 @@
 	           socket.on('map', function(data) 
        		   {
        			   var jsonDataList = eval('('+data+')');
-       			      
-       			   data_set(jsonDataList.data);  
+       			   
+       				console.log('data receive..');
+       			   
+       				$('#editor_frame')[0].contentWindow.data_set(jsonDataList.data);  
        		   });
        		    
-       		  /*   $("body").keydown(function() 
-       		    {
-       		      setTimeout(function()
+       		      setInterval(function()
        		      {
        		         console.log('data send..');
-       		      
-       		         var data = data_get();
-       		         if(doc != data){
-       		         doc = data;
-       		      
-       		         socket.emit('data', {data : data, room : docId, memberId : memberId});
-       		         }
+
+       		         var data = $('#editor_frame')[0].contentWindow.data_get();
+       		         
+       		      	socket.emit('data', {data : data, room : docId, memberId : memberId});
+       		         
        		      }, 3000); 
-       		   }); */
 	           
 	           var chat_count = 0;
 	           
@@ -249,7 +441,7 @@
 						 
 						 messageList += '<li class="self">';
 						 messageList += '<div class="avatar">';
-						 messageList += '----------------------------------------';
+						 messageList += '----------------------------------------------------------------------';
 						 messageList += '</div>';
 						 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
 					 }
@@ -260,7 +452,7 @@
 						 
 						 messageList += '<li class="other">';
 						 messageList += '<div class="avatar">';
-						 messageList += '----------------------------------------';
+						 messageList += '----------------------------------------------------------------------';
 						 messageList += '</div>';
 						 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
 					 }
@@ -287,9 +479,57 @@
 				   
 				   $("#btn-input").val("");
 				});
-		
-	           
-	//========================================================================================================================================================================           
+			   
+			   $("#backUp_btn").click(function()
+				{
+				   var data = $('#editor_frame')[0].contentWindow.data_get();
+			
+				   socket.emit('backUp_send', {data : data, memberId : memberId, contentId : contentId});
+				});
+			   
+			   var backUp_count = 0;
+			   
+			   socket.on('backUp_receive', function(data) 
+			    {
+				   var jsonDataList = eval('('+data+')');
+				   
+				   jData = JSON.parse(jsonDataList);
+				   
+					var result = $.parseJSON(jData.tempVO);
+					
+					var tempDiv = "";
+					
+					if(backUp_count == 8)
+					{
+						tempDiv +='<li><p class="green">BACK UP LIST</p></li>';
+						backUp_count = 0;
+						$("#backUp_area").html("");
+					}
+
+					tempDiv += '<li>';
+					tempDiv += '<button style="width:100%" onclick="setBackUpData(\'' + result['tempId'] + '\')">';
+					tempDiv += '<div class="task-info">';
+					tempDiv += '<div class="desc">' + result['date'] + '</div>';
+					tempDiv += '<div class="percent">' + result['memberId'] + '</div>';
+					tempDiv += '</div>';
+					tempDiv += '<div class="progress progress-striped">';
+					tempDiv += '</div></button></li>';
+					
+					backUp_count++;
+					
+					$("#backUp_area").append(tempDiv);
+			    });
+			   
+			   socket.on('get_backUpData', function(data) 
+	   		   {
+	   			   var jsonDataList = eval('('+data+')');
+	   			   
+	   			   alert(jsonDataList[0]);
+	
+	   				$('#editor_frame')[0].contentWindow.data_set(jsonDataList[0]);  
+	   		   });
+			  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	  			$('select.styled').customSelect();
 	            $("#date-popover").popover({html: true, trigger: "manual"});
 	            $("#date-popover").hide();
@@ -297,186 +537,18 @@
 	                $(this).hide();
 	            });
 	        });
+	        
+	        function setBackUpData(tempId)
+	        {
+	        	 var data = tempId;
+	        	 
+	        	 alert(tempId);
+	 			
+				 socket.emit('set_backUpData', {data : data});
+	        };
 		</script>
 
-	<style>
-@import url(http://weloveiconfonts.com/api/?family=typicons);
 
-[class*="typicons-"]:before {
-	font-family: 'Typicons', sans-serif;
-}
-
-.module {
-	width: 300px;
-	margin: 20px auto;
-}
-
-.top-bar {
-	background: #666;
-	color: white;
-	padding: 0.5rem;
-	position: relative;
-	overflow: hidden; h1 { display : inline;
-	font-size: 1.1rem;
-}
-
-.typicons-message {
-	display: inline-block;
-	padding: 4px 5px 2px 5px;
-}
-
-.typicons-minus {
-	position: relative;
-	top: 3px;
-}
-
-.left {
-	float: left;
-}
-
-.right {
-	float: right;
-	padding-top: 5px;
-}
-
->
-* {
-	position: relative;
-}
-
-&
-::before {
-	content: "";
-	position: absolute;
-	top: -100%;
-	left: 0;
-	right: 0;
-	bottom: -100%;
-	opacity: 0.25;
-	background: radial-gradient(white, black);
-	animation: pulse 1s ease alternate infinite;
-}
-
-}
-.discussion {
-	list-style: none;
-	background: #e5e5e5;
-	margin: 0;
-	padding: 0 0 50px 0; // finality li { padding : 0.5rem;
-	overflow: hidden;
-	display: flex;
-}
-
-.avatar {
-	width: 40px;
-	//
-	stronger
-	than
-	%
-	//
-	could
-	set
-	height,
-	but
-	gonna
-	bottom-align
-	instead
-	position
-	:
-	relative;
-	//
-	for
-	triangle
-	img
-	{
-	display
-	:
-	block;
-	//
-	triangle
-	position
-	width
-	:
-	100%;
-}
-
-}
-}
-.other { .avatar { &:after {
-					      content : "";
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 0;
-	height: 0;
-	border: 5px solid white;
-	border-left-color: transparent;
-	border-bottom-color: transparent;
-}
-
-}
-}
-.self {
-	justify-content: flex-end;
-	align-items: flex-end; . messages { order : 1;
-	border-bottom-right-radius: 0;
-	//
-	weird
-	shadow
-	fix
-}
-
-.avatar {
-	order: 2; &: after { content : "";
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 0;
-	height: 0;
-	border: 5px solid white;
-	border-right-color: transparent;
-	border-top-color: transparent;
-	box-shadow: 1px 1px 2px rgba(black, 0.2);
-	//
-	not
-	quite
-	perfect
-	but
-	close
-}
-
-}
-}
-.messages {
-	background: white;
-	padding: 10px;
-	border-radius: 2px;
-	box-shadow: 0 1px 2px rgba(black, 0.2); p { font-size : 0.8rem;
-	margin: 0 0 0.2rem 0;
-}
-
-time {
-	font-size: 0.7rem;
-	color: #ccc;
-}
-
-}
-@
-keyframes pulse {from { opacity:0;
-	
-}
-
-to {
-	opacity: 0.5;
-}
-
-}
-#chat_main {
-	position: absolute;
-	top: 20px;
-	right: 5px;
-}
-</style>
 
 	<section class="module" id="chat_main" style="display:none">
 	<header class="top-bar">
@@ -502,12 +574,7 @@ to {
 		</div>
 	</div>
 	</section>
-	
-		
-	<%-- <div id="contents_inside">
-		<c:import
-			url="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" />
-	</div> --%>
-	
+
+ 	<iframe style="height:100%; width:100%" src="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" id="editor_frame"></iframe> 
 </body>
 </html>

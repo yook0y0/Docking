@@ -21,11 +21,6 @@ import org.docking.erbse.vo.MemberVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.TempVO;
 
-import org.docking.erbse.vo.EditorCodeVO;
-import org.docking.erbse.vo.EditorExecuteInfoVO;
-import org.docking.erbse.vo.EditorVO;
-import org.docking.erbse.vo.MemberVO;
-
 
 public class DockingController {
 	private HttpServletRequest req;
@@ -64,6 +59,7 @@ public class DockingController {
 	}
 
 	public void editorExecute() throws IOException, ServletException{
+		
 		String contentId = req.getParameter("contentId");
 		
 		GenericService<ContentVO>	service = new GenericServiceImpl<ContentVO>();
@@ -76,12 +72,9 @@ public class DockingController {
 		
 		req.setAttribute("getMethod", eeivo.getGetMethod());
 		req.setAttribute("setMethod", eeivo.getSetMethod());
-/*		req.setAttribute("getMethod", "jMap.toXML()");
-		req.setAttribute("setMethod", "jMap.controller.customLoadMap(data)");*/
-		
 		req.setAttribute("startPage", eeivo.getStartPage());
 		req.setAttribute("editorId", eeivo.getEditorId());
-		
+
 		System.out.println("eeivo.getGetMethod()" + eeivo.getGetMethod());
 		System.out.println("eeivo.getSetMethod()" + eeivo.getSetMethod());
 		System.out.println("eeivo.getStartPage()" + eeivo.getStartPage());
@@ -102,39 +95,6 @@ public class DockingController {
 
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
-		pw.flush();
-	}
-	
-	public void tempAdd()	throws IOException
-	{
-		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
-		
-		String	memberId = req.getParameter("memberId");
-		String	contentsBody = req.getParameter("contentsBody");
-		String	contentId = req.getParameter("contentId");
-		
-		TempVO	tempVO = new TempVO();
-		
-		tempVO.setContentId(contentId);
-		tempVO.setContentsBody(contentsBody);
-		tempVO.setMemberId(memberId);
-		tempVO.setDate(mSimpleDateFormat.format(new Date()));
-		
-		String	jRes = ds.tempAdd(tempVO);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write(jRes);
-		pw.flush();
-	}
-	
-	public void tempSearch()	throws IOException
-	{
-		String	tempId = req.getParameter("tempId");
-		
-		String	tempData = ds.tempSearch(tempId);
-		
-		PrintWriter pw = res.getWriter();
-		pw.write(tempData);
 		pw.flush();
 	}
 }

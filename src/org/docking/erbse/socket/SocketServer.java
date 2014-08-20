@@ -1,12 +1,14 @@
 package org.docking.erbse.socket;
 
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import org.docking.erbse.analysis.attribute.Attr;
-import org.docking.erbse.dao.service.GenericService;
-import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.controller.TempController;
+import org.docking.erbse.util.Injector;
 import org.docking.erbse.util.JsonParser;
 import org.docking.erbse.vo.TempVO;
 import org.vertx.java.core.Handler;
@@ -89,34 +91,81 @@ public class SocketServer extends DefaultEmbeddableVerticle
 				});
 
 				socket.on("data", new Handler<JsonObject>() 
-						{
+				{
 					public void handle(JsonObject data) {
-						String room = data.getString("room");
-						String dt = data.getString("data");
-						String memberId = data.getString("memberId");
-
-						/*if(!Attr.backUpData.equals("0"))
-						{
-							dt = Attr.backUpData;
-
-							System.out.println("SocketIO comming");
-						}*/
-
-						String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId"}, new String[]{dt,memberId});
-						io.sockets().in(room).emit("map", res);
+					String room = data.getString("room");
+					String dt = data.getString("data");
+					String memberId = data.getString("memberId");
+		
+					/*if(!Attr.backUpData.equals("0"))
+					{
+						dt = Attr.backUpData;
+		
+						System.out.println("SocketIO comming");
+					}*/
+		
+					String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId"}, new String[]{dt,memberId});
+					io.sockets().in(room).emit("map", res);
 					}
-						});
+				});
 
 				socket.on("chat_send", new Handler<JsonObject>() 
+				{
+					public void handle(JsonObject data) 
+					{
+						String	memberId = data.getString("memberId");
+						String	message = data.getString("data");
+						
+						io.sockets().emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
+					}
+				});
+				
+				socket.on("backUp_send", new Handler<JsonObject>() 
+				{
+					public void handle(JsonObject data)
+					{
+						String	contentId = data.getString("contentId");
+						String	memberId = data.getString("memberId");
+						String	contentsBody = data.getString("data");
+						
+						TempController	tempController = (TempController)Injector.getInstance().getObject(TempController.class);
+						
+						String	res = null;
+						
+						try
 						{
-							public void handle(JsonObject data) 
-							{
-								String	memberId = data.getString("memberId");
-								String	message = data.getString("data");
-								
-								io.sockets().emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
-							}
-						});
+							res = tempController.tempAdd(getTempVO(contentId,memberId,contentsBody));
+						}
+						catch(IOException e)
+						{
+							e.printStackTrace();
+						}
+				
+						io.sockets().emit("backUp_receive", JsonParser.getInstance().jParseArr(new String[]{res}));
+					}
+				});
+				
+				socket.on("set_backUpData", new Handler<JsonObject>() 
+				{
+					public void handle(JsonObject data)
+					{
+						String	tempId = data.getString("data");
+						
+						TempController	tempController = (TempController)Injector.getInstance().getObject(TempController.class);
+						
+						String	res = null;
+						try 
+						{
+							res = tempController.tempSearch(tempId);
+						} 
+						catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
+						
+						io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{res}));
+					}
+				});
 
 				/*socket.onDisconnect(new Handler<JsonObject>() 
 						{
@@ -187,6 +236,20 @@ public class SocketServer extends DefaultEmbeddableVerticle
 
 		return backUpData;
 	}*/
+	
+	private TempVO getTempVO(String contentId, String memberId, String contentsBody)
+	{
+		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
+		
+		TempVO	tempVO = new TempVO();
+		
+		tempVO.setContentId(contentId);
+		tempVO.setContentsBody(contentsBody);
+		tempVO.setMemberId(memberId);
+		tempVO.setBackUpDate(mSimpleDateFormat.format(new Date()));
+		
+		return tempVO;
+	}
 
 	private void print(RoomClient roomClient) {
 		System.out.println("===================== RoomClient ===================");

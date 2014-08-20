@@ -5,29 +5,29 @@
 <mapper namespace="org.docking.erbse.dao.dao.TempDAO">
 	<insert id="temp_add" parameterType="org.docking.erbse.vo.TempVO">
 		insert into temp_tb (temp_tempId, temp_contentId, temp_memberId, temp_contentsBody, temp_date)
-		values (temp_seq.NEXTVAL, #{contentId}, #{memberId}, #{contentsBody}, #{date})
+		values (temp_seq.NEXTVAL, #{contentId}, #{memberId}, #{contentsBody}, #{backUpDate})
 	</insert>
 	
 	<update id="temp_modify" parameterType="org.docking.erbse.vo.TempVO">
 		update temp_tb
-		set temp_memberId=#{memberId}, temp_contentsBody=#{contentsBody}, temp_date=#{date}
+		set temp_memberId=#{memberId}, temp_contentsBody=#{contentsBody}, temp_date=#{backUpDate}
 		where temp_tempId=#{tempId}
 	</update>
 	
 	<select id="temp_search" parameterType="org.docking.erbse.vo.TempVO" resultType="org.docking.erbse.vo.TempVO">
-		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date backUpDate
 		from temp_tb 
 		where temp_tempId=#{tempId}
 	</select>
 
 	<select id="temp_searchAll_key" parameterType="org.docking.erbse.vo.TempVO" resultType="org.docking.erbse.vo.TempVO">
-		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date backUpDate
 		from temp_tb 
 		where temp_contentId=#{contentId}
 	</select>
 	
 	<select id="temp_searchAll" resultType="org.docking.erbse.vo.TempVO">
-		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date date
+		select temp_tempId tempId, temp_contentId contentId, temp_memberId memberId, temp_contentsBody contentsBody, temp_date backUpDate
 		from temp_tb 
 	</select>
 	

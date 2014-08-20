@@ -5,6 +5,7 @@ import org.docking.erbse.controller.DocumentController;
 import org.docking.erbse.controller.EditorController;
 import org.docking.erbse.controller.MemberController;
 import org.docking.erbse.controller.ReviewController;
+import org.docking.erbse.controller.TempController;
 import org.docking.erbse.file.FileManager;
 import org.docking.erbse.service.DockingService;
 import org.docking.erbse.service.DockingServiceImpl;
@@ -55,6 +56,9 @@ public class Injector
 		else if(type == ReviewController.class){
 			return createEditorReviewController();
 		}
+		else if(type == TempController.class){
+			return createTempController();
+		}
 		/*
 		 * Service
 		 */
@@ -102,6 +106,11 @@ public class Injector
 	private Object createDocumentController() {
 		// TODO Auto-generated method stub
 		return new DocumentController();
+	}
+	
+	private Object createTempController()
+	{
+		return new TempController();
 	}
 	
 	private Object createDockingService() {

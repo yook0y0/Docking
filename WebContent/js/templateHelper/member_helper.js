@@ -19,6 +19,29 @@ function memberAdd()
 	});
 };
 
+function duplicationCheck()
+{
+	var memberId = $("#memberId").val();
+
+	$.post("./duplicationCheck",
+	{ 
+		memberId: memberId
+	},
+
+	function(data)
+	{
+		if(data == "0")
+		{
+			alert("IMPOSSIBLE ID!");
+		}
+		
+		else
+		{
+			alert("POSSIBLE ID!");
+		}
+	});
+};
+
 
 function memberModify() 
 {

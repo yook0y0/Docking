@@ -33,6 +33,19 @@ public class MemberServiceImpl implements MemberService {
 		
 		return 1;
 	}
+	
+	public Integer duplicationCheck(String memberId)
+	{
+		GenericService<MemberVO>	memService = new GenericServiceImpl<MemberVO>();
+		MemberVO 	memberVO = memService.search("member_search", memberId);
+		
+		if(memberVO != null)
+		{
+			return 0;
+		}
+		
+		return 1;
+	}
 
 	@Override
 	public Integer memberModify(MemberVO member) 

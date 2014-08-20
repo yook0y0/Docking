@@ -23,6 +23,7 @@ import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
+import org.docking.erbse.vo.TempVO;
 
 
 public class EditorServiceImpl implements EditorService {
@@ -186,8 +187,16 @@ public class EditorServiceImpl implements EditorService {
 		res += eeService.delete("editorExecute_delete", editorId);
 		
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
-		res += conService.delete("content_delete", editorId);
-
+		ContentVO	contentVO = conService.search("content_searchByEditorId", editorId);
+		
+		if(contentVO != null)
+		{
+			GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+			res += tempService.delete("temp_deleteByContentId", contentVO.getContentId());
+			
+			res += conService.delete("content_deleteByEditorId", editorId);
+		}
+		
 		return res;
 	}
 

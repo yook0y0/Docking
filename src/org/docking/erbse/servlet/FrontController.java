@@ -18,7 +18,7 @@ import org.docking.erbse.util.Injector;
 
 @WebServlet(name="/FrontController", urlPatterns={
 		
-		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk",
+		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk", "/duplicationCheck",
 
 		"/editorAdd", "/editorModify", "/editorSearch", "/editorSearchAll", "/editorDelete", "/ownEditorList", "/editorCodeAdd", "/editorCodeModify","/editorCodeSearch","/editorCodeDelete","/codeList", "/childCodeList",
 
@@ -102,6 +102,13 @@ public class FrontController extends HttpServlet
 			mc.setReq(req);
 			mc.setRes(res);
 			mc.memberAddChk();
+		}
+		else if(action.equals("duplicationCheck"))
+		{
+			MemberController mc = (MemberController)Injector.getInstance().getObject(MemberController.class);
+			mc.setReq(req);
+			mc.setRes(res);
+			mc.duplicationCheck();
 		}
 		
 		/*

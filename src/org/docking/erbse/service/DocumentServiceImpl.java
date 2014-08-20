@@ -11,6 +11,7 @@ import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.MemberContentVO;
 import org.docking.erbse.vo.MemberVO;
+import org.docking.erbse.vo.TempVO;
 
 
 public class DocumentServiceImpl implements DocumentService 
@@ -219,10 +220,13 @@ public class DocumentServiceImpl implements DocumentService
 	}
 
 	@Override
-	public Integer contentDelete(String contentId) {
-		// TODO Auto-generated method stub
+	public Integer contentDelete(String contentId) 
+	{
 		GenericService<ContentVO>	genericService = new GenericServiceImpl<ContentVO>();
-		Integer res = 		genericService.delete("content_delete", contentId);
+		Integer res = genericService.delete("content_delete", contentId);
+		
+		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+		res += tempService.delete("temp_deleteByContentId", contentId);
 
 		return res;
 	}

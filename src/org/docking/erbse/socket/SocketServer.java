@@ -64,13 +64,6 @@ public class SocketServer extends DefaultEmbeddableVerticle
 
 						String	memberId = data.getString("memberId");
 
-						String	initData = setInitData(room);
-						
-						if(!initData.equals("0"))
-						{
-							io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{initData}));
-						}
-
 						Attr.socketList.put(socket.getId(), memberId);
 
 						String[] clients = io.sockets().clients(room);
@@ -157,6 +150,21 @@ public class SocketServer extends DefaultEmbeddableVerticle
 						}
 						
 						io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{res}));
+					}
+				});
+				
+				socket.on("set_initData", new Handler<JsonObject>() 
+				{
+					public void handle(JsonObject data)
+					{
+						String room = data.getString("room");
+						
+						String	initData = setInitData(room);
+						
+						if(!(initData.equals("0")))
+						{
+							io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{initData}));
+						}
 					}
 				});
 

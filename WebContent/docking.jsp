@@ -346,24 +346,21 @@
 	<script type="application/javascript">
 		
 	var socket;
+	var contentId;
+	var memberId;
+	var docId;
 	
 	        $(document).ready(function () 
 	       	{        		   	
-	        	var memberId = $("#h_memberId").val();
-	        	var docId = $("#h_documentId").val();
-	        	var contentId = $("#h_contentId").val();
+	        	memberId = $("#h_memberId").val();
+	        	docId = $("#h_documentId").val();
+	        	contentId = $("#h_contentId").val();
 	        	
 	          	socket = io.connect("http://localhost:9000");
+	          	
 	           console.log('client socket create..');
-	           socket.emit('room', {room : contentId, memberId : memberId});
 	           
-	           // receive
-	           socket.on('roomCreate', function(data) 
-	           { 
-	              console.log(data);
-	              
-	              $('#editor_frame')[0].contentWindow.data_set(data);
-	           });
+	           socket.emit('room', {room : contentId, memberId : memberId});
 	   		
 	           socket.on('userList', function(data)
 	        	{
@@ -522,7 +519,7 @@
 			   socket.on('get_backUpData', function(data) 
 	   		   {
 	   			   var jsonDataList = eval('('+data+')');
-
+	   			   
 	   				$('#editor_frame')[0].contentWindow.data_set(jsonDataList[0]);  
 	   		   });
 			  
@@ -535,6 +532,11 @@
 	            });
 	        });
 	        
+			function setInitData()
+			{
+   	        	socket.emit('set_initData', {room : contentId});
+			};
+
 	        function setBackUpData(tempId)
 	        {
 	        	 var data = tempId;
@@ -576,7 +578,7 @@
 	</section>
 	
 	<div style="width:100%; height:100%; padding:55px 0 0 0;">
- 		<iframe style="height:100%; width:100%" src="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" id="editor_frame"></iframe>
+ 		<iframe style="height:100%; width:100%" src="http://localhost:8089/Docking/getEditorCode?path=${requestScope.startPage}&editorId=${requestScope.editorId}" id="editor_frame" onLoad="setInitData()"></iframe>
  	</div> 
 </body>
 </html>

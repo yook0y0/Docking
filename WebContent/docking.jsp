@@ -355,7 +355,7 @@
 	        	
 	          	socket = io.connect("http://localhost:9000");
 	           console.log('client socket create..');
-	           socket.emit('room', {room : docId, memberId : memberId});
+	           socket.emit('room', {room : contentId, memberId : memberId});
 	           
 	           // receive
 	           socket.on('roomCreate', function(data) 
@@ -412,7 +412,7 @@
 
        		         var data = $('#editor_frame')[0].contentWindow.data_get();
        		         
-       		      	socket.emit('data', {data : data, room : docId, memberId : memberId});
+       		      	socket.emit('data', {data : data, room : contentId, memberId : memberId});
        		         
        		      }, 3000); 
 	           
@@ -522,9 +522,7 @@
 			   socket.on('get_backUpData', function(data) 
 	   		   {
 	   			   var jsonDataList = eval('('+data+')');
-	   			   
-	   			   alert(jsonDataList[0]);
-	
+
 	   				$('#editor_frame')[0].contentWindow.data_set(jsonDataList[0]);  
 	   		   });
 			  
@@ -540,8 +538,6 @@
 	        function setBackUpData(tempId)
 	        {
 	        	 var data = tempId;
-	        	 
-	        	 alert(tempId);
 	 			
 				 socket.emit('set_backUpData', {data : data});
 	        };

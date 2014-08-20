@@ -23,4 +23,9 @@ public class TempController
 	{
 		return ts.tempSearch(tempId);
 	}
+	
+	public String getLastestData(String contentId)	throws IOException
+	{
+		return ts.getLastestData(contentId);
+	}
 }

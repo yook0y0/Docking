@@ -47,9 +47,9 @@ public class DockingServiceImpl implements DockingService
 		code = ecvo.getCode();
 				
 		if(eeivo.getStartPage().equals(path)){
-			//String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
+			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
 			//String scriptSrc = "<body><script>$(document).ready(function () {window.location = " + eeivo.getStartPage() + "; }); function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
-			String scriptSrc = "<body><script>function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
+			//String scriptSrc = "<body><script>function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
 			
 			DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
 			da.analyze();

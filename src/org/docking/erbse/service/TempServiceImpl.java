@@ -28,6 +28,37 @@ public class TempServiceImpl implements TempService
 		return tempVO.getContentsBody();
 	}
 	
+	@Override
+	public String getLastestData(String contentId) 
+	{
+		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+		List<TempVO>	tempList = tempService.searchAll("temp_searchAll_key",contentId);
+		
+		int	lastDate = 0;
+
+		if(tempList.size() != 0)
+		{
+			lastDate = tempList.get(0).getTempId();
+			
+			for(TempVO vo : tempList)
+			{
+				if(vo.getTempId() >= lastDate)
+				{
+					lastDate = vo.getTempId();
+				}
+			}
+		}
+		
+		if(lastDate == 0)
+		{
+			return "0";
+		}
+		
+		TempVO	vo = tempService.search("temp_search", lastDate);
+
+		return vo.getContentsBody();
+	}
+	
 	private String getLastestBackUp()
 	{
 		GenericService<TempVO>	tService = new GenericServiceImpl<TempVO>();

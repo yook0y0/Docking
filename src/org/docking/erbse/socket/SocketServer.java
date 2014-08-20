@@ -64,13 +64,12 @@ public class SocketServer extends DefaultEmbeddableVerticle
 
 						String	memberId = data.getString("memberId");
 
-						//String	initData = setInitData(room);
-
-
-						/*if(!initData.equals("0"))
+						String	initData = setInitData(room);
+						
+						if(!initData.equals("0"))
 						{
-							socket.emit("roomCreate",initData);
-						}*/
+							io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{initData}));
+						}
 
 						Attr.socketList.put(socket.getId(), memberId);
 
@@ -96,13 +95,6 @@ public class SocketServer extends DefaultEmbeddableVerticle
 					String room = data.getString("room");
 					String dt = data.getString("data");
 					String memberId = data.getString("memberId");
-		
-					/*if(!Attr.backUpData.equals("0"))
-					{
-						dt = Attr.backUpData;
-		
-						System.out.println("SocketIO comming");
-					}*/
 		
 					String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId"}, new String[]{dt,memberId});
 					io.sockets().in(room).emit("map", res);
@@ -154,6 +146,7 @@ public class SocketServer extends DefaultEmbeddableVerticle
 						TempController	tempController = (TempController)Injector.getInstance().getObject(TempController.class);
 						
 						String	res = null;
+						
 						try 
 						{
 							res = tempController.tempSearch(tempId);
@@ -211,31 +204,23 @@ public class SocketServer extends DefaultEmbeddableVerticle
 		server.listen(port);
 	}
 
-	/*private String setInitData(String contentId)
+	private String setInitData(String contentId)
 	{
-		GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
-
-		List<TempVO>	tempList = tempService.searchAll("temp_searchAll_key", contentId);
-
-		String	backUpData = "0";
-
-		if(tempList.size() != 0)
+		TempController	tempController = (TempController)Injector.getInstance().getObject(TempController.class);
+		
+		String 	backUpData = null;
+		
+		try 
 		{
-			int	lastDate = tempList.get(0).getTempId();
-
-			for(TempVO vo : tempList)
-			{
-				if(vo.getTempId() >= lastDate)
-				{
-					lastDate = vo.getTempId();
-
-					backUpData = vo.getContentsBody();
-				}
-			}
+			backUpData = tempController.getLastestData(contentId);
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 
 		return backUpData;
-	}*/
+	}
 	
 	private TempVO getTempVO(String contentId, String memberId, String contentsBody)
 	{

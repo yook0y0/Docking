@@ -144,7 +144,7 @@ public class MemberController
 		String	memberId = req.getParameter("memberId");
 		
 		Integer	code = 	ms.memberLogin(memberId,req.getParameter("pw"));
-		
+
 		if(code == 1)
 		{
 			req.getSession().setAttribute("logInMember", ms.memberSearch(memberId));

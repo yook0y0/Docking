@@ -126,11 +126,14 @@ function memberLogin()
 
 	function(data)
 	{
-		console.log("data : " + data);
-		
-		if(data == null)
+		if(data == "-1")
 		{
-			alert("LOGIN FAIL");
+			alert("NO ID");
+		}
+		
+		else if(data == "0")
+		{
+			alert("PASSWORD ERROR!");
 		}
 
 		else

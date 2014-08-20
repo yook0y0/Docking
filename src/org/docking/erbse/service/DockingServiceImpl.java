@@ -38,42 +38,46 @@ public class DockingServiceImpl implements DockingService
 		
 		GenericService<EditorExecuteInfoVO> eeivoService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", editorId);
-		
-		String realPath = editorId  + "\\" +  path;
 
 		String code = null;
 		
 		GenericService<EditorCodeVO>	ecvoService = new GenericServiceImpl<EditorCodeVO>();
-		EditorCodeVO ecvo = ecvoService.search("editorCode_search", realPath.replace("/", "\\"));
+		EditorCodeVO ecvo = ecvoService.search("editorCode_search", (editorId  + "\\" +  path).replace("/", "\\"));
 		code = ecvo.getCode();
-
-		byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
 		
-		String path1 = GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
-		String path2 = GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
+		/*
+		 * 애초에 서버 등록 시 주소 바꾸도록 해봄 (일반 사용자 실행속도 ↑ , code 보여줄때는 다시 원래대로 바꾸어줘야할 듯)
+		 */
+		///////////////////////////////////////////////
+		byte[][] targetData = {" src=\"./".getBytes()," href=\"./".getBytes()};
+		
+		String path1 = " " + GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
+		String path2 = " " + GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
 		
 		byte[][] processData = {path1.getBytes(),path2.getBytes()};
 		
-		DockingAnalyzer da = null;
-		
-		if(eeivo.getStartPage().equals(path)){
-			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getGetMethod() + "; };" + "function data_set(data){"+ eeivo.getSetMethod() + "; };</script>";
-
-			da = new SingleDataUpdateFilter(
-					new SingleDataUpdateFilter(
-						new NextDataTargetInsertFilter(
-							new DataRegister(code),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
-		}
-		else{
-			da = new SingleDataUpdateFilter(
-					new NextDataTargetInsertFilter(
-						new DataRegister(code),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData);
-		}
-		
+		byte[][] srcData = new byte[][]{"script src=\"".getBytes()};
+		byte[][] rsrcData = new byte[][]{"./".getBytes(),"/".getBytes(),"http:".getBytes()};
+		byte[] insertData = "./".getBytes();
+		DockingAnalyzer da = new SingleDataUpdateFilter(new NextDataTargetInsertFilter(new DataRegister(code),srcData,rsrcData,insertData,false),targetData,processData);
 		da.analyze();
 		
-		DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+		DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);		
 		code = dAttr.getStringValue()[0];
+		
+		
+		/*
+		 * 
+		 */
+				
+		if(eeivo.getStartPage().equals(path)){
+			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
+	
+			da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
+			da.analyze();
+			dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+			code = dAttr.getStringValue()[0];
+		}
 		
 		return code;
 	}

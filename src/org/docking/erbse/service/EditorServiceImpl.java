@@ -66,34 +66,6 @@ public class EditorServiceImpl implements EditorService {
 				ecvo = new EditorCodeVO();
 				ecvo.setEditorId(editorId);
 				
-				/*
-				 * 애초에 서버 등록 시 주소 바꾸도록 해봄 (일반 사용자 실행속도 ↑ , code 보여줄때는 다시 원래대로 바꾸어줘야할 듯)
-				 
-				///////////////////////////////////////////////
-				byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
-				
-				String path1 = GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
-				String path2 = GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
-				
-				byte[][] processData = {path1.getBytes(),path2.getBytes()};
-				
-				//DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(fm.read(fileList.get(i))),targetData,processData);
-				
-				DockingAnalyzer da = new SingleDataUpdateFilter(new NextDataTargetInsertFilter(new DataRegister(fm.read(fileList.get(i))),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData);
-				
-				da.analyze();
-				
-				DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
-				String[] sArray = dAttr.getStringValue();
-				
-				
-				///////////////////////////////////////////////
-				code = sArray[0];
-				if(code.equals(null) || code == null || code.equals("")){
-					code = "code";
-				}*/
-				
-/*				code = fileList.get(i);*/
 				code = new String(fm.read(fileList.get(i)));
 				if(code.equals(null) || code == null || code.equals("")){
 					code = "code";

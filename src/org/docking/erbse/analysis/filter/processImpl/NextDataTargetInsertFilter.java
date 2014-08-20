@@ -55,37 +55,28 @@ public class NextDataTargetInsertFilter extends SingleDataProcessFilter{
 		System.arraycopy(data, dataIndex, tmp, 0, getSrcData.length);
 
 		for(int i=0;i<this.targetData.length;i++){
+			chk = 0;
 			if(this.targetData[i][0] == data[len]){
 				tmp = new byte[this.targetData[i].length];
 				System.arraycopy(data, len, tmp, 0, this.targetData[i].length);
-				if(this.targetEquals == true){
-					if(super.compare(tmp, this.targetData[i])){
-						chk++;
-					}
-					else{
-						break;
-					}
-				}
-				else{
-					if(!super.compare(tmp, this.targetData[i])){
-						chk++;
-					}
-					else{
-						break;
-					}
+				if(super.compare(tmp, this.targetData[i])){
+					chk++;
+					break;
 				}
 			}
 		}
 
-		if(chk == 0){
+		if(chk > 0){
+			tmp = data;
+		}
+		else{
 			tmp = new byte[data.length+this.insertData.length];
 
 			System.arraycopy(data, 0, tmp, 0, len);
 			System.arraycopy(this.insertData, 0, tmp, len, this.insertData.length);
 			System.arraycopy(data, len, tmp, len+this.insertData.length, data.length-(len));
-		}
-		else{
-			tmp = null;
+		
+			System.out.println("tmp : " + new String(tmp));
 		}
 
 		return tmp;

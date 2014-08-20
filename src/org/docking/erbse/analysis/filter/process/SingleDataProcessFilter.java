@@ -39,12 +39,9 @@ public abstract class SingleDataProcessFilter extends DataProcessFilter {
 						if(this.compare(tmp, this.srcData[j])){
 							tmp = operate(dataTmp,i,j);
 
-							if(tmp != null){
-								startWidth.add(i);
-								endWidth.add(i+this.srcData[j].length);
-
-								dataTmp = tmp;
-							}
+							startWidth.add(i);
+							endWidth.add(i+this.srcData[j].length);
+							dataTmp = tmp;
 						}
 					}
 					else{

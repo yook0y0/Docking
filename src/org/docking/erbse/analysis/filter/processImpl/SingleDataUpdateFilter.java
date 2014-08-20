@@ -23,7 +23,7 @@ public class SingleDataUpdateFilter extends SingleDataProcessFilter {
 
 	protected byte[] operate(byte[] data, int dataIndex, int srcIndex){
 		
-		byte[] targetData = super.getTargetData()[srcIndex];
+		byte[] targetData = super.getSrcData()[srcIndex];
 		
 		byte[] tmp = new byte[data.length+this.updateData[srcIndex].length-targetData.length];
 		

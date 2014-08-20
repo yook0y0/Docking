@@ -3,10 +3,12 @@ package org.docking.erbse.service;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.processImpl.NextDataTargetInsertFilter;
 import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
 import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
+import org.docking.erbse.util.GlobalVariable;
 import org.docking.erbse.vo.ContentVO;
 import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
@@ -39,23 +41,39 @@ public class DockingServiceImpl implements DockingService
 		
 		String realPath = editorId  + "\\" +  path;
 
-
 		String code = null;
 		
 		GenericService<EditorCodeVO>	ecvoService = new GenericServiceImpl<EditorCodeVO>();
 		EditorCodeVO ecvo = ecvoService.search("editorCode_search", realPath.replace("/", "\\"));
 		code = ecvo.getCode();
-				
+
+		byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
+		
+		String path1 = GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
+		String path2 = GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
+		
+		byte[][] processData = {path1.getBytes(),path2.getBytes()};
+		
+		DockingAnalyzer da = null;
+		
 		if(eeivo.getStartPage().equals(path)){
-			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getSetMethod() + "; };" + "function data_set(data){"+ eeivo.getGetMethod() + "; };</script>";
-			//String scriptSrc = "<body><script>$(document).ready(function () {window.location = " + eeivo.getStartPage() + "; }); function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
-			//String scriptSrc = "<body><script>function data_get(){ console.log('setMethod');};" + "function data_set(data){console.log('getMethod');};</script>";
-			
-			DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(code),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
-			da.analyze();
-			DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
-			code = dAttr.getStringValue()[0];
+			String scriptSrc = "<body><script>function data_get(){ return "+ eeivo.getGetMethod() + "; };" + "function data_set(data){"+ eeivo.getSetMethod() + "; };</script>";
+
+			da = new SingleDataUpdateFilter(
+					new SingleDataUpdateFilter(
+						new NextDataTargetInsertFilter(
+							new DataRegister(code),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData),new byte[][]{"<body>".getBytes()},new byte[][]{scriptSrc.getBytes()});
 		}
+		else{
+			da = new SingleDataUpdateFilter(
+					new NextDataTargetInsertFilter(
+						new DataRegister(code),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData);
+		}
+		
+		da.analyze();
+		
+		DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
+		code = dAttr.getStringValue()[0];
 		
 		return code;
 	}

@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.docking.erbse.analysis.DockingAnalyzer;
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.analysis.attribute.DataAttribute;
+import org.docking.erbse.analysis.filter.processImpl.NextDataTargetInsertFilter;
 import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
 import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
@@ -67,7 +68,7 @@ public class EditorServiceImpl implements EditorService {
 				
 				/*
 				 * 애초에 서버 등록 시 주소 바꾸도록 해봄 (일반 사용자 실행속도 ↑ , code 보여줄때는 다시 원래대로 바꾸어줘야할 듯)
-				 */
+				 
 				///////////////////////////////////////////////
 				byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
 				
@@ -76,7 +77,9 @@ public class EditorServiceImpl implements EditorService {
 				
 				byte[][] processData = {path1.getBytes(),path2.getBytes()};
 				
-				DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(fm.read(fileList.get(i))),targetData,processData);
+				//DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(fm.read(fileList.get(i))),targetData,processData);
+				
+				DockingAnalyzer da = new SingleDataUpdateFilter(new NextDataTargetInsertFilter(new DataRegister(fm.read(fileList.get(i))),new byte[][]{"src=\"".getBytes(),"href=\"".getBytes()},new byte[][]{"./".getBytes(),"http:".getBytes()},"./".getBytes(),false),targetData,processData);
 				
 				da.analyze();
 				
@@ -86,6 +89,12 @@ public class EditorServiceImpl implements EditorService {
 				
 				///////////////////////////////////////////////
 				code = sArray[0];
+				if(code.equals(null) || code == null || code.equals("")){
+					code = "code";
+				}*/
+				
+/*				code = fileList.get(i);*/
+				code = new String(fm.read(fileList.get(i)));
 				if(code.equals(null) || code == null || code.equals("")){
 					code = "code";
 				}

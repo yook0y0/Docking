@@ -221,7 +221,7 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////초대 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" onclick="inviteMember()"> <i
-					class="fa fa-tasks"></i> <span class="badge bg-theme"></span>
+					class="glyphicon glyphicon-plus-sign"></i> <span class="badge bg-theme"></span>
 			</a></li>
 
 			<!-- settings end -->
@@ -230,7 +230,7 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
 			<li id="header_inbox_bar" class="dropdown"><a
 				data-toggle="dropdown" class="dropdown-toggle"
-				onclick="chatToggle()"> <i class="fa fa-envelope-o"></i> <span
+				onclick="chatToggle()"> <i class="glyphicon glyphicon-comment"></i> <span
 					class="badge bg-theme" id="chat_count"> </span>
 			</a></li>
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////채팅 -->
@@ -238,7 +238,7 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////조인멤버 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" href="index.html#"> <i
-					class="fa fa-tasks"></i> <span class="badge bg-theme"
+					class="glyphicon glyphicon-user"></i> <span class="badge bg-theme"
 					id="user_count_area"> </span></a>
 				<ul class="dropdown-menu extended tasks-bar" id="user_area">
 
@@ -248,7 +248,7 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////컨텐츠 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" href="index.html#"> <i
-					class="fa fa-tasks"></i> <span class="badge bg-theme">${contentCount }</span></a>
+					class="glyphicon glyphicon-folder-open"></i> <span class="badge bg-theme">${contentCount }</span></a>
 				<ul class="dropdown-menu extended tasks-bar">
 					<div class="notify-arrow notify-arrow-green"></div>
 					<li><p class="green">CONTENTS LIST!</p></li>
@@ -265,7 +265,7 @@
 			<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////백업 -->
 			<li class="dropdown"><a data-toggle="dropdown"
 				class="dropdown-toggle" href="index.html#"> <i
-					class="fa fa-tasks"></i> <span class="badge bg-theme"></span>
+					class="glyphicon glyphicon-floppy-save"></i> <span class="badge bg-theme"></span>
 			</a>
 				<ul class="dropdown-menu extended tasks-bar" id="backUp_area">
 					<div class="notify-arrow notify-arrow-green"></div>
@@ -490,7 +490,7 @@
 						 
 						 else
 						 {
-							 message = messageId + dat;
+							 message = messageId + " : " + dat;
 							 
 							 messageList += '<li class="other">';
 							 messageList += '<div class="avatar">';

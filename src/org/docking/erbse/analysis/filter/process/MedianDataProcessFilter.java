@@ -2,14 +2,14 @@ package org.docking.erbse.analysis.filter.process;
 
 import java.util.List;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 
 public abstract class MedianDataProcessFilter extends DataProcessFilter {
 
 	private byte[][] preData;
 	private byte[][] postData;
 
-	public MedianDataProcessFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData) {
+	public MedianDataProcessFilter(DockingStream stream, byte[][] preData, byte[][] postData) {
 		super(stream);
 		this.preData = preData;
 		this.postData = postData;

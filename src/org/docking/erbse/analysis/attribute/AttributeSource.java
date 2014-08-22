@@ -3,11 +3,11 @@ package org.docking.erbse.analysis.attribute;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 
 
 @SuppressWarnings("rawtypes")
-public abstract class AttributeSource implements DockingAnalyzer{
+public abstract class AttributeSource implements DockingStream{
 
 	private Map<Integer, Attribute> attrSet;
 	

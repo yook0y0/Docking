@@ -1,11 +1,11 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.SingleDataProcessFilter;
 
 public class SingleDataDeleteFilter extends SingleDataProcessFilter {
 
-	public SingleDataDeleteFilter(DockingAnalyzer stream, byte[][] targetData) {
+	public SingleDataDeleteFilter(DockingStream stream, byte[][] targetData) {
 		super(stream, targetData);
 		// TODO Auto-generated constructor stub
 	}

@@ -56,6 +56,17 @@ public class MemberController
 		pWriter.write(msg);
 		pWriter.flush();
 	}
+	
+	public void duplicationCheck()	throws IOException
+	{
+		String memberId = req.getParameter("memberId");
+
+		Integer code = ms.duplicationCheck(memberId);
+		
+		PrintWriter pWriter = res.getWriter();
+		pWriter.write(code.toString());
+		pWriter.flush();
+	}
 
 	public void memberModify() throws IOException 
 	{

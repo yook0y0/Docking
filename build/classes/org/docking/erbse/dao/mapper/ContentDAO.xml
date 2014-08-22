@@ -5,7 +5,7 @@
 <mapper namespace="org.docking.erbse.dao.dao.ContentDAO">
 	<insert id="content_add" parameterType="org.docking.erbse.vo.ContentVO">
 		insert into content_tb (content_documentId, content_contentId, content_body, content_editorId)
-		values (#{documentId}, #{contentId}, #{body}, #{editorId})
+		values (#{documentId}, content_seq.NEXTVAL, #{body}, #{editorId})
 	</insert>
 	
 	<update id="content_modify" parameterType="org.docking.erbse.vo.ContentVO">
@@ -18,6 +18,12 @@
 		select content_documentId documentId, content_contentId contentId, content_body body, content_editorId editorId
 		from content_tb 
 		where content_contentId=#{contentId}
+	</select>
+	
+	<select id="content_searchByEditorId" parameterType="org.docking.erbse.vo.ContentVO" resultType="org.docking.erbse.vo.ContentVO">
+		select content_documentId documentId, content_contentId contentId, content_body body, content_editorId editorId
+		from content_tb 
+		where content_editorId=#{editorId}
 	</select>
 
 	<select id="content_searchAll_key" parameterType="org.docking.erbse.vo.ContentVO" resultType="org.docking.erbse.vo.ContentVO">
@@ -34,6 +40,11 @@
 	<delete id="content_delete" parameterType="org.docking.erbse.vo.ContentVO">
         delete from content_tb 
         where content_contentId=#{contentId}
+    </delete>
+    
+    <delete id="content_deleteByEditorId" parameterType="org.docking.erbse.vo.ContentVO">
+        delete from content_tb 
+        where content_editorId=#{editorId}
     </delete>
     
     <delete id="content_deleteByDocumentId" parameterType="org.docking.erbse.vo.ContentVO">

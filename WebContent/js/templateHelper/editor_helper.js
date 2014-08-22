@@ -101,21 +101,25 @@ function openShareMode()
 
 function selectTextEditor()
 {
+	alert("TEXT EDITOR!");
 	$("#editorType").val("0");
 };
 
 function selectMindMap()
 {
+	alert("MIND MAP");
 	$("#editorType").val("1");
 };
 
 function selectQuestionnaire()
 {
+	alert("QUESTIONNAIRE!");
 	$("#editorType").val("2");
 };
 
 function selectElse()
 {
+	alert("ELSE");
 	$("#editorType").val("3");
 };
 

@@ -35,6 +35,10 @@
         delete from temp_tb where temp_tempId=#{tempId}
     </delete>
     
+    <delete id="temp_deleteByContentId" parameterType="org.docking.erbse.vo.TempVO">
+        delete from temp_tb where temp_contentId=#{contentId}
+    </delete>
+    
     <delete id="temp_deleteAll">
         delete from temp_tb
     </delete>

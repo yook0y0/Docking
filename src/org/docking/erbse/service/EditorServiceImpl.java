@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
-import org.docking.erbse.analysis.attribute.Attr;
-import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
-import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.file.FileManager;
@@ -23,6 +18,7 @@ import org.docking.erbse.vo.EditorCodeVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
 import org.docking.erbse.vo.EditorReviewBBSVO;
 import org.docking.erbse.vo.EditorVO;
+import org.docking.erbse.vo.TempVO;
 
 
 public class EditorServiceImpl implements EditorService {
@@ -64,27 +60,7 @@ public class EditorServiceImpl implements EditorService {
 				ecvo = new EditorCodeVO();
 				ecvo.setEditorId(editorId);
 				
-				/*
-				 * 애초에 서버 등록 시 주소 바꾸도록 해봄 (일반 사용자 실행속도 ↑ , code 보여줄때는 다시 원래대로 바꾸어줘야할 듯)
-				 */
-				///////////////////////////////////////////////
-				byte[][] targetData = {"src=\"./".getBytes(),"href=\"./".getBytes()};
-				
-				String path1 = GlobalVariable.PATH_CASE_1 + "getEditorCode?editorId=" + editorId + "&path=";
-				String path2 = GlobalVariable.PATH_CASE_2 + "getEditorCode?editorId=" + editorId + "&path=";
-				
-				byte[][] processData = {path1.getBytes(),path2.getBytes()};
-				
-				DockingAnalyzer da = new SingleDataUpdateFilter(new DataRegister(fm.read(fileList.get(i))),targetData,processData);
-				
-				da.analyze();
-				
-				DataAttribute dAttr = (DataAttribute)da.getAttrSet().get(Attr.DATA_ATTR);
-				String[] sArray = dAttr.getStringValue();
-				
-				
-				///////////////////////////////////////////////
-				code = sArray[0];
+				code = new String(fm.read(fileList.get(i)));
 				if(code.equals(null) || code == null || code.equals("")){
 					code = "code";
 				}
@@ -186,8 +162,16 @@ public class EditorServiceImpl implements EditorService {
 		res += eeService.delete("editorExecute_delete", editorId);
 		
 		GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
-		res += conService.delete("content_delete", editorId);
-
+		ContentVO	contentVO = conService.search("content_searchByEditorId", editorId);
+		
+		if(contentVO != null)
+		{
+			GenericService<TempVO>	tempService = new GenericServiceImpl<TempVO>();
+			res += tempService.delete("temp_deleteByContentId", contentVO.getContentId());
+			
+			res += conService.delete("content_deleteByEditorId", editorId);
+		}
+		
 		return res;
 	}
 

@@ -1,26 +1,26 @@
 package org.docking.erbse.analysis.tokenizer;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.attribute.AttributeSource;
 
 
 public abstract class Tokenizer extends AttributeSource{
 
-	private DockingAnalyzer stream;
+	private DockingStream stream;
 	private byte[] token;
 
-	public Tokenizer(DockingAnalyzer stream, byte[] token) {
+	public Tokenizer(DockingStream stream, byte[] token) {
 		this.stream = stream;
 		this.token = token;
 		super.setAttrSet(this.stream.getAttrSet());
 		stream.analyze();
 	}
 
-	public DockingAnalyzer getStream() {
+	public DockingStream getStream() {
 		return this.stream;
 	}
 	
-	public void setStream(DockingAnalyzer stream) {
+	public void setStream(DockingStream stream) {
 		this.stream = stream;
 	}
 	

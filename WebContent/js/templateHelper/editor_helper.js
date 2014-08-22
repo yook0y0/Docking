@@ -252,7 +252,7 @@ function reviewListByEditor(editorId)
 		var review;
 		var reviewList = "";
 		
-		for(var i = 0 ; i < result.length ; i++)
+		for(var i = 0 ; i < result.length-1 ; i++)
 		{
 			review = $.parseJSON(result[i]);
 			
@@ -280,60 +280,110 @@ function reviewListByEditor(editorId)
 	});
 };
 
-
-/*function getCodeList(editorId)
+function getCodeList(editorId)
 {
+	
 	getContJsCss("edit_code","edit_code");
 	
 	$.post("./codeList",
 	{ 
 		editorId : editorId
 	},
-	
+
 	function(data)
 	{
 		jData = JSON.parse(data);
-		var result = $.parseJSON(jData.EditorCodeVOList);
-		
+		var editorAllCodeDataJsonArray = $.parseJSON(jData.EditorCodeVOList);
 		var	editorCode;
 
-		var masterList = "";
-		var secondList = "";
-		var thirdList = "";
-
-		for(var i = 0 ; i < result.length ; i++)
+		var upperfolder ="";
+		var secondfolder ="";
+		console.log("start");
+		var treeCode="";
+		var secondLoop = 0;
+		var thirdLoop = 0;
+		
+		for(var i = 0 ; i < editorAllCodeDataJsonArray.length ; i++)
 		{
-			editorCode = $.parseJSON(result[i]);
+			editorCode = $.parseJSON(editorAllCodeDataJsonArray[i]);
 
-			if(i == 0)
-			{
-				$("#codeList_title").append('<i class="fa fa-angle-right"></i>' + editorCode['editorId']);
+			var str = editorCode['path'];
+			var twiceSlashStr = str.replace(/\\/g,'\\\\');
+			var strArray = str.split('\\');
+			if(strArray.length == 2){
+				treeCode+='<li id=\''+twiceSlashStr+'\'><a onclick="sendPathToOpenDocument(\'' + twiceSlashStr + '\')">'+strArray[1]+'</a><ul></ul></li>';
+				continue;
 			}
-			
-			var trashId = editorCode['path'].split("\\");
-
-			for(var j = 1 ; j < trashId.length ; j++)
-			{
-				if(j == 1)
+			if(upperfolder != strArray[1]){//1단계가 새로움
+				if(secondLoop != 0){
+					console.log("1번 하위 폴더 막음");
+					treeCode+='</ul></li>';
+					secondLoop = 0;
+				}
+				if((thirdLoop != 0)){
+					console.log("2번 하위 폴더 막음");
+					treeCode+='</ul></li>';
+					thirdLoop = 0;
+				}
+				upperfolder = strArray[1];
+				console.log("ㅡ"+upperfolder);
+				treeCode+='<li><a href="#" src="assets/img/file2.gif">'+upperfolder+'</a><ul>';
+			}
+			else{	//동일한 1단계
+				secondLoop++;		
+			}
+			if(secondfolder != strArray[2]){//새로운 2단계 + 그냥 씀
+				
+				if(thirdLoop != 0)
 				{
-					masterList += '<li id="' + trashId[1] + i + '"><a href="#"><img src="assets/img/file.png" />' + trashId[1] + '</a></li>';
-					
-					$("#tree_menu").append(masterList);
-
-					continue;
+					console.log("2번 하위 폴더 막음");
+					treeCode += '</ul></li>';
+					thirdLoop = 0;
 				}
 				
-				secondList += '<ul id="' + trashId[j] + j + '"></ul>';
+				secondfolder = strArray[2];
 				
-				$("#" + trashId[j-1] + i).append(secondList);
+				
+				startInt = editorCode['editorId'].length + 2 + upperfolder.length+secondfolder.length;
+				
+				if(str.length == startInt){//2단계가 마지막일 경우 끝냄
+					console.log("		ㄴ하나뿐인 2단계"+secondfolder);
+					treeCode+='<li id=\''+twiceSlashStr+'\'><a onclick="sendPathToOpenDocument(\'' + twiceSlashStr + '\')">'+secondfolder+'</a></li>';
+					secondLoop++;
+					continue;
+				}else{//3단계가 있음
+					treeCode+='<li><a href="#")>'+secondfolder+'</a><ul>';
+					console.log("		ㄴ새로운 2단계"+secondfolder);
+					startInt = editorCode['editorId'].length + 3 + upperfolder.length+secondfolder.length;
+					console.log("				ㄴ3단계"+ str.substring(startInt) );
+					treeCode += '<li id=\''+twiceSlashStr+'\'><a onclick="sendPathToOpenDocument(\'' + twiceSlashStr + '\')">'+str.substring(startInt)+'</a></li>';//3단계 이상되는 파일 경로 그냥 씀
+					secondLoop++;
+					thirdLoop++;
+				}
+			}
+			else{//동일한 2단계
+				startInt = editorCode['editorId'].length + 3 + upperfolder.length+secondfolder.length;
+				console.log("				ㄴ3단계"+ str.substring(startInt) );
+				treeCode += '<li id=\''+twiceSlashStr+'\'><a onclick="sendPathToOpenDocument(\'' + twiceSlashStr + '\')">'+str.substring(startInt)+'</a></li>';//3단계 이상되는 파일 경로 그냥 씀
+				thirdLoop++;
+				secondLoop++;
+			}
 
-				thirdList += '<li><a href="#">' + trashId[j] + '</a></li>';
-				
-				$("#" + trashId[j] + j).append(thirdList);
-			};
-		};
+		}
+		
+		if(thirdLoop != 0){
+			treeCode+='</ul></li>';
+		}
+		if(secondLoop != 0){
+			treeCode+='</ul></li>';
+		}
+		treeCode+='</ul></li>';
+		
+		$('#tree_menu').append(treeCode);
+		load_tree(editorId);
+		
 	});
-};*/
+};
 
 
 

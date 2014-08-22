@@ -154,11 +154,9 @@ public class EditorController {
 	public void editorCodeAdd() throws IOException{
 		EditorCodeVO ecvo = new EditorCodeVO();
 		ecvo.setEditorId(req.getParameter("editorId"));
-		ecvo.setCode(req.getParameter("code"));
+		ecvo.setCode(req.getParameter("editorId")+"\\"+req.getParameter("code"));
 		ecvo.setPath(req.getParameter("path"));
-		
 		Integer code = es.editorCodeAdd(ecvo);
-
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
 		pw.flush();
@@ -166,25 +164,33 @@ public class EditorController {
 	
 	public void editorCodeModify() throws IOException{		
 		EditorCodeVO ecvo = new EditorCodeVO();
+		System.out.println("1");
 		ecvo.setEditorId(req.getParameter("editorId"));
+		System.out.println(req.getParameter("editorId"));
 		ecvo.setCode(req.getParameter("code"));
+		System.out.println("code : "+req.getParameter("code"));
 		ecvo.setPath(req.getParameter("path"));
-		
+		System.out.println("path:"+req.getParameter("path"));
 		Integer code = es.editorCodeModify(ecvo);
-
+		System.out.println("5");
 		PrintWriter pw = res.getWriter();
 		pw.write(code);
 		pw.flush();
+		
 	}
 	
 	public void editorCodeSearch() throws IOException{
+		System.out.println("editorCodeSearch()");	
+		
 		String path = req.getParameter("path");
-		
+		System.out.println(path);
 		String jRes = es.editorCodeSearch(path);
-		
+		System.out.println("jRes: "+jRes);	
 		PrintWriter pw = res.getWriter();
 		pw.write(jRes);
 		pw.flush();
+	
+		
 	}
 	
 	public void editorCodeDelete() throws IOException{

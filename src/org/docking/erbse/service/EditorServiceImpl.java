@@ -329,7 +329,7 @@ public class EditorServiceImpl implements EditorService {
 	public String codeList(String editorId) 
 	{
 		GenericService<EditorCodeVO>	editCodeService = new GenericServiceImpl<EditorCodeVO>();
-		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_searchAll_key", editorId);
+		List<EditorCodeVO> ecvoList = editCodeService.searchAll("editorCode_search_only_path", editorId);
 
 		List<String> tmpList = new ArrayList<String>();
 

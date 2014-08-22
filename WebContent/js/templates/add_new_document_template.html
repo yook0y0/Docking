@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+#first_span{
+text-align: center;
+background-color: #008299; 
+color: white; 
+font-size: 10p;
+font-weight:bolder;  
+padding-top: 2px;
+padding-bottom: 2px;
+margin-bottom: 15px;
+}
+body{
+background-color: #F2F2F2;
+}
+</style>
+<script language="Javascript" type="text/javascript"> 
+
+function CallParentWindowFunction() 
+{
+	var str = '';
+	str+=document.getElementById("first_path").value;
+	str+='\\';
+	str+=document.getElementById("second_path").value;
+	if(str.search('.') == -1){
+		alert('there is no file! please contain file type');
+		return;
+	}
+    window.opener.createNewDocument(str);
+    close();
+    return false; 
+} 
+</script>
+<title>input your new document information</title>
+</head>
+<body>
+<div id="first_span">
+<h3>CREATE DOCUMENT</h3>
+</div>
+<div align="center">
+package name:
+<input id='first_path' style="margin-bottom: 15px; margin-top:20px;" ></input>
+<br/>
+class name : 
+<input id='second_path' style="margin-bottom: 15px;"></input>
+<hr>
+ <input type=button onclick="CallParentWindowFunction();" value="create" style="margin-top: 15px;"/>
+ <input type=button onclick="window.close();" value="close"/>
+ </div>
+</body>
+</html>

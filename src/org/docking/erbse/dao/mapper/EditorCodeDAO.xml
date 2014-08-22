@@ -13,21 +13,29 @@
 	<update id="editorCode_modify" parameterType="org.docking.erbse.vo.EditorCodeVO">
 		update
 		editorCode_tb
-		set editorCode_editorId=#{editorId}, editorCode_code=#{code}, editorCode_path=#{path}
-		where editorCode_path=#{path}
+		set editorCode_code=#{code}
+		WHERE editorCode_path =#{path}
 	</update>
 
 	<select id="editorCode_search" parameterType="org.docking.erbse.vo.EditorCodeVO"
 		resultType="org.docking.erbse.vo.EditorCodeVO">
 		select editorCode_editorId editorId, editorCode_code code, editorCode_path path 
 		from editorCode_tb
-		where editorCode_path=#{path}
+		WHERE editorCode_path =#{path}
+	</select>
+	
+	<select id="editorCode_search_only_path" parameterType="org.docking.erbse.vo.EditorCodeVO" resultType="org.docking.erbse.vo.EditorCodeVO">
+		select editorCode_editorId editorId, 	editorCode_path path
+		from editorCode_tb 
+		where editorCode_editorId=#{editorId}
+		order by path
 	</select>
 	
 	<select id="editorCode_searchAll_key" parameterType="org.docking.erbse.vo.EditorCodeVO" resultType="org.docking.erbse.vo.EditorCodeVO">
 		select editorCode_editorId editorId, editorCode_code code, editorCode_path path
 		from editorCode_tb 
 		where editorCode_editorId=#{editorId}
+		order by path
 	</select>
 
 	<select id="editorCode_searchAll" resultType="org.docking.erbse.vo.EditorCodeVO">

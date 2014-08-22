@@ -15,7 +15,6 @@ import org.docking.erbse.controller.MemberController;
 import org.docking.erbse.controller.ReviewController;
 import org.docking.erbse.util.Injector;
 
-
 @WebServlet(name="/FrontController", urlPatterns={
 		
 		"/memberAdd", "/memberModify", "/memberSearch", "/memberDelete", "/memberLogin", "/memberLogout", "/memberAddChk",
@@ -26,7 +25,7 @@ import org.docking.erbse.util.Injector;
 		
 		"/reviewAdd", "/reviewModify", "/reviewSearch", "/reviewDelete", "/reviewList", "/reviewListByEditor", "/reviewListByWriter",
 
-		"/editorTestExecute", "/editorExecute", "/getEditorCode"
+		"/editorTestExecute", "/editorExecute", "/getEditorCode","/openDocument"
 })
 public class FrontController extends HttpServlet 
 {

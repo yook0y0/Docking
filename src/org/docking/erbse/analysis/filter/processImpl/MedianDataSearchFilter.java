@@ -1,11 +1,11 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.MedianDataProcessFilter;
 
 public class MedianDataSearchFilter extends MedianDataProcessFilter {
 
-	public MedianDataSearchFilter(DockingAnalyzer stream, byte[][] preData,
+	public MedianDataSearchFilter(DockingStream stream, byte[][] preData,
 			byte[][] postData) {
 		super(stream, preData, postData);
 		// TODO Auto-generated constructor stub

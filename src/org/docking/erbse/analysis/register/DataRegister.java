@@ -1,6 +1,9 @@
 package org.docking.erbse.analysis.register;
 
+import java.util.Map;
+
 import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.analysis.attribute.Attribute;
 import org.docking.erbse.analysis.attribute.AttributeSource;
 import org.docking.erbse.analysis.attribute.DataAttribute;
 
@@ -98,8 +101,9 @@ public class DataRegister extends AttributeSource
 		this.data.setData(data);
 	}
 	
-	public void analyze(){
+	public Map<Integer, Attribute> analyze(){
 		super.addAttr(Attr.DATA_ATTR, data);
+		return super.getAttrSet();
 	}
 
 	@Override

@@ -2,13 +2,13 @@ package org.docking.erbse.analysis.filter.process;
 
 import java.util.List;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 
 public abstract class SingleDataProcessFilter extends DataProcessFilter {
 
 	private byte[][] srcData;
 
-	public SingleDataProcessFilter(DockingAnalyzer stream, byte[][] srcData) {
+	public SingleDataProcessFilter(DockingStream stream, byte[][] srcData) {
 		super(stream);
 		this.srcData = srcData;
 		// TODO Auto-generated constructor stub

@@ -51,35 +51,6 @@ public class DocumentServiceImpl implements DocumentService
 		String jEvo = JsonParser.getInstance().jParseObj(GlobalVariable.M_DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
 
 		return JsonParser.getInstance().jParseObj(objName,new String[]{jEvo});
-
-		/*GenericService<ContentVO>	conService = new GenericServiceImpl<ContentVO>();
-		List<ContentVO> cvoList = conService.searchAll("content_searchAll_key", documentId);
-
-		GenericService<MemberContentVO>	memService = new GenericServiceImpl<MemberContentVO>();
-		List<MemberContentVO> mcvoList = memService.searchAll("memberContent_searchAll_key", documentId);
-
-		String[] objName = new String[]{"documentVO","contentVOList","memberContentVOList"};
-		
-		String jDvo = JsonParser.getInstance().jParseObj(GlobalVariable.DOC_VO_FIELD, new String[]{dvo.getDocumentId(),dvo.getWriter(),dvo.getTitle(),dvo.getCreationDate()});
-		List<String> tmpList = new ArrayList<String>();		
-		
-		for(ContentVO tcvo : cvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.CON_VO_FIELD, new String[]{tcvo.getDocumentId(),tcvo.getContentId(),tcvo.getBody(),tcvo.getEditorId()}));
-		}
-		
-		String[] cvoArr = new String[cvoList.size()];
-		cvoArr = tmpList.toArray(cvoArr);
-		String jCvoList = JsonParser.getInstance().jParseArr(cvoArr);
-		
-		tmpList.clear();
-		for(MemberContentVO tmcvo : mcvoList){
-			tmpList.add(JsonParser.getInstance().jParseObj(GlobalVariable.MEMCON_VO_FIELD, new String[]{tmcvo.getDocumentId(),tmcvo.getMemberId(),String.valueOf(tmcvo.getMemberPosition())}));
-		}
-		String[] mcvoArr = new String[mcvoList.size()];
-		mcvoArr = tmpList.toArray(mcvoArr);
-		String jMcvoList = JsonParser.getInstance().jParseArr(mcvoArr);
-		
-		return JsonParser.getInstance().jParseObj(objName,new String[]{jDvo,jCvoList,jMcvoList});*/
 	}
 
 	@Override
@@ -92,8 +63,17 @@ public class DocumentServiceImpl implements DocumentService
 		res += mService.delete("memberContent_deleteByDocumentId", documentId);
 		
 		GenericService<ContentVO>	cService = new GenericServiceImpl<ContentVO>();
-		res += cService.delete("content_deleteByDocumentId", documentId);
+		List<ContentVO>	contentList = cService.searchAll("content_searchAll_key", documentId);
+		
+		GenericService<TempVO>	tService = new GenericServiceImpl<TempVO>();
+		
+		for(ContentVO cVO : contentList)
+		{
+			tService.delete("temp_deleteByContentId", cVO.getContentId());
+		}
 
+		res += cService.delete("content_deleteByDocumentId", documentId);
+		
 		return res;
 	}
 
@@ -271,11 +251,13 @@ public class DocumentServiceImpl implements DocumentService
 		GenericService<MemberContentVO>	genericService = new GenericServiceImpl<MemberContentVO>();
 		MemberContentVO	memberContentVO = genericService.search("memberContent_searchAllbyMemberId", memberContent.getMemberId());
 		
-		if(memberContentVO.getDocumentId().equals(memberContent.getDocumentId()))
+		if(memberContentVO != null)
 		{
-			return -2;
+			if(memberContentVO.getDocumentId().equals(memberContent.getDocumentId()))
+			{
+				return -2;
+			}
 		}
-		
 		
 		Integer res = genericService.add("memberContent_add", memberContent);
 		

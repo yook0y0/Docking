@@ -1,6 +1,6 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.SingleDataProcessFilter;
 
 public class NextDataTargetInsertFilter extends SingleDataProcessFilter{
@@ -10,7 +10,7 @@ public class NextDataTargetInsertFilter extends SingleDataProcessFilter{
 	
 	private boolean targetEquals;
 
-	public NextDataTargetInsertFilter(DockingAnalyzer stream, byte[][] srcData, byte[][] targetData, byte[] insertData, boolean targetEquals) {
+	public NextDataTargetInsertFilter(DockingStream stream, byte[][] srcData, byte[][] targetData, byte[] insertData, boolean targetEquals) {
 		super(stream, srcData);
 		this.targetData = targetData;
 		this.insertData = insertData;

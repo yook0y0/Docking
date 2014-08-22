@@ -1,17 +1,17 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.MedianDataProcessFilter;
 
 public class MedianDataDeleteFilter extends MedianDataProcessFilter {
 	
 	private byte[][] targetData;
 	
-	public MedianDataDeleteFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData){
+	public MedianDataDeleteFilter(DockingStream stream, byte[][] preData, byte[][] postData){
 		this(stream,preData,postData,null);
 	}
 
-	public MedianDataDeleteFilter(DockingAnalyzer stream, byte[][] preData,
+	public MedianDataDeleteFilter(DockingStream stream, byte[][] preData,
 			byte[][] postData, byte[][] targetData) {
 		super(stream, preData, postData);
 		this.targetData = targetData;

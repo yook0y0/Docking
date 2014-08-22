@@ -3,8 +3,10 @@ package org.docking.erbse.socket;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.docking.erbse.analysis.attribute.Attr;
 import org.docking.erbse.controller.TempController;
@@ -88,8 +90,9 @@ public class SocketServer extends DefaultEmbeddableVerticle
 					String room = data.getString("room");
 					String dt = data.getString("data");
 					String memberId = data.getString("memberId");
+					String contentId = data.getString("contentId");
 		
-					String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId"}, new String[]{dt,memberId});
+					String res =  JsonParser.getInstance().jParseObj(new String[]{"data","memberId","contentId"}, new String[]{dt,memberId,contentId});
 					io.sockets().in(room).emit("map", res);
 					}
 				});
@@ -98,10 +101,11 @@ public class SocketServer extends DefaultEmbeddableVerticle
 				{
 					public void handle(JsonObject data) 
 					{
+						String	room = data.getString("room");
 						String	memberId = data.getString("memberId");
 						String	message = data.getString("data");
 						
-						io.sockets().emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
+						io.sockets().in(room).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"chat",memberId,message}));
 					}
 				});
 				
@@ -109,6 +113,7 @@ public class SocketServer extends DefaultEmbeddableVerticle
 				{
 					public void handle(JsonObject data)
 					{
+						String	room = data.getString("room");
 						String	contentId = data.getString("contentId");
 						String	memberId = data.getString("memberId");
 						String	contentsBody = data.getString("data");
@@ -126,7 +131,7 @@ public class SocketServer extends DefaultEmbeddableVerticle
 							e.printStackTrace();
 						}
 				
-						io.sockets().emit("backUp_receive", JsonParser.getInstance().jParseArr(new String[]{res}));
+						io.sockets().in(room).emit("backUp_receive", JsonParser.getInstance().jParseArr(new String[]{res,contentId}));
 					}
 				});
 				
@@ -134,7 +139,9 @@ public class SocketServer extends DefaultEmbeddableVerticle
 				{
 					public void handle(JsonObject data)
 					{
+						String	room = data.getString("room");
 						String	tempId = data.getString("data");
+						String	contentId = data.getString("contentId");
 						
 						TempController	tempController = (TempController)Injector.getInstance().getObject(TempController.class);
 						
@@ -149,7 +156,7 @@ public class SocketServer extends DefaultEmbeddableVerticle
 							e.printStackTrace();
 						}
 						
-						io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{res}));
+						io.sockets().in(room).emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{res,contentId}));
 					}
 				});
 				
@@ -157,19 +164,20 @@ public class SocketServer extends DefaultEmbeddableVerticle
 				{
 					public void handle(JsonObject data)
 					{
-						String room = data.getString("room");
-						
-						String	initData = setInitData(room);
+						String 	room = data.getString("room");
+						String	contentId = data.getString("contentId");
+
+						String	initData = setInitData(contentId);
 						
 						if(!(initData.equals("0")))
 						{
-							io.sockets().emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{initData}));
+							io.sockets().in(room).emit("get_backUpData", JsonParser.getInstance().jParseArr(new String[]{initData,contentId}));
 						}
 					}
 				});
 
-				/*socket.onDisconnect(new Handler<JsonObject>() 
-						{
+				socket.onDisconnect(new Handler<JsonObject>() 
+				{
 					public void handle(JsonObject data) 
 					{
 						String	memberId = Attr.socketList.get(socket.getId());
@@ -181,22 +189,19 @@ public class SocketServer extends DefaultEmbeddableVerticle
 
 						Iterator<String>	iterator = rs.iterator();
 
-						String	roomId = "";
-
+						String	roomId = null;
+						
 						while(iterator.hasNext())
 						{
-							if((roomId = iterator.next()) != "")
-							{
-								roomId = roomId.replace("/", "");
-							}
-						}
+							roomId = iterator.next();
+						}	
+						
+						roomId = roomId.replace("/", "");
 
-						String[] clients = io.sockets().clients(roomId);
+						String[] 	clients = io.sockets().clients(roomId);
+						String[] 	userIdList = new String[clients.length];
 
-
-						String[] userIdList = new String[clients.length];
-
-						for(int i=0;i<clients.length;i++)
+						for(int i = 0 ; i < clients.length ; i++)
 						{
 							userIdList[i] = Attr.socketList.get(clients[i]);
 						}
@@ -205,7 +210,7 @@ public class SocketServer extends DefaultEmbeddableVerticle
 
 						io.sockets().in(roomId).emit("chat_receive", JsonParser.getInstance().jParseArr(new String[]{"exit",memberId," 님이 퇴장하셨습니다."}));
 					}
-						});*/
+				});
 			}
 		});
 

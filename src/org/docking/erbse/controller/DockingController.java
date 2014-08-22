@@ -15,9 +15,9 @@ import org.docking.erbse.service.DockingService;
 import org.docking.erbse.util.Injector;
 import org.docking.erbse.view.ContentsView;
 import org.docking.erbse.vo.ContentVO;
-
-import org.docking.erbse.vo.MemberVO;
+import org.docking.erbse.vo.DocumentVO;
 import org.docking.erbse.vo.EditorExecuteInfoVO;
+import org.docking.erbse.vo.MemberVO;
 
 
 public class DockingController {
@@ -66,6 +66,9 @@ public class DockingController {
 		GenericService<EditorExecuteInfoVO> eeivoService = new GenericServiceImpl<EditorExecuteInfoVO>();
 		EditorExecuteInfoVO eeivo = eeivoService.search("editorExecute_search", cvo.getEditorId());
 		
+		GenericService<DocumentVO>	dService = new GenericServiceImpl<DocumentVO>();
+		String	masterId = (dService.search("document_search", cvo.getDocumentId())).getWriter();
+		
 		List<ContentVO>	contentList = service.searchAll("content_searchAll_key", cvo.getDocumentId());
 		List<ContentsView>	contentsViewList = new ArrayList<ContentsView>();
 		
@@ -75,6 +78,7 @@ public class DockingController {
 		{
 			cv = new ContentsView();
 			
+			cv.setContentId(conVO.getContentId());
 			cv.setEditorId(conVO.getEditorId());
 			cv.setStartPage((eeivoService.search("editorExecute_search", conVO.getEditorId())).getStartPage());
 			
@@ -95,6 +99,7 @@ public class DockingController {
 		req.setAttribute("memberId", ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId());
 		req.setAttribute("contentsViewList", contentsViewList);
 		req.setAttribute("contentCount", contentList.size());
+		req.setAttribute("masterId", masterId);
 		
 		req.getRequestDispatcher("./docking.jsp").forward(req, res);
 	}

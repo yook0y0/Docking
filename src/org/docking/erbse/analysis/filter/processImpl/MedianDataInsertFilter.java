@@ -1,13 +1,13 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.MedianDataProcessFilter;
 
 public class MedianDataInsertFilter extends MedianDataProcessFilter {
 
 	private byte[][] insertData;
 	
-	public MedianDataInsertFilter(DockingAnalyzer stream, byte[][] preData,
+	public MedianDataInsertFilter(DockingStream stream, byte[][] preData,
 			byte[][] postData, byte[][] insertData) {
 		super(stream, preData, postData);
 		this.insertData = insertData;

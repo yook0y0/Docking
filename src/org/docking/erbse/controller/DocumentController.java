@@ -42,7 +42,7 @@ public class DocumentController
 		SimpleDateFormat    mSimpleDateFormat = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss", Locale.KOREA );
 		String	creationDate = mSimpleDateFormat.format(new Date());
 		String	writer = ((MemberVO)req.getSession().getAttribute("logInMember")).getMemberId();
-		String	documentId = writer + "/" + creationDate;
+		String	documentId = String.valueOf(System.currentTimeMillis());
 		
 		DocumentVO dvo = new DocumentVO();
 		dvo.setDocumentId(documentId);

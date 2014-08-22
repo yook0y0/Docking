@@ -1,13 +1,13 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.SingleDataProcessFilter;
 
 public class SingleDataUpdateFilter extends SingleDataProcessFilter {
 
 	private byte[][] updateData;
 	
-	public SingleDataUpdateFilter(DockingAnalyzer stream, byte[][] targetData, byte[][] updateData) {
+	public SingleDataUpdateFilter(DockingStream stream, byte[][] targetData, byte[][] updateData) {
 		super(stream,targetData);
 		this.updateData = updateData;
 		// TODO Auto-generated constructor stub

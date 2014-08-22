@@ -7,12 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
-import org.docking.erbse.analysis.attribute.Attr;
-import org.docking.erbse.analysis.attribute.DataAttribute;
-import org.docking.erbse.analysis.filter.processImpl.NextDataTargetInsertFilter;
-import org.docking.erbse.analysis.filter.processImpl.SingleDataUpdateFilter;
-import org.docking.erbse.analysis.register.DataRegister;
 import org.docking.erbse.dao.service.GenericService;
 import org.docking.erbse.dao.serviceImpl.GenericServiceImpl;
 import org.docking.erbse.file.FileManager;

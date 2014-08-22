@@ -2,22 +2,24 @@ package org.docking.erbse.analysis.tokenizer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.attribute.Attr;
+import org.docking.erbse.analysis.attribute.Attribute;
 import org.docking.erbse.analysis.attribute.DataAttribute;
 import org.docking.erbse.analysis.attribute.IndexAttribute;
 import org.docking.erbse.analysis.attribute.TokenAttribute;
 
 public class DataTokenizer extends Tokenizer {
 
-	public DataTokenizer(DockingAnalyzer stream, byte[] token) {
+	public DataTokenizer(DockingStream stream, byte[] token) {
 		super(stream, token);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void analyze(){
+	public Map<Integer, Attribute> analyze(){
 		DataAttribute dAttr = null;
 		dAttr = (DataAttribute)this.getAttrSet().get(Attr.DATA_ATTR);
 
@@ -66,9 +68,12 @@ public class DataTokenizer extends Tokenizer {
 			iAttr.setEndWidth(endIndex);
 			iAttr.setProcess(Attr.PROCESS_FILTER);
 			super.modifyAttr(Attr.INDEX_ATTR, iAttr);
+			
+			return super.getAttrSet();
 		}
 		else{
 			// Error Message..
+			return null;
 		}
 	}
 

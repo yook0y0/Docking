@@ -1,6 +1,6 @@
 package org.docking.erbse.analysis.filter.processImpl;
 
-import org.docking.erbse.analysis.DockingAnalyzer;
+import org.docking.erbse.analysis.DockingStream;
 import org.docking.erbse.analysis.filter.process.MedianDataProcessFilter;
 
 public class MedianDataUpdateFilter extends MedianDataProcessFilter {
@@ -8,11 +8,11 @@ public class MedianDataUpdateFilter extends MedianDataProcessFilter {
 	private byte[][] targetData;
 	private byte[][] updateData;
 
-	public MedianDataUpdateFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData, byte[][] updateData) {
+	public MedianDataUpdateFilter(DockingStream stream, byte[][] preData, byte[][] postData, byte[][] updateData) {
 		this(stream,preData,postData,null,updateData);
 	}
 
-	public MedianDataUpdateFilter(DockingAnalyzer stream, byte[][] preData, byte[][] postData,byte[][] targetData, byte[][] updateData) {
+	public MedianDataUpdateFilter(DockingStream stream, byte[][] preData, byte[][] postData,byte[][] targetData, byte[][] updateData) {
 		super(stream,preData,postData);
 		this.targetData = targetData;
 		this.updateData = updateData;

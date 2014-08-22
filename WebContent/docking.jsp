@@ -203,6 +203,7 @@
 	<input type="hidden" id="h_documentId" value="${requestScope.documentId}" />
 	<input type="hidden" id="h_memberId" value="${requestScope.memberId}" />
 	<input type="hidden" id="h_contentId" value="${requestScope.contentId}" />
+	<input type="hidden" id="h_masterId" value="${requestScope.masterId}" />
 
 	<section id="container"> <header class="header black-bg">
 	<div class="sidebar-toggle-box">
@@ -252,7 +253,7 @@
 					<div class="notify-arrow notify-arrow-green"></div>
 					<li><p class="green">CONTENTS LIST!</p></li>
 					<c:forEach var="item" items="${contentsViewList}">
-						<li><a onclick="changeFrame('${item.editorId}','${item.startPage}')">
+						<li><a onclick="changeFrame('${item.contentId}','${item.editorId}','${item.startPage}')">
 								<div class="task-info">
 									<div class="desc">${item.editorId}</div>
 								</div>
@@ -292,7 +293,7 @@
 			<li style="margin:10px">
 				<div class="btn-group">
 					<button type="button" class="btn btn-theme dropdown-toggle"
-						onclick='exit'>EXIT</button>
+						onclick='window.location = "main.jsp";'>EXIT</button>
 				</div>
 			</li>
 		</ul>
@@ -349,18 +350,20 @@
 	var contentId;
 	var memberId;
 	var docId;
+	var masterId;
 	
 	        $(document).ready(function () 
 	       	{        		   	
 	        	memberId = $("#h_memberId").val();
 	        	docId = $("#h_documentId").val();
 	        	contentId = $("#h_contentId").val();
+	        	masterId = $("#h_masterId").val();
 	        	
 	          	socket = io.connect("http://localhost:9000");
 	          	
 	           console.log('client socket create..');
 	           
-	           socket.emit('room', {room : contentId, memberId : memberId});
+	           socket.emit('room', {room : docId, memberId : memberId});
 	   		
 	           socket.on('userList', function(data)
 	        	{
@@ -399,19 +402,63 @@
        			   var jsonDataList = eval('('+data+')');
        			   
        				console.log('data receive..');
-       			   
-       				$('#editor_frame')[0].contentWindow.data_set(jsonDataList.data);  
+       			
+       			   if(jsonDataList.contentId == contentId)
+       			   {
+       					$('#editor_frame')[0].contentWindow.data_set(jsonDataList.data);
+       			   }  
        		   });
-       		    
-       		      setInterval(function()
-       		      {
-       		         console.log('data send..');
-
-       		         var data = $('#editor_frame')[0].contentWindow.data_get();
-       		         
-       		      	socket.emit('data', {data : data, room : contentId, memberId : memberId});
-       		         
-       		      }, 3000); 
+	           
+	           $('#editor_frame').on("load" , function()
+	        	{
+	        	   $(document.getElementById('editor_frame').contentWindow.document).keydown(function()
+	       	        { 
+	        		   setTimeout(function()
+    	  	  		      {
+    	  	  		         console.log('data send..');
+    	
+    	  	  		         var data = $('#editor_frame')[0].contentWindow.data_get();
+    	  	  		         
+    	  	  		      	socket.emit('data', {data : data, room : docId, memberId : memberId, contentId : contentId});
+    	  	  		         
+    	  	  		      }, 100); 
+	       	        });	
+	        	   
+	        	   $(document.getElementById('editor_frame').contentWindow.document).mouseup(function()
+   	       	        { 
+   	        		    setTimeout(function()
+       	  	  		      {
+       	  	  		         console.log('data send..');
+       	
+       	  	  		         var data = $('#editor_frame')[0].contentWindow.data_get();
+       	  	  		         
+       	  	  		      	socket.emit('data', {data : data, room : docId, memberId : memberId, contentId : contentId});
+       	  	  		         
+       	  	  		      }, 100);  
+   	       	        });
+	       		});
+	           
+	           
+	           
+	           /* $('#editor_frame').contents().find('body').keydown(function() 
+       		    {
+	        	   alert("keyUp");
+	        	   
+	        	   setTimeout(function()
+	  	  		      {
+	  	  		         console.log('data send..');
+	
+	  	  		         var data = $('#editor_frame')[0].contentWindow.data_get();
+	  	  		         
+	  	  		      	socket.emit('data', {data : data, room : docId, memberId : memberId, contentId : contentId});
+	  	  		         
+	  	  		      }, 3000); 
+       		   }); */
+	            
+  		      
+  		      
+  		      
+  		      
 	           
 	           var chat_count = 0;
 	           
@@ -431,15 +478,26 @@
 						 if(messageId == memberId)
 						 {
 							 messageId = "나";
+							 
+							 message = messageId + " : " + dat;
+							 
+							 messageList += '<li class="self">';
+							 messageList += '<div class="avatar">';
+							 messageList += '----------------------------------------------------------------------';
+							 messageList += '</div>';
+							 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
 						 }
 						 
-						 message = messageId + " : " + dat;
-						 
-						 messageList += '<li class="self">';
-						 messageList += '<div class="avatar">';
-						 messageList += '----------------------------------------------------------------------';
-						 messageList += '</div>';
-						 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
+						 else
+						 {
+							 message = messageId + dat;
+							 
+							 messageList += '<li class="other">';
+							 messageList += '<div class="avatar">';
+							 messageList += '----------------------------------------------------------------------';
+							 messageList += '</div>';
+							 messageList += '<div class="messages"><p>' + message + '</p></div></li>';
+						 }
 					 }
 					 
 					 else
@@ -471,7 +529,7 @@
 				{
 				   var data = $("#btn-input").val();
 			
-				   socket.emit('chat_send', {data : data, memberId : memberId});
+				   socket.emit('chat_send', {room : docId, data : data, memberId : memberId});
 				   
 				   $("#btn-input").val("");
 				});
@@ -480,7 +538,7 @@
 				{
 				   var data = $('#editor_frame')[0].contentWindow.data_get();
 			
-				   socket.emit('backUp_send', {data : data, memberId : memberId, contentId : contentId});
+				   socket.emit('backUp_send', {room : docId, data : data, memberId : memberId, contentId : contentId});
 				});
 			   
 			   var backUp_count = 0;
@@ -489,38 +547,44 @@
 			    {
 				   var jsonDataList = eval('('+data+')');
 				   
-				   jData = JSON.parse(jsonDataList);
-				   
-					var result = $.parseJSON(jData.tempVO);
-					
-					var tempDiv = "";
-					
-					if(backUp_count == 8)
+				   if(jsonDataList[1] == contentId)
 					{
-						tempDiv +='<li><p class="green">BACK UP LIST</p></li>';
-						backUp_count = 0;
-						$("#backUp_area").html("");
+					   jData = JSON.parse(jsonDataList[0]);
+					   
+						var result = $.parseJSON(jData.tempVO);
+						
+						var tempDiv = "";
+						
+						if(backUp_count == 8)
+						{
+							tempDiv +='<li><p class="green">BACK UP LIST</p></li>';
+							backUp_count = 0;
+							$("#backUp_area").html("");
+						}
+	
+						tempDiv += '<li>';
+						tempDiv += '<button style="width:100%" onclick="setBackUpData(\'' + result['tempId'] + '\')">';
+						tempDiv += '<div class="task-info">';
+						tempDiv += '<div class="desc">' + result['date'] + '</div>';
+						tempDiv += '<div class="percent">' + result['memberId'] + '</div>';
+						tempDiv += '</div>';
+						tempDiv += '<div class="progress progress-striped">';
+						tempDiv += '</div></button></li>';
+						
+						backUp_count++;
+						
+						$("#backUp_area").append(tempDiv);
 					}
-
-					tempDiv += '<li>';
-					tempDiv += '<button style="width:100%" onclick="setBackUpData(\'' + result['tempId'] + '\')">';
-					tempDiv += '<div class="task-info">';
-					tempDiv += '<div class="desc">' + result['date'] + '</div>';
-					tempDiv += '<div class="percent">' + result['memberId'] + '</div>';
-					tempDiv += '</div>';
-					tempDiv += '<div class="progress progress-striped">';
-					tempDiv += '</div></button></li>';
-					
-					backUp_count++;
-					
-					$("#backUp_area").append(tempDiv);
 			    });
 			   
 			   socket.on('get_backUpData', function(data) 
 	   		   {
 	   			   var jsonDataList = eval('('+data+')');
 	   			   
-	   				$('#editor_frame')[0].contentWindow.data_set(jsonDataList[0]);  
+	   			   if(jsonDataList[1] == contentId)
+   				 	{
+	   					$('#editor_frame')[0].contentWindow.data_set(jsonDataList[0]);
+   				  	}  
 	   		   });
 			  
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,19 +598,21 @@
 	        
 			function setInitData()
 			{
-   	        	socket.emit('set_initData', {room : contentId});
+   	        	socket.emit('set_initData', {room : docId , contentId : contentId});
 			};
 
 	        function setBackUpData(tempId)
 	        {
 	        	 var data = tempId;
 	 			
-				 socket.emit('set_backUpData', {data : data});
+				 socket.emit('set_backUpData', {room : docId, data : data, contentId : contentId});
 	        };
 	        
-	        function changeFrame(editorId, startPage)
+	        function changeFrame(conId, editorId, startPage)
 	        {
 	        	$('#editor_frame').attr('src', "http://localhost:8089/Docking/getEditorCode?path=" + startPage + "&editorId=" + editorId);
+
+	        	contentId = conId;
 	        }
 		</script>
 
